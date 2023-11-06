@@ -62,10 +62,29 @@ void agregarLotesAProducto(lista_Producto *&producto)
         {
             std::cout << "\nIngrese la fecha de expiración del lote en formato dd/mm/yyyy: ";
             scanf("%2d/%2d/%2d", &diae, &mese, &añoe);
-            if (!((diae < 1 || diae > 31) || (mese < 1 || mese > 12) || (añoe < 1)))
+            if ((añoe == año) && (mese == mes) && (diae > dia)) //Validar en el mes actual
             {
-                lote_actual.expiracion_fecha = {diae, mese, añoe};
-                break;
+                if(validarDiaPorMes(añoe, mese, diae))
+                {
+                    lote_actual.expiracion_fecha = {diae, mese, añoe};
+                    break;                    
+                }
+            }
+            else if((añoe == año) && (mese > mes))
+            {
+                if(validarDiaPorMes(añoe, mese, diae))
+                {
+                    lote_actual.expiracion_fecha = {diae, mese, añoe};
+                    break;      
+                }
+            }
+            else if(añoe > año)
+            {
+                 if(validarDiaPorMes(añoe, mese, diae))
+                {
+                    lote_actual.expiracion_fecha = {diae, mese, añoe};
+                    break;      
+                }               
             }
             std::cout << "Error al ingresar la fecha. Vuelve a intentarlo.\n";
             std::cin.clear();
