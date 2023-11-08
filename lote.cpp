@@ -17,7 +17,7 @@ char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual)
 {
     char id[20];
     int incremental = mes_actual->lotes_cantidad + 1;
-    sprintf(id, "%d%02d%02d%d%d", conteo_id_producto, dia, mes, año % 100, incremental);
+    sprintf(id, "%d%02d%02d%d%d", conteo_id_producto, dia, mes, año % 100, incremental); // 10811231 //1 2 3 4 6
     char *id_total = new char[strlen(id) + 1];
     strcpy(id_total, id);
     return id_total;
@@ -62,29 +62,29 @@ void agregarLotesAProducto(lista_Producto *&producto)
         {
             std::cout << "\nIngrese la fecha de expiración del lote en formato dd/mm/yyyy: ";
             scanf("%2d/%2d/%2d", &diae, &mese, &añoe);
-            if ((añoe == año) && (mese == mes) && (diae > dia)) //Validar en el mes actual
+            if ((añoe == año) && (mese == mes) && (diae > dia)) // Validar en el mes actual
             {
-                if(validarDiaPorMes(añoe, mese, diae))
+                if (validarDiaPorMes(añoe, mese, diae))
                 {
                     lote_actual.expiracion_fecha = {diae, mese, añoe};
-                    break;                    
+                    break;
                 }
             }
-            else if((añoe == año) && (mese > mes))
+            else if ((añoe == año) && (mese > mes))
             {
-                if(validarDiaPorMes(añoe, mese, diae))
+                if (validarDiaPorMes(añoe, mese, diae))
                 {
                     lote_actual.expiracion_fecha = {diae, mese, añoe};
-                    break;      
+                    break;
                 }
             }
-            else if(añoe > año)
+            else if (añoe > año)
             {
-                 if(validarDiaPorMes(añoe, mese, diae))
+                if (validarDiaPorMes(añoe, mese, diae))
                 {
                     lote_actual.expiracion_fecha = {diae, mese, añoe};
-                    break;      
-                }               
+                    break;
+                }
             }
             std::cout << "Error al ingresar la fecha. Vuelve a intentarlo.\n";
             std::cin.clear();
@@ -156,8 +156,67 @@ void agregarLotesAProducto(lista_Producto *&producto)
         {
             break;
         }
-        
     }
 }
 
+void buscarLote(lista_Producto *producto)
+{
+    int id_producto;
+    std::cout << "Digite el ID del producto para buscar un lote: ";
+    id_producto = soloEnteros(id_producto);
+    lista_Producto *producto_actual = buscarProducto(lista_producto, id_producto);
+    if (producto_actual == NULL)
+    {
+        std::cout << "Producto no encontrado.\n";
+        return;
+    }
+    char *id_lote;
+    std::cout << "Para el producto " << producto_actual->producto.nombre_producto << ", Digite el ID de lote que desea buscar: ";
+    agregarElementoPuntero(id_lote, input);
+    cola_Lote *lote_actual = obtenerLote(producto_actual, id_lote);
+    delete[] id_lote;
+    if (lote_actual == NULL)
+    {
+        std::cout << "Lote no encontrado.\n";
+        return;
+    }
+    //Mostrar el lote 
+}
+
+cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote)
+{
+    Lista_Año *año_actual = producto->producto.años_producto;
+    while (año_actual != NULL)
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+            while (mes_actual->lotes != NULL)
+            {
+                if (strcmp(mes_actual->lotes->lote.id_lote, id_lote) == 0)
+                {
+                    if (mes_actual->lotes->lote.validacion)
+                    {
+                        std::cout << "Este lote no cumple con los requerimientos para estar validado.\n";
+                        return NULL;
+                    }
+                    return mes_actual->lotes;
+                }
+            }
+            mes_actual->lotes = mes_actual->lotes->siguiente;
+        }
+        año_actual = año_actual->siguiente;
+    }
+    return NULL;
+}
+/*struct Lote
+{ 
+    char *id_lote;
+    Fecha ingreso_fecha;
+    Fecha expiracion_fecha;
+    double precio_producto;
+    int cantidad_de_producto;
+    bool validacion = false;
+};
+*/
 #endif

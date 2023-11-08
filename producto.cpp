@@ -46,14 +46,13 @@ void agregarUnidadMedida(lista_Unidad_Medida *&lista, char *input)
             if (x->siguiente == NULL)
             {
                 lista_Unidad_Medida *nueva_unidad = new lista_Unidad_Medida;
-                nueva_unidad->unidad_medida = unidad_medida; 
-                x->siguiente = nueva_unidad; 
+                nueva_unidad->unidad_medida = unidad_medida;
+                x->siguiente = nueva_unidad;
                 std::cout << "Unidad de medida añadida al sistema exitosamente.\n";
-                return; 
+                return;
             }
             x = x->siguiente;
         }
-
     }
 }
 void agregarProductoEnLista(lista_Producto *&producto, char *input)
@@ -132,17 +131,67 @@ bool comprobarUnidadMedida(lista_Unidad_Medida *lista, char *unidad_medida)
     return false;
 }
 
-lista_Producto *buscarProducto(lista_Producto *lista, int id_producto)
+lista_Producto *buscarProducto(lista_Producto *lista, int id_producto) // Leche            leche   1
 {
-    while (lista != NULL)
+    lista_Producto *aux = lista;
+    while (aux != NULL)
     {
-        if (lista->producto.id_producto == id_producto)
+        if ((aux->producto.id_producto == id_producto) && (!aux->producto.anulado))
         {
-            return lista;
+            return aux;
         }
-        lista = lista->siguiente;
+        aux = aux->siguiente;
     }
     return NULL;
 }
 
+void obtenerProducto(lista_Producto *lista)
+{
+    int id_producto;
+    std::cout << "Digite el ID del producto que desea buscar: ";
+    id_producto = soloEnteros(id_producto);
+    lista_Producto *producto_actual = buscarProductoParaInformacion(lista, id_producto);
+    if (producto_actual == NULL)
+    {
+        std::cout << "El producto no fue encontrado o validado.\n";
+        return;
+    }
+    mostrarProducto(producto_actual);
+}
+
+lista_Producto *buscarProductoParaInformacion(lista_Producto *lista, int id_producto)
+{
+    lista_Producto *aux = lista;
+    while (aux != NULL)
+    {
+        if (aux->producto.id_producto == id_producto)
+        {
+            if (aux->producto.anulado)
+            {
+                int op;
+                std::cout << "El producto seleccionado ha sido anulado anteriormente del sistema. ¿Deseas observar su información?\n";
+                std::cout << "1. Sí\n2. No";
+                op = soloEnteros(op);
+                if (op == 1)
+                {
+                    return aux;
+                }
+                return NULL;
+            }
+            
+        }
+        aux = aux->siguiente;
+    }
+    return NULL;
+}
+void mostrarProducto(lista_Producto *producto)
+{
+    std::cout << producto->producto.nombre_producto << "\n";
+    std::cout << producto->producto.descripcion_producto << "\n";
+    std::cout << producto->producto.unidad_medida << "\n";
+    std::cout << producto->producto.existencia_cantidad << "\n";
+    (producto->producto.anulado) ? std::cout << "El producto está anulado\n" : std::cout << "El producto no está anulado\n";
+}
+
+// Nombre, descripcion, unidad medida, cantidad
 #endif

@@ -152,11 +152,13 @@ void eliminarListaUsuario(lista_Usuario *&lista, char *nombre, char *codigo_acce
 
 void agregarProductoEnLista(lista_Producto *&producto, char *input);
 void mostrarTodosProducto(lista_Producto *&producto);
-void mostrarProducto(lista_Producto *&producto);
-lista_Producto *buscarProducto(lista_Producto *lista, int id_producto); //! important
+void mostrarProducto(lista_Producto *producto);
+lista_Producto *buscarProducto(lista_Producto *lista, int id_producto); 
 void modificarProducto(lista_Producto *&lista);
 void eliminarTodaListaProducto(lista_Producto *&lista);
 void eliminarListaProducto(lista_Producto *&lista, char *nombre, char *codigo_acceso);
+void obtenerProducto(lista_Producto *lista);
+lista_Producto *buscarProductoParaInformacion(lista_Producto *lista, int id_producto);
 
 // Lote
 void agregarPrimerLote(lista_Producto *&producto);
@@ -164,7 +166,9 @@ char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual);
 void agregarLotesAProducto(lista_Producto *&producto);
 void mostrarLotesDeProducto(cola_Lote *cola, char *id_producto);
 void mostrarLotesDeTodosProductos(cola_Lote *cola);
-void buscarLote(cola_Lote *cola, char *id_producto);
+void buscarLote(lista_Producto *producto);
+cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote);
+int validarLote(cola_Lote *lote);
 void modificarLoteDeProducto(cola_Lote *&cola);
 void eliminarLoteYMovimientoDeProducto(cola_Lote *&cola_lote, lista_Movimiento *&cola_movimiento, char *id_producto, char *codigo_acceso);
 void eliminarLotesYMovimientosTodoDeProducto(cola_Lote *&cola_lote, lista_Movimiento *&cola_movimiento, char *id_producto, char *codigo_acceso);

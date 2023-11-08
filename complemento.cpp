@@ -14,6 +14,8 @@ int soloEnteros(int numero)
 {
     if (std::cin >> numero)
     {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return numero;
     }
     std::cin.clear();
@@ -94,5 +96,5 @@ bool validarDiaPorMes(int dia, int mes, int año)
 
 bool esBisiesto(int año)
 {
-    return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);    
+    return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);
 }

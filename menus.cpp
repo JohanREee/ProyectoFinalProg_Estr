@@ -79,10 +79,11 @@ void menuGestionProductos(int &opcion)
         std::cout << "1. Agregar producto" << std::endl;
         std::cout << "2. Buscar producto" << std::endl;
         std::cout << "3. Anular producto" << std::endl;
-        std::cout << "4. Listar producto" << std::endl;
-        std::cout << "5. Modificar producto" << std::endl;
-        std::cout << "6. Volver al menu anterior" << std::endl;
-        std::cout << "7. Salir" << std::endl;
+        std::cout << "4. Activar producto\n";
+        std::cout << "5. Listar producto" << std::endl;
+        std::cout << "6. Modificar producto" << std::endl;
+        std::cout << "7. Volver al menu anterior" << std::endl;
+        std::cout << "8. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros(opcion);
         fflush(stdin);
@@ -99,15 +100,17 @@ void menuGestionProductos(int &opcion)
             std::cout << "Anulando producto..." << std::endl;
             break;
         case 4:
+            std::cout << "Activando producto..." << std::endl;
+        case 5:
             std::cout << "Listando productos..." << std::endl;
             break;
-        case 5:
-            std::cout << "Modificando producto" << std::endl;
-            break;
         case 6:
-            std::cout << "Volviendo al menú principal." << std::endl;
-            return;
+           std::cout << "Modificando producto" << std::endl;
+            break;
         case 7:
+             std::cout << "Volviendo al menú principal." << std::endl;
+            return;
+        case 8:
             std::cout << "Saliendo del sistema." << std::endl;
             exit(0);
             break;
