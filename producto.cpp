@@ -127,7 +127,7 @@ bool comprobarUnidadMedida(lista_Unidad_Medida *lista, char *unidad_medida)
         }
         lista = lista->siguiente;
     } while (lista != NULL);
-    std::cout << "Unidad de medida no encontrada en el sistema. ";
+    std::cout << "Unidad de medida no encontrada en el sistema. \n";
     return false;
 }
 
@@ -178,7 +178,6 @@ lista_Producto *buscarProductoParaInformacion(lista_Producto *lista, int id_prod
                 }
                 return NULL;
             }
-            
         }
         aux = aux->siguiente;
     }
@@ -193,5 +192,129 @@ void mostrarProducto(lista_Producto *producto)
     (producto->producto.anulado) ? std::cout << "El producto está anulado\n" : std::cout << "El producto no está anulado\n";
 }
 
+void mostrarTodosProducto(lista_Producto *lista_producto)
+{
+    int op;
+    std::cout << "ADVERTENCIA. ¿Desea mostrar los productos anulados?\n";
+    std::cout << "1.Sí\n2.No";
+    op = soloEnteros(op);
+    (op == 1) ? mostrarProductosAnulados(lista_producto) : mostrarProductosNoAnulados(lista_producto);
+}
+
+void mostrarProductosNoAnulados(lista_Producto *producto)
+{
+    lista_Producto *aux = producto;
+    while (aux != NULL)
+    {
+        if (!producto->producto.anulado)
+        {
+            std::cout << producto->producto.nombre_producto << "\n";
+            std::cout << producto->producto.descripcion_producto << "\n";
+            std::cout << producto->producto.unidad_medida << "\n";
+            std::cout << producto->producto.existencia_cantidad << "\n";
+        }
+        aux = aux->siguiente;
+    }
+}
+void mostrarProductosAnulados(lista_Producto *producto)
+{
+    lista_Producto *aux = producto;
+    while (aux != NULL)
+    {
+        std::cout << producto->producto.nombre_producto << "\n";
+        std::cout << producto->producto.descripcion_producto << "\n";
+        std::cout << producto->producto.unidad_medida << "\n";
+        std::cout << producto->producto.existencia_cantidad << "\n";
+        aux = aux->siguiente;
+    }
+}
 // Nombre, descripcion, unidad medida, cantidad
+void modificarProducto(lista_Producto *&lista)
+{
+    int id_producto;
+    std::cout << "Ingrese el ID del producto: ";
+    id_producto = soloEnteros(id_producto);
+    lista_Producto *producto_actual = buscarProducto(lista_producto, id_producto);
+    if (producto_actual == NULL)
+    {
+        std::cout << "Producto no encontrado.\n";
+        return;
+    }
+    int op;
+    std::cout << "Seleccione el campo de " << producto_actual->producto.nombre_producto << " que desea modificar\n";
+    std::cout << "1. Nombre\n";
+    std::cout << "2. Descripción\n";
+    std::cout << "3. Unidad de medida\n";
+    std::cout << "4. Cantidad actual en existencia\n";
+    op = soloEnteros(op);
+    switch (op)
+    {
+    case 1:
+        char *nombre;
+        std::cout << "Digite el nuevo nombre del producto: ";
+        agregarElementoPuntero(nombre, input);
+        std::cout << "Nombre del producto " << producto_actual->producto.nombre_producto << " ha sido cambiado a " << nombre << " exitosamente.\n";
+        //Lineas para modificar un dato.
+        delete[] producto_actual->producto.nombre_producto; //Primero se borra la memoria dinamica
+        producto_actual->producto.nombre_producto = new char[strlen(nombre) + 1]; //Se reasigna con el tamaño del char ingresado con anterioridad (char *nombre)
+        strcpy(producto_actual->producto.nombre_producto, nombre); // se copia el contenido de nombre a el puntero de la estructura que debe contener el nombre real
+        //
+        delete [] nombre;
+        break;
+    case 2:
+        char *descripcion;
+        std::cout << "Digite la nueva descripcion del producto: ";
+        agregarElementoPuntero(descripcion, input);
+        std::cout << "Descripcion anterior: " << producto_actual->producto.descripcion_producto << "\n";
+        std::cout << "Descripcion nueva: " << descripcion << "\n";
+        delete[] producto_actual->producto.descripcion_producto;
+        producto_actual->producto.descripcion_producto = new char[strlen(descripcion) + 1];
+        strcpy(producto_actual->producto.descripcion_producto, descripcion);
+        delete[] descripcion;
+        break;
+    case 3:
+        while (true)
+        {
+            char *unidad_medida;
+            std::cout << "Digite la nueva unida de medida: ";
+            agregarElementoPuntero(descripcion, input);
+            if (!comprobarUnidadMedida(lista_unidad_medida, unidad_medida))
+            {
+                int opt;
+                std::cout << "¿Desea digitar otra unidad de medida?\n";
+                std::cout << "1.Sí\n2.No";
+                opt = soloEnteros(opt);
+                if (opt == 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    std::cout << "Serás enviado al menú anterior.\n";
+                    return;
+                }
+            }
+            std::cout << "La unidad de medida " << producto_actual->producto.unidad_medida << " ha sido reemplazada por " << unidad_medida << " exitosamente";
+            delete[] producto_actual->producto.unidad_medida;
+            producto_actual->producto.unidad_medida = new char[strlen(unidad_medida)+1];
+            strcpy(producto_actual->producto.unidad_medida, unidad_medida);
+            delete[] unidad_medida;
+            break;
+        }
+        break;
+    case 4:
+        int cantidad_existencia;
+        std::cout << "Digite la nueva cantidad en existencia: ";
+        cantidad_existencia = soloEnteros(cantidad_existencia);
+        std::cout << "La cantidad en existencia actual (" << producto_actual->producto.existencia_cantidad << ") ha sido reemplazada por " << cantidad_existencia;
+        producto_actual->producto.existencia_cantidad = cantidad_existencia;
+        break;
+    default:
+        std::cout << "Has digitado un valor invalido.\n";
+        std::cout << "Serás enviado al menú anterior.\n";
+        return;
+    }
+    return;
+
+}
 #endif
