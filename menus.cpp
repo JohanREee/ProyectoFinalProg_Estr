@@ -10,7 +10,7 @@ void menuGestionUsuarios(int &opcion);
 void menuPrincipal(int &opcion)
 {
     opcion = 0;
-    while (opcion != 6 || opcion !=5)
+    while (opcion != 6 || opcion !=7)
     {
         std::cout << "Bienvenido, " << primerNombre(usuario_actual->usuario.nombre_completo) << "\n";
         std::cout << "\t Sistema de Gestion de Inventario SaboresSostenibles \n"
@@ -20,11 +20,13 @@ void menuPrincipal(int &opcion)
         std::cout << "3. Ingresar movimiento" << std::endl;
         std::cout << "4. Generar Reportes Historicos" << std::endl;
         std::cout << "5. Cerrar sesion" << std::endl;
-        std::cout << "6. Salir" << std::endl;
-        if (usuario_actual->usuario.administrador)
+        std::cout << "6. Gestión de usuarios\n";
+        std::cout << "7. Salir" << std::endl;
+
+        /*if (usuario_actual->usuario.administrador)
         {
             std::cout << "7. Gestión de usuarios\n";
-        }
+        }*/
         std::cout << "Ingresar opcion: ";
         opcion = soloEnteros(opcion);
         fflush(stdin);
@@ -48,9 +50,6 @@ void menuPrincipal(int &opcion)
             opcion = 2;
             return;
         case 6:
-            std::cout << "Saliendo del programa.\n";
-            return;
-        case 7:
             if (usuario_actual->usuario.administrador)
             {
                 // menu de gestion
@@ -60,6 +59,10 @@ void menuPrincipal(int &opcion)
                 std::cout << "Opcion invalida. Por favor, seleccione una opcion valida.\n";
             }
             break;
+        case 7:
+            std::cout << "Saliendo del programa.\n";
+            return;
+
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
             break;
@@ -155,7 +158,7 @@ void menuGestionLotes(int &opcion)
             std::cout << "Volviendo al menú principal.";
             return;
         case 7:
-            std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
+            std::cout << "Saliendo del programa.  Hasta luego!" << std::endl;
             exit(0);
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
@@ -198,7 +201,7 @@ void menuReporteHistorico(int &opcion)
             return;
             break;
         case 6:
-            std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
+            std::cout << "Saliendo del programa.  Hasta luego!" << std::endl;
             exit(0);
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
@@ -241,7 +244,7 @@ void menuGestionUsuario(int &opcion)
             return;
             break;
         case 6:
-            std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
+            std::cout << "Saliendo del programa.  Hasta luego!" << std::endl;
             exit(0);
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
