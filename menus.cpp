@@ -10,7 +10,7 @@ void menuGestionUsuarios(int &opcion);
 void menuPrincipal(int &opcion)
 {
     opcion = 0;
-    while (opcion != 6 || opcion !=5)
+    while (opcion != 6 || opcion != 5)
     {
         std::cout << "Bienvenido, " << primerNombre(usuario_actual->usuario.nombre_completo) << "\n";
         std::cout << "\t Sistema de Gestion de Inventario SaboresSostenibles \n"
@@ -80,7 +80,7 @@ void menuGestionProductos(int &opcion)
         std::cout << "2. Buscar producto" << std::endl;
         std::cout << "3. Anular producto" << std::endl;
         std::cout << "4. Activar producto\n";
-        std::cout << "5. Listar producto" << std::endl;
+        std::cout << "5. Mostrar todos los productos" << std::endl;
         std::cout << "6. Modificar producto" << std::endl;
         std::cout << "7. Volver al menu anterior" << std::endl;
         std::cout << "8. Salir" << std::endl;
@@ -94,21 +94,21 @@ void menuGestionProductos(int &opcion)
             agregarProductoEnLista(lista_producto, input);
             break;
         case 2:
-            std::cout << "Buscando producto..." << std::endl;
+            obtenerProducto(lista_producto);
             break;
         case 3:
-            std::cout << "Anulando producto..." << std::endl;
+            eliminarProducto(lista_producto);
             break;
         case 4:
             std::cout << "Activando producto..." << std::endl;
         case 5:
-            std::cout << "Listando productos..." << std::endl;
+            mostrarTodosProducto(lista_producto);
             break;
         case 6:
-           std::cout << "Modificando producto" << std::endl;
+            modificarProducto(lista_producto);
             break;
         case 7:
-             std::cout << "Volviendo al menú principal." << std::endl;
+            std::cout << "Volviendo al menú principal." << std::endl;
             return;
         case 8:
             std::cout << "Saliendo del sistema." << std::endl;
@@ -123,16 +123,17 @@ void menuGestionProductos(int &opcion)
 void menuGestionLotes(int &opcion)
 {
     opcion = 0;
-    while (opcion != 6 || opcion != 7)
+    while (opcion != 7 || opcion != 8)
     {
         std::cout << "=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
         std::cout << "1. Agregar lote" << std::endl;
         std::cout << "2. Buscar lote" << std::endl;
         std::cout << "3. Eliminar lote" << std::endl;
-        std::cout << "4. Listar lotes" << std::endl;
-        std::cout << "5. Listar lotes por producto" << std::endl;
-        std::cout << "6. Volver al menu anterior" << std::endl;
-        std::cout << "7. Salir" << std::endl;
+        std::cout << "4. Mostrar todos los lotes" << std::endl;
+        std::cout << "5. Mostrar todos los lotes por producto" << std::endl;
+        std::cout << "6. Modificar lote\n";
+        std::cout << "7. Volver al menu anterior" << std::endl;
+        std::cout << "8. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros(opcion);
         fflush(stdin);
@@ -143,21 +144,23 @@ void menuGestionLotes(int &opcion)
             agregarLotesAProducto(lista_producto);
             break;
         case 2:
-
+            buscarLote(lista_producto);
             break;
         case 3:
 
             break;
         case 4:
-
+            mostrarTodosLotesDeTodosProductos(lista_producto);
             break;
         case 5:
-
+            mostrarTodosLotesDeProducto(lista_producto);
             break;
         case 6:
+            modificarLoteDeProducto(lista_producto);
+        case 7:
             std::cout << "Volviendo al menú principal.";
             return;
-        case 7:
+        case 8:
             std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
             exit(0);
         default:

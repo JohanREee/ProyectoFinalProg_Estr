@@ -91,7 +91,7 @@ struct Producto
     char *unidad_medida;
     char *descripcion_producto;
     Lista_Año *años_producto = NULL;
-    int existencia_cantidad;
+    int existencia_cantidad = 0;
     bool anulado = false;
 };
 
@@ -156,10 +156,10 @@ void mostrarProducto(lista_Producto *producto);
 void mostrarProductosNoAnulados(lista_Producto *producto);
 void mostrarProductosAnulados(lista_Producto *producto);
 lista_Producto *buscarProducto(lista_Producto *lista, int id_producto); 
-void modificarProducto(lista_Producto *&lista);
-void eliminarTodaListaProducto(lista_Producto *&lista);
-void eliminarListaProducto(lista_Producto *&lista, char *nombre, char *codigo_acceso);
-void obtenerProducto(lista_Producto *lista);
+void modificarProducto(lista_Producto *&lista_producto);
+void eliminarTodaListaProducto(lista_Producto *&lista_producto);
+void eliminarProducto(lista_Producto *&lista_producto);
+void obtenerProducto(lista_Producto *lista_producto);
 lista_Producto *buscarProductoParaInformacion(lista_Producto *lista, int id_producto);
 
 // Lote
@@ -167,12 +167,13 @@ void agregarPrimerLote(lista_Producto *&producto);
 char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual);
 void agregarLotesAProducto(lista_Producto *&producto);
 void mostrarLotesDeProducto(cola_Lote *cola);
-void mostrarTodosLotesDeProductos(lista_Producto *producto);
-void buscarLote(lista_Producto *producto);
+void mostrarTodosLotesDeTodosProductos(lista_Producto *lista_producto);
+void mostrarTodosLotesDeProducto(lista_Producto *lista_producto);
+void buscarLote(lista_Producto *lista_producto);
 cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote);
 int validarLote(cola_Lote *lote);
-void modificarLoteDeProducto(cola_Lote *&cola);
-void eliminarLoteYMovimientoDeProducto(cola_Lote *&cola_lote, lista_Movimiento *&cola_movimiento, char *id_producto, char *codigo_acceso);
+void modificarLoteDeProducto(lista_Producto *&producto_actual);
+void eliminarLoteDeProducto(lista_Producto *&lista_producto);
 void eliminarLotesYMovimientosTodoDeProducto(cola_Lote *&cola_lote, lista_Movimiento *&cola_movimiento, char *id_producto, char *codigo_acceso);
 
 // Movimiento
