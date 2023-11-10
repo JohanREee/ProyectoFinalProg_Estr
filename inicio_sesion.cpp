@@ -23,9 +23,8 @@ void inicioSesion(int &opcion, lista_Usuario *&usuario)
     do
     {
         std::cout << "Bienvenido al sistema de Gestion de Inventario \"Sabores Sostenibles\"\n\n\n\n";
-        std::cout << "1. Registrarse\n";
-        std::cout << "2. Iniciar sesión\n";
-        std::cout << "3. Salir\n";
+        std::cout << "1. Iniciar sesión\n";
+        std::cout << "2. Salir\n";
         std::cout << "Seleccionar opcion: ";
         opcion = soloEnteros(opcion);
         fflush(stdin);
@@ -36,19 +35,17 @@ void inicioSesion(int &opcion, lista_Usuario *&usuario)
                 agregarPrimerUsuarioEnLista(usuario, input);
             }
             else{
-                agregarUsuarioEnLista(usuario, input);
+                inicioSesionAdministradorPersonal(usuario,opcion);
             }
             break;
         case 2:
-            inicioSesionAdministradorPersonal(usuario,opcion);
-            break;
-        case 3:
             std::cout << "Saliendo del sistema...\n";
+            break;
         default:
             break;
         }
 
-    } while (opcion !=3);
+    } while (opcion !=2);
 }
 
 void inicioSesionAdministradorPersonal(lista_Usuario *&usuario, int &opcion)
@@ -107,19 +104,19 @@ void inicioSesionAdministradorPersonal(lista_Usuario *&usuario, int &opcion)
 void agregarPrimerUsuarioEnLista(lista_Usuario *&usuario, char *input)
 {
     lista_Usuario *nuevo_usuario = new lista_Usuario();
-    std::cout << "Ingrese su nombre completo: ";
-    agregarElementoPuntero(nuevo_usuario->usuario.nombre_completo, input);
-    std::cout << "Ingrese su telefono: ";
+    //std::cout << "Ingrese su nombre completo: ";
+    agregarElementoPuntero(nuevo_usuario->usuario.nombre_completo, "admin@admin.com");
+    //std::cout << "Ingrese su telefono: ";
     nuevo_usuario->usuario.telefono = soloEnteros(nuevo_usuario->usuario.telefono);
-    fflush(stdin);
-    std::cout << "Ingrese su correo: ";
-    agregarElementoPuntero(nuevo_usuario->usuario.correo, input);
-    std::cout << "Ingrese su contraseña: ";
-    agregarElementoPuntero(nuevo_usuario->usuario.contraseña, input);
+    //fflush(stdin);
+    //std::cout << "Ingrese su correo: ";
+    agregarElementoPuntero(nuevo_usuario->usuario.correo, "00000000");
+    //std::cout << "Ingrese su contraseña: ";
+    agregarElementoPuntero(nuevo_usuario->usuario.contraseña, "admin123456");
     char *user = primerNombre(nuevo_usuario->usuario.nombre_completo);
-    std::cout << "Usuario " << user << " agregado a la lista de usuarios." << std::endl;
-    std::cout << "Por defecto, el primer usuario ingresado debe ser un administrador.\n";
-    system("pause");
+    //std::cout << "Usuario " << user << " agregado a la lista de usuarios." << std::endl;
+    //std::cout << "Por defecto, el primer usuario ingresado debe ser un administrador.\n";
+    //system("pause");
     nuevo_usuario->usuario.administrador = true;
     // usuario = NULL
     lista_Usuario *aux = usuario; // Reservamos el valor original de la lista
