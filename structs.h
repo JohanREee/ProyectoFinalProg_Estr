@@ -134,10 +134,12 @@ int conteo_id_producto = 0;
 // Prototipado de funcionaes
 
 // General
-#include "complemento.cpp"
+
 void agregarElementoPuntero(char *&dato, char *input);
 void modificarElementoPuntero(char *&dato, char *input);
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto, lista_Unidad_Medida *&lista_unidad_medida);
+bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, int diae);
+void asociarMesConNumero(int mes);
 // Usuarios
 
 void agregarUsuarioEnLista(lista_Usuario *&usuario, char *input);
@@ -171,10 +173,12 @@ void mostrarTodosLotesDeTodosProductos(lista_Producto *lista_producto);
 void mostrarTodosLotesDeProducto(lista_Producto *lista_producto);
 void buscarLote(lista_Producto *lista_producto);
 cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote);
-int validarLote(cola_Lote *lote);
+void vencerLotes(lista_Producto *&producto);
 void modificarLoteDeProducto(lista_Producto *&producto_actual);
 void eliminarLoteDeProducto(lista_Producto *&lista_producto);
 void eliminarLotesYMovimientosTodoDeProducto(cola_Lote *&cola_lote, lista_Movimiento *&cola_movimiento, char *id_producto, char *codigo_acceso);
+bool comprobarEstadoFecha(int dia, int mes, int año, cola_Lote *lote_actual);
+void registroDeInformacionLote(Lote &lote);
 
 // Movimiento
 

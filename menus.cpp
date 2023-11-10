@@ -167,6 +167,7 @@ void menuGestionLotes(int &opcion)
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
     }
+    vencerLotes(lista_producto);
     opcion = 0;
 }
 void menuReporteHistorico(int &opcion)
