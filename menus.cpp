@@ -19,8 +19,8 @@ void menuPrincipal(int &opcion)
         std::cout << "2. Gestion de lotes" << std::endl;
         std::cout << "3. Ingresar movimiento" << std::endl;
         std::cout << "4. Generar Reportes Historicos" << std::endl;
-        std::cout << "5. Cerrar sesion" << std::endl;
-        std::cout << "6. Gestión de usuarios\n";
+        std::cout << "5. Gestión de usuarios\n";
+        std::cout << "6. Cerrar sesion" << std::endl;
         std::cout << "7. Salir" << std::endl;
 
         /*if (usuario_actual->usuario.administrador)
@@ -46,10 +46,6 @@ void menuPrincipal(int &opcion)
             menuReporteHistorico(opcion);
             break;
         case 5:
-            std::cout << "Cerrando sesión de " << primerNombre(usuario_actual->usuario.nombre_completo) << std::endl;
-            opcion = 2;
-            return;
-        case 6:
             if (usuario_actual->usuario.administrador)
             {
                 // menu de gestion
@@ -59,6 +55,10 @@ void menuPrincipal(int &opcion)
                 std::cout << "Opcion invalida. Por favor, seleccione una opcion valida.\n";
             }
             break;
+        case 6:
+            std::cout << "Cerrando sesión de " << primerNombre(usuario_actual->usuario.nombre_completo) << std::endl;
+            opcion = 2;
+            return;
         case 7:
             std::cout << "Saliendo del programa.\n";
             return;

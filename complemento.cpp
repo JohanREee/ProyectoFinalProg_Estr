@@ -14,6 +14,8 @@ int soloEnteros(int numero)
 {
     if (std::cin >> numero)
     {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return numero;
     }
     std::cin.clear();
@@ -72,19 +74,19 @@ Lista_Año *buscarAñoActualDeProducto(lista_Producto *producto, int año)
     }
     return NULL;
 }
-#endif
+
 
 bool validarDiaPorMes(int dia, int mes, int año)
 {
-    int diasEnMes[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int diasEnMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     // Ajusta febrero para años bisiestos
     if (esBisiesto(año))
     {
-        diasEnMes[2] = 29;
+        diasEnMes[1] = 29;
     }
 
-    if (dia < 1 || dia > diasEnMes[mes])
+    if (dia < 1 || dia > diasEnMes[mes-1])
     {
         return false; // Día inválido para el mes dado
     }
@@ -94,5 +96,7 @@ bool validarDiaPorMes(int dia, int mes, int año)
 
 bool esBisiesto(int año)
 {
-    return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);    
+    return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);
 }
+
+#endif
