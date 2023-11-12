@@ -18,6 +18,7 @@ void inicioSesion(int &opcion);
 void inicioSesionAdministradorPersonal(lista_Usuario *&usuario, int &opcion);
 void elegirPermiso(int administrador, int &cont, lista_Usuario *&nuevo_usuario);
 void agregarPrimerUsuarioEnLista(lista_Usuario *&usuario, char *input);
+
 void inicioSesion(int &opcion, lista_Usuario *&usuario)
 {
     do

@@ -1,27 +1,23 @@
 #include "structs.h"
 #include "complemento.cpp"
-void menuPrincipal(int &opcion);
-void menuGestionProductos(int &opcion);
-void menuGestionLotes(int &opcion);
-void menuReporteHistorico(int &opcion);
-void menuGestionUsuarios(int &opcion);
+
 // void menuGestionMovimiento();
 
 void menuPrincipal(int &opcion)
 {
     opcion = 0;
-    while (opcion != 6 || opcion != 5)
+    char *user = nombreFormal(usuario_activo->usuario);
+    do
     {
-        std::cout << "Bienvenido, " << primerNombre(usuario_actual->usuario.nombre_completo) << "\n";
-        std::cout << "\t Sistema de Gestion de Inventario SaboresSostenibles \n"
-                  << std::endl;
+        std::cout << "\nBienvenido, " << user << "\n";
+        std::cout << "\t Sistema de Gestion de Inventario SaboresSostenibles \n";
         std::cout << "1. Gestion de productos" << std::endl;
         std::cout << "2. Gestion de lotes" << std::endl;
         std::cout << "3. Ingresar movimiento" << std::endl;
         std::cout << "4. Generar Reportes Historicos" << std::endl;
         std::cout << "5. Cerrar sesion" << std::endl;
         std::cout << "6. Salir" << std::endl;
-        if (usuario_actual->usuario.administrador)
+        if (usuario_activo->usuario.administrador)
         {
             std::cout << "7. Gestión de usuarios\n";
         }
@@ -31,10 +27,11 @@ void menuPrincipal(int &opcion)
         switch (opcion)
         {
         case 1:
-            std::cout << "Ingresando al sistema de gestión de productos\n";
+            std::cout << "Ingresando al sistema de gestión de productos.\n";
             menuGestionProductos(opcion);
             break;
         case 2:
+            std::cout << "Ingresando al sistema de gestión de lotes.\n";
             menuGestionLotes(opcion);
             break;
         case 3:
@@ -44,16 +41,19 @@ void menuPrincipal(int &opcion)
             menuReporteHistorico(opcion);
             break;
         case 5:
-            std::cout << "Cerrando sesión de " << primerNombre(usuario_actual->usuario.nombre_completo) << std::endl;
+            std::cout << "Cerrando sesión de " << user << std::endl;
             opcion = 2;
+            delete[] user;
             return;
         case 6:
             std::cout << "Saliendo del programa.\n";
-            return;
+            delete[] user;
+            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            break;
         case 7:
-            if (usuario_actual->usuario.administrador)
+            if (usuario_activo->usuario.administrador)
             {
-                // menu de gestion
+                menuGestionUsuarios(opcion);
             }
             else
             {
@@ -61,19 +61,19 @@ void menuPrincipal(int &opcion)
             }
             break;
         default:
-            std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
+            std::cout << "Opcion invalida. Por favor, seleccione una opcion valida.\n";
             break;
         }
-
         std::cout << std::endl;
+        delete[] user;
         system("pause");
-    }
+    } while (opcion != 5);
 }
 
 void menuGestionProductos(int &opcion)
 {
     opcion = 0;
-    while (opcion != 6 || opcion != 7)
+    do
     {
         std::cout << "=== Bienvenido al módulo de gestión de productos ===" << std::endl;
         std::cout << "1. Agregar producto" << std::endl;
@@ -86,7 +86,7 @@ void menuGestionProductos(int &opcion)
         std::cout << "8. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros(opcion);
-        fflush(stdin);
+        limpiarBuffer();
         std::cout << std::endl;
         switch (opcion)
         {
@@ -100,7 +100,7 @@ void menuGestionProductos(int &opcion)
             eliminarProducto(lista_producto);
             break;
         case 4:
-            std::cout << "Activando producto..." << std::endl;
+            activarProducto(lista_producto);
         case 5:
             mostrarTodosProducto(lista_producto);
             break;
@@ -109,31 +109,34 @@ void menuGestionProductos(int &opcion)
             break;
         case 7:
             std::cout << "Volviendo al menú principal." << std::endl;
-            return;
+            break;
         case 8:
             std::cout << "Saliendo del sistema." << std::endl;
-            exit(0);
+            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
-    }
+    } while (opcion != 7);
     opcion = 0;
+    std::cout << "\n";
+    system("pause");
 }
 void menuGestionLotes(int &opcion)
 {
     opcion = 0;
-    while (opcion != 7 || opcion != 8)
+    do
     {
         std::cout << "=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
         std::cout << "1. Agregar lote" << std::endl;
         std::cout << "2. Buscar lote" << std::endl;
         std::cout << "3. Eliminar lote" << std::endl;
-        std::cout << "4. Mostrar todos los lotes" << std::endl;
-        std::cout << "5. Mostrar todos los lotes por producto" << std::endl;
-        std::cout << "6. Modificar lote\n";
-        std::cout << "7. Volver al menu anterior" << std::endl;
-        std::cout << "8. Salir" << std::endl;
+        std::cout << "4. Activar lote" << std::endl;
+        std::cout << "5. Mostrar todos los lotes" << std::endl;
+        std::cout << "6. Mostrar todos los lotes por producto" << std::endl;
+        std::cout << "7. Modificar lote\n";
+        std::cout << "8. Volver al menu anterior" << std::endl;
+        std::cout << "9. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros(opcion);
         fflush(stdin);
@@ -147,27 +150,33 @@ void menuGestionLotes(int &opcion)
             buscarLote(lista_producto);
             break;
         case 3:
-
+            eliminarLoteDeProducto(lista_producto);
             break;
         case 4:
-            mostrarTodosLotesDeTodosProductos(lista_producto);
+
             break;
         case 5:
-            mostrarTodosLotesDeProducto(lista_producto);
+            mostrarTodosLotesDeTodosProductos(lista_producto);
             break;
         case 6:
-            modificarLoteDeProducto(lista_producto);
+            mostrarTodosLotesDeProducto(lista_producto);
+            break;
         case 7:
+            modificarLoteDeProducto(lista_producto);
+            break;
+        case 8:
             std::cout << "Volviendo al menú principal.";
             return;
-        case 8:
-            std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
-            exit(0);
+        case 9:
+            std::cout << "Saliendo del programa." << std::endl;
+            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
-    }
+    } while (opcion != 8);
     vencerLotes(lista_producto);
+    std::cout << std::endl;
+    system("pause");
     opcion = 0;
 }
 void menuReporteHistorico(int &opcion)
@@ -205,26 +214,31 @@ void menuReporteHistorico(int &opcion)
             return;
             break;
         case 6:
-            std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
-            exit(0);
+            std::cout << "Saliendo del programa.\n";
+            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
+        std::cout << std::endl;
+        system("pause");
+        opcion = 0;
     }
 }
 
-void menuGestionUsuario(int &opcion)
+void menuGestionUsuarios(int &opcion)
 {
     opcion = 0;
-    while (opcion != 5)
+    while (opcion != 6)
     {
         std::cout << "=== Bienvenido al módulo de gestión de usuarios ===" << std::endl;
-        std::cout << "1. Reporte de existencias por producto." << std::endl;
-        std::cout << "2. Reporte por rango de tiempo." << std::endl;
-        std::cout << "3. Reporte de lotes por expirar." << std::endl;
-        std::cout << "4. Reporte de productos bajos en stock." << std::endl;
-        std::cout << "5. Volver al menu anterior." << std::endl;
-        std::cout << "6. Salir" << std::endl;
+        std::cout << "1. Añadir usuario." << std::endl;
+        std::cout << "2. Buscar usuario" << std::endl;
+        std::cout << "3. Modificar usuario" << std::endl;
+        std::cout << "4. Anular usuario" << std::endl;
+        std::cout << "5. Activar usuario\n";
+        std::cout << "5. Mostrar todos los usuarios" << std::endl;
+        std::cout << "6. Volver al menu anterior." << std::endl;
+        std::cout << "7. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros(opcion);
         fflush(stdin);
@@ -244,14 +258,17 @@ void menuGestionUsuario(int &opcion)
 
             break;
         case 5:
+
+        case 6:
             std::cout << "Volviendo al menú principal.";
             return;
-            break;
-        case 6:
-            std::cout << "Saliendo del programa. �Hasta luego!" << std::endl;
-            exit(0);
+        case 7:
+            std::cout << "Saliendo del programa." << std::endl;
+            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
+        std::cout << std::endl;
+        system("pause");
     }
 }

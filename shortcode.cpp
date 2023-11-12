@@ -1,26 +1,20 @@
 #include <iostream>
-#include <cstdlib>
-#include <string.h>
-char input[250];
-
-int conteo_id_producto = 3;
-
-char *generarIdLote(int dia, int mes, int año);
-
+#include <windows.h>
+#include <string>
 int main()
 {
-    char *id_lote = generarIdLote(5, 3, 2023);
-    std::cout << id_lote;
-    delete[] id_lote;
-    return 0;
-}
+    char *correo = new char[40];
+    std::cout << "Dame un correo: ";
+    std::cin.getline(correo, 40, '\n');
+    if ((strchr(correo, '@') != NULL) &&(strlen(correo) > 1))
+    {
+        std::cout << "@ encontrado";
+    }
+    else
+    {
+        std::cout << "@ no encontrado.";
+    }
 
-char *generarIdLote(int dia, int mes, int año)
-{
-    char id[20];
-    int incremental = 3;
-    sprintf(id,"%d%02d%02d%d%d", conteo_id_producto, dia, mes, año %100, incremental);
-    char *id_total = new char[strlen(id)+1];
-    strcpy(id_total,id);
-    return id_total;
+    delete[] correo;
+    return 0;
 }

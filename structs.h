@@ -41,6 +41,9 @@ struct Lote
     double precio_producto;
     int cantidad_de_producto;
     bool validacion = false;
+    int forma_validacion;
+    // 1 significa que fue borrado por el usuario
+    // 2 significa que fue borrado por el propio sistema y el producto caduco por su fecha.
 };
 
 struct cola_Lote
@@ -77,19 +80,21 @@ struct Lista_Año
 
 struct Usuario
 {
-    char *nombre_completo;
+    char *nombres = NULL;
+    char *apellidos = NULL;
     int telefono;
-    char *correo;
-    char *contraseña;
+    char *correo = NULL;
+    char *contraseña = NULL;
     bool administrador;
+    bool validacion = false;
 };
 
 struct Producto
 {
     int id_producto;
-    char *nombre_producto;
-    char *unidad_medida;
-    char *descripcion_producto;
+    char *nombre_producto = NULL;
+    char *unidad_medida = NULL;
+    char *descripcion_producto = NULL;
     Lista_Año *años_producto = NULL;
     int existencia_cantidad = 0;
     bool anulado = false;
@@ -128,7 +133,7 @@ lista_Usuario *lista_usuario = NULL;
 lista_Reporte_Historico *lista_reporte_historico = NULL;
 lista_Producto *lista_producto = NULL;
 lista_Unidad_Medida *lista_unidad_medida = NULL;
-lista_Usuario *usuario_actual = NULL;
+lista_Usuario *usuario_activo = NULL; 
 int conteo_id_producto = 0;
 
 // Prototipado de funcionaes
@@ -140,15 +145,35 @@ void modificarElementoPuntero(char *&dato, char *input);
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto, lista_Unidad_Medida *&lista_unidad_medida);
 bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, int diae);
 void asociarMesConNumero(int mes);
+
+//Menu
+
+void menuPrincipal(int &opcion);
+void menuGestionProductos(int &opcion);
+void menuGestionLotes(int &opcion);
+void menuReporteHistorico(int &opcion);
+void menuGestionUsuarios(int &opcion);
 // Usuarios
 
-void agregarUsuarioEnLista(lista_Usuario *&usuario, char *input);
-void mostrarTodosUsuario(lista_Usuario *lista);
-void mostrarUsuario(lista_Usuario *lista);
-bool buscarUsuarioEnLista(lista_Usuario *lista, char *correo, char *contraseña, lista_Usuario **usuario_actual = NULL);
-void modificarUsuario(lista_Usuario *&lista);
+void agregarUsuarioEnLista(lista_Usuario *&usuario);
+void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario);
+void mostrarUsuario(Usuario usuario);
+lista_Usuario *buscarUsuarioParaSesion(lista_Usuario *lista, char *correo, char *contraseña);
+lista_Usuario *buscarUsuario(lista_Usuario *lista, char *correo);
+void modificarUsuario(lista_Usuario *&usuario_actual);
 void eliminarTodaListaUsuario(lista_Usuario *&lista);
-void eliminarListaUsuario(lista_Usuario *&lista, char *nombre, char *codigo_acceso);
+void eliminarUsuario(lista_Usuario *&usuario_actual);
+void activarUsuario(lista_Usuario *&usuario_actual);
+void modificarNombreYApellido(lista_Usuario *&usuario_actual, char *user);
+void modificarTelefono(lista_Usuario *&usuario_actual, char *user);
+void modificarCorreo(lista_Usuario *&usuario_actual, char *user);
+void modificarContraseña(lista_Usuario *&usuario_actual, char *user);
+void modificarPermiso(lista_Usuario *&usuario_actual, char *user);
+
+// Unidades de medida
+
+void agregarUnidadMedida(lista_Unidad_Medida *&lista, char *input);
+bool comprobarUnidadMedida(lista_Unidad_Medida *lista, char *unidad_medida);
 
 // Producto
 
@@ -157,16 +182,18 @@ void mostrarTodosProducto(lista_Producto *lista_producto);
 void mostrarProducto(lista_Producto *producto);
 void mostrarProductosNoAnulados(lista_Producto *producto);
 void mostrarProductosAnulados(lista_Producto *producto);
-lista_Producto *buscarProducto(lista_Producto *lista, int id_producto); 
+lista_Producto *buscarProducto(lista_Producto *lista, int id_producto);
+lista_Producto *buscarProductoAnulado(lista_Producto *lista, int id_producto);
 void modificarProducto(lista_Producto *&lista_producto);
 void eliminarTodaListaProducto(lista_Producto *&lista_producto);
 void eliminarProducto(lista_Producto *&lista_producto);
 void obtenerProducto(lista_Producto *lista_producto);
 lista_Producto *buscarProductoParaInformacion(lista_Producto *lista, int id_producto);
+void activarProducto(lista_Producto *&lista_producto);
 
 // Lote
 void agregarPrimerLote(lista_Producto *&producto);
-char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual);
+char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual, Producto producto_actual);
 void agregarLotesAProducto(lista_Producto *&producto);
 void mostrarLotesDeProducto(cola_Lote *cola);
 void mostrarTodosLotesDeTodosProductos(lista_Producto *lista_producto);
@@ -179,6 +206,7 @@ void eliminarLoteDeProducto(lista_Producto *&lista_producto);
 void eliminarLotesYMovimientosTodoDeProducto(cola_Lote *&cola_lote, lista_Movimiento *&cola_movimiento, char *id_producto, char *codigo_acceso);
 bool comprobarEstadoFecha(int dia, int mes, int año, cola_Lote *lote_actual);
 void registroDeInformacionLote(Lote &lote);
+void activarLoteDeProducto(lista_Producto *&lista_producto);
 
 // Movimiento
 
@@ -206,23 +234,7 @@ void agregarElementoPuntero(char *&dato, char *input)
 }
 
 // Usuario
-bool buscarUsuarioEnLista(lista_Usuario *lista, char *correo, char *contraseña, lista_Usuario **usuario_actual)
-{
-    while (lista != NULL)
-    {
-        if ((strcmp(correo, lista->usuario.correo) == 0) && (strcmp(contraseña, lista->usuario.contraseña) == 0))
-        {
 
-            if (usuario_actual != NULL)
-            {
-                *usuario_actual = lista;
-            }
-            return true;
-        }
-        lista = lista->siguiente;
-    }
-    return false;
-}
 // Si
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto, lista_Unidad_Medida *&lista_unidad_medida) //! IMPORTANT
 {
@@ -230,8 +242,10 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
     {
         lista_Usuario *aux = lista_usuario;
 
-        delete[] aux->usuario.nombre_completo;
-        aux->usuario.nombre_completo = NULL;
+        delete[] aux->usuario.nombres;
+        aux->usuario.nombres = NULL;
+        delete[] aux->usuario.apellidos;
+        aux->usuario.apellidos = NULL;
         delete[] aux->usuario.correo;
         aux->usuario.correo = NULL;
         delete[] aux->usuario.contraseña;
@@ -262,7 +276,8 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
                     delete lote_actual;
                     lote_actual = NULL;
                 }
-                while(año_actual->año_producto.producto[i].movimientos != NULL){
+                while (año_actual->año_producto.producto[i].movimientos != NULL)
+                {
                     lista_Movimiento *movimiento_actual = año_actual->año_producto.producto[i].movimientos;
                     delete[] movimiento_actual->movimiento.tipo_movimiento;
                     movimiento_actual->movimiento.tipo_movimiento = NULL;
@@ -275,22 +290,23 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
             delete año_actual;
             año_actual = NULL;
         }
-        
-       lista_producto = lista_producto->siguiente;
+
+        lista_producto = lista_producto->siguiente;
         delete aux;
         aux = NULL;
     }
 
-    while(lista_unidad_medida !=NULL){
+    while (lista_unidad_medida != NULL)
+    {
         lista_Unidad_Medida *aux = lista_unidad_medida;
-        delete [] aux->unidad_medida;
+        delete[] aux->unidad_medida;
         aux->unidad_medida = NULL;
         lista_unidad_medida = lista_unidad_medida->siguiente;
         delete aux;
         aux = NULL;
     }
+
+    exit(0);
 }
-
-
 
 #endif
