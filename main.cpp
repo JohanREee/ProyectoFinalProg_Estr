@@ -4,7 +4,6 @@
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
-
     int opcion = 0;
     agregarUsuarioMaestro(lista_usuario);
     inicioSesion(opcion);

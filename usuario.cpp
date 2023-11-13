@@ -155,7 +155,10 @@ void mostrarUsuario(Usuario usuario)
         {
             std::cout << "*";
         }
+        std::cout << "\n";
     }
+    std::cout << "Permiso: ";
+    (usuario.administrador) ? std::cout << "Administrador" : std::cout << "Personal";
     std::cout << "\n";
 }
 
@@ -172,16 +175,26 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
         return;
     }
     lista_Usuario *usuario_actual = buscarUsuario(lista_usuario, correo);
+    delete[] correo;
     if (usuario_actual == NULL)
     {
         std::cout << "Usuario no encontrado.";
         std::cout << "\nVolviendo al menú anterior.\n";
-        delete[] correo;
         return;
     }
-    delete[] correo;
+    if (strcmp(usuario_actual->usuario.correo, "z") == 0)
+    {
+        std::cout << "Error. Este usuario no se puede modificar.\n";
+        return;
+    }
+    if (!usuario_activo->usuario.administrador)
+    {
+        std::cout << "No tienes suficientes permisos para modificar los datos.\n";
+        return;
+    }
+    char *actual_user = nombreFormal(usuario_actual->usuario);
     int op;
-    std::cout << "Usuario actual: " << user << "\n";
+    std::cout << "Usuario actual: " << actual_user << "\n";
     std::cout << "\nSeleccione uno de los campos que desea modificar.\n";
     std::cout << "1. Nombre.\n";
     std::cout << "2. Telefono.\n";
@@ -201,7 +214,7 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
             std::cout << "Volviendo al menú anterior.\n";
             break;
         }
-        modificarNombreYApellido(usuario_actual, user);
+        modificarNombreYApellido(usuario_actual, actual_user);
         break;
     case 2:
         std::cout << "¿Estás seguro de que quieres modificar este parametro?\n";
@@ -211,7 +224,7 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
             std::cout << "Volviendo al menú anterior.\n";
             break;
         }
-        modificarTelefono(usuario_actual, user);
+        modificarTelefono(usuario_actual, actual_user);
         break;
     case 3:
         std::cout << "¿Estás seguro de que quieres modificar este parametro?\n";
@@ -221,7 +234,7 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
             std::cout << "Volviendo al menú anterior.\n";
             break;
         }
-        modificarCorreo(usuario_actual, user);
+        modificarCorreo(usuario_actual, actual_user);
         break;
     case 4:
         std::cout << "¿Estás seguro de que quieres modificar este parametro?\n";
@@ -231,7 +244,7 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
             std::cout << "Volviendo al menú anterior.\n";
             break;
         }
-        modificarContraseña(usuario_actual, user);
+        modificarContraseña(usuario_actual, actual_user);
         break;
     case 5:
         std::cout << "¿Estás seguro de que quieres modificar este parametro?\n";
@@ -241,14 +254,15 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
             std::cout << "Volviendo al menú anterior.\n";
             break;
         }
-        modificarPermiso(usuario_actual, user);
+        modificarPermiso(usuario_actual, actual_user);
         break;
     default:
         std::cout << "Valor incorrecto.\n";
         std::cout << "Serás enviado al menú anterior.\n";
         break;
     }
-    if (op == 1)
+    delete[] actual_user;
+    if ((op == 1) && ((strcmp(usuario_activo->usuario.correo, usuario_actual->usuario.correo) == 0)))
     {
         delete[] user;
         char *user = nombreFormal(usuario_actual->usuario);
@@ -316,13 +330,26 @@ void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
 
     if ((strcmp(usuario_activo->usuario.correo, "z") == 0) || (strcmp(usuario_activo->usuario.correo, usuario_actual->usuario.correo) == 0))
     {
-        char *contraseña;
+        char *contraseña = NULL;
+        char *contraseña2 = NULL;
         std::cout << "Ingrese la nueva contraseña de " << user << ": ";
         agregarElementoPuntero(contraseña, input);
-        std::cout << "La contraseña ha sido modificada por \"" << contraseña << "\".\n";
-        delete[] usuario_actual->usuario.contraseña;
-        usuario_actual->usuario.contraseña = new char[strlen(contraseña) + 1];
-        strcpy(usuario_actual->usuario.contraseña, contraseña);
+
+        std::cout << "Valide la contraseña: ";
+        agregarElementoPuntero(contraseña2, input);
+        if (strcmp(contraseña, contraseña2) == 0)
+        {
+            std::cout << "La contraseña ha sido modificada por \"" << contraseña << "\".\n";
+            delete[] usuario_actual->usuario.contraseña;
+            usuario_actual->usuario.contraseña = new char[strlen(contraseña) + 1];
+            strcpy(usuario_actual->usuario.contraseña, contraseña);
+        }
+        else
+        {
+            std::cout << "Validación incorrecta.\n";
+            std::cout << "Volviendo al menú anterior.\n";
+        }
+        delete[] contraseña2;
         delete[] contraseña;
     }
     else
@@ -340,7 +367,7 @@ void modificarPermiso(lista_Usuario *&usuario_actual, char *user)
         (usuario_actual->usuario.administrador) ? std::cout << "Administrador" : std::cout << "Personal";
         std::cout << "\"\n ¿Deseas convertirlo en ";
         (usuario_actual->usuario.administrador) ? std::cout << "Personal" : std::cout << "Administrador";
-        std::cout << "\n";
+        std::cout << "?\n";
         verificarModificacionEnUsuario(opt);
         if (opt == 1)
         {
@@ -396,30 +423,26 @@ void eliminarUsuario(lista_Usuario *&lista_usuario)
         delete[] correo;
         return;
     }
-    if ((strcmp(usuario_activo->usuario.correo, "z") == 0))
+    if ((strcmp(usuario_actual->usuario.correo, "z") == 0))
     {
         std::cout << "El usuario maestro no puede ser anulado.\n";
     }
-    else if (usuario_activo->usuario.administrador && usuario_actual->usuario.administrador)
+    else if ((usuario_activo->usuario.administrador && usuario_actual->usuario.administrador))
     {
-        std::cout << "El usuario " << user << " no puede ser eliminado porque también es un administrador.\n";
-    }
-    else if (usuario_activo->usuario.administrador)
-    {
-        std::cout << "¿Estás seguro de querer eliminar el usuario " << user << "? ";
-        int op;
-        verificarModificacionEnUsuario(op);
-        if (op != 1)
+        if ((strcmp(usuario_activo->usuario.correo, "z") == 0))
         {
-            std::cout << "Usuario no eliminado.\n";
-            delete[] user;
-            return;
+            std::cout << "Usuario " << user << " eliminado.\n";
+            usuario_actual->usuario.validacion = !usuario_actual->usuario.validacion;
         }
-        usuario_actual->usuario.validacion = !usuario_actual->usuario.validacion;
+        else
+        {
+            std::cout << "El usuario " << user << " no puede ser eliminado porque también es un administrador.\n";
+        }
     }
-    else
+    else if (!usuario_actual->usuario.administrador)
     {
-        std::cout << "No cuentas con los permisos para borrar a este usuario.\n";
+        std::cout << "Usuario " << user << " eliminado.\n";
+        usuario_actual->usuario.validacion = !usuario_actual->usuario.validacion;
     }
     delete[] user;
 }
@@ -480,42 +503,58 @@ void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario)
         return;
     }
     lista_Usuario *usuario_actual = buscarUsuario(lista_usuario, correo);
+    delete[] correo;
     if (usuario_actual == NULL)
     {
         std::cout << "Usuario no encontrado.";
         std::cout << "\nVolviendo al menú anterior.\n";
-        delete[] correo;
+
         return;
     }
-    mostrarUsuario(usuario_actual->usuario);
+    if (usuario_actual->usuario.validacion)
+    {
+        if ((strcmp(usuario_actual->usuario.correo, "z") != 0) && (strcmp(usuario_activo->usuario.correo, "z") != 0))
+        { // El usuario que buscamos es el admin                 el que estamos usando es el admin
+            std::cout << "Usuario no encontrado.\n";
+            std::cout << "Volviendo al menú anterior.\n";
+            return;
+        }
+        mostrarUsuario(usuario_actual->usuario);
+        return;
+    }
+    else if ((strcmp(usuario_actual->usuario.correo, usuario_activo->usuario.correo) == 0))
+    //               el usuario que buscamos          el que manejamos, en este caso es un personal si o si
+    {
+        mostrarUsuario(usuario_actual->usuario);
+        return;
+    }
+    //
+    else
+    {
+        std::cout << "Usuario no encontrado.\n";
+        std::cout << "Volviendo al menú anterior.\n";
+        return;
+    }
 }
 void mostrarUsuarios(lista_Usuario *lista_usuario)
 {
     lista_Usuario *aux = lista_usuario;
     while (aux != NULL)
     {
-        mostrarUsuario(aux->usuario);
+        if (strcmp(usuario_activo->usuario.correo, "z") == 0)
+        {
+            mostrarUsuario(aux->usuario);
+            std::cout << "\n";
+        }
+        else if (usuario_activo->usuario.validacion)
+        {
+            if ((strcmp(aux->usuario.correo, "z") != 0))
+            {
+                mostrarUsuario(aux->usuario);
+                std::cout << "\n";
+            }
+        }
+
         aux = aux->siguiente;
     }
 }
-/*td::cout << "=== Bienvenido al módulo de gestión de usuarios ===" << std::endl;
-        std::cout << "1. Añadir usuario." << std::endl;
-        std::cout << "2. Buscar usuario" << std::endl;
-        std::cout << "3. Modificar usuario" << std::endl;
-        std::cout << "4. Anular usuario" << std::endl;
-        std::cout << "5. Activar usuario\n";
-        std::cout << "5. Mostrar todos los usuarios" << std::endl;
-        std::cout << "6. Volver al menu anterior." << std::endl;
-        std::cout << "7. Salir" << std::endl;
-        std::cout << "Seleccione una opcion: ";*/
-
-/*struct Usuario
-{
-    char *nombres;
-    char *apellidos;
-    int telefono;
-    char *correo;
-    char *contraseña;
-    bool administrador;
-    bool validacion = false;
-};*/

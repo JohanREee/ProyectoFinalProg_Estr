@@ -17,6 +17,9 @@ bool verificarModificacionEnLote(int &op);
 bool verificarModificacionEnProducto(int &op);
 bool verificarModificacionEnUsuario(int &op);
 bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario);
+void pausar();
+void limpiar();
+void pausarYLimpiar();
 
 int soloEnteros()
 {
@@ -26,19 +29,26 @@ int soloEnteros()
     {
         esNumeroValido = true;
         std::cin.getline(input, 250, '\n');
-        for (int i = 0; input[i] != '\0'; ++i)
+        if (input[0] != '\n')
         {
-            if (!std::isdigit(input[i]))
+            for (int i = 0; input[i] != '\0'; ++i)
             {
-                esNumeroValido = false;
-                if (std::cin.fail())
+                if (!std::isdigit(input[i]))
                 {
-                    limpiarBuffer();
+                    esNumeroValido = false;
+                    if (std::cin.fail())
+                    {
+                        limpiarBuffer();
+                    }
+                    std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
+                    std::cout << "Ingresar números: ";
+                    break;
                 }
-                std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
-                std::cout << "Ingresar números: ";
-                break;
             }
+        }
+        else
+        {
+            //continue
         }
 
         if (esNumeroValido)
@@ -277,5 +287,22 @@ bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario)
         return true;
     }
     return false;
+}
+
+void pausar()
+{
+    std::cout << "\nPresione ENTER para continuar...\n";
+    std::cin.get();
+}
+
+void limpiar()
+{
+    system("cls || clear");
+}
+
+void pausarYLimpiar()
+{
+    pausar();
+    limpiar();
 }
 #endif

@@ -237,22 +237,60 @@ void menuGestionUsuarios(int &opcion, char *&user)
         switch (opcion)
         {
         case 1:
-            agregarUsuarioEnLista(lista_usuario);
+            if (usuario_activo->usuario.administrador)
+            {
+                agregarUsuarioEnLista(lista_usuario);
+            }
+            else
+            {
+                std::cout << "No tienes permisos para eliminar usuarios.\n";
+            }
             break;
         case 2:
             mostrarUsuarioEnPantalla(lista_usuario);
             break;
         case 3:
-            modificarUsuario(lista_usuario, user);
+            if (usuario_activo->usuario.administrador)
+            {
+                modificarUsuario(lista_usuario, user);
+            }
+            else
+            {
+                std::cout << "No tienes permisos para eliminar usuarios.\n";
+            }
+
             break;
         case 4:
-            eliminarUsuario(lista_usuario);
+            if (usuario_activo->usuario.administrador)
+            {
+                eliminarUsuario(lista_usuario);
+            }
+            else
+            {
+                std::cout << "No tienes permisos para eliminar usuarios.\n";
+            }
             break;
         case 5:
-            activarUsuario(lista_usuario);
+            if (usuario_activo->usuario.administrador)
+            {
+                activarUsuario(lista_usuario);
+            }
+            else
+            {
+                std::cout << "No tienes permisos para eliminar usuarios.\n";
+            }
+
             break;
         case 6:
-            mostrarUsuarios(lista_usuario);
+            if (usuario_activo->usuario.administrador)
+            {
+                mostrarUsuarios(lista_usuario);
+            }
+            else
+            {
+                std::cout << "No tienes permisos para eliminar usuarios.\n";
+            }
+
             break;
         case 7:
             std::cout << "Volviendo al menú principal.";
