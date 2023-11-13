@@ -5,14 +5,14 @@ void agregarUsuarioMaestro(lista_Usuario *&lista_usuario) // Primer Usuario
 {
     lista_Usuario *nuevo_usuario = new lista_Usuario();
     nuevo_usuario->usuario.nombres = new char[6]; // admin
-    strcpy(nuevo_usuario->usuario.nombres, "admin@");
+    strcpy(nuevo_usuario->usuario.nombres, "@admin");
     nuevo_usuario->usuario.apellidos = new char[6]; // admin
     strcpy(nuevo_usuario->usuario.apellidos, "@admin");
     nuevo_usuario->usuario.telefono = -100;
-    nuevo_usuario->usuario.correo = new char[2];
-    strcpy(nuevo_usuario->usuario.correo, "z");
-    nuevo_usuario->usuario.contraseña = new char[9];
-    strcpy(nuevo_usuario->usuario.contraseña, "898900Ww");
+    nuevo_usuario->usuario.correo = new char[17];
+    strcpy(nuevo_usuario->usuario.correo, "admin@admin.com");
+    nuevo_usuario->usuario.contraseña = new char[12];
+    strcpy(nuevo_usuario->usuario.contraseña, "admin123456");
     nuevo_usuario->usuario.administrador = true;
     lista_Usuario *aux = lista_usuario; // Reservamos el valor original de la lista
     lista_Usuario *aux2;
@@ -145,7 +145,7 @@ void mostrarUsuario(Usuario usuario)
     std::cout << "Teléfono: " << usuario.telefono << "\n";
     std::cout << "Correo: " << usuario.correo << "\n";
     std::cout << "Contraseña: ";
-    if (strcmp(usuario_activo->usuario.correo, "z") == 0)
+    if (strcmp(usuario_activo->usuario.correo, "admin@admin.com") == 0)
     {
         std::cout << usuario.contraseña << "\n";
     }
@@ -182,7 +182,7 @@ void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
         std::cout << "\nVolviendo al menú anterior.\n";
         return;
     }
-    if (strcmp(usuario_actual->usuario.correo, "z") == 0)
+    if (strcmp(usuario_actual->usuario.correo, "admin@admin.com") == 0)
     {
         std::cout << "Error. Este usuario no se puede modificar.\n";
         return;
@@ -328,7 +328,7 @@ void modificarCorreo(lista_Usuario *&usuario_actual, char *user)
 void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
 {
 
-    if ((strcmp(usuario_activo->usuario.correo, "z") == 0) || (strcmp(usuario_activo->usuario.correo, usuario_actual->usuario.correo) == 0))
+    if ((strcmp(usuario_activo->usuario.correo, "admin@admin.com") == 0) || (strcmp(usuario_activo->usuario.correo, usuario_actual->usuario.correo) == 0))
     {
         char *contraseña = NULL;
         char *contraseña2 = NULL;
@@ -361,7 +361,7 @@ void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
 void modificarPermiso(lista_Usuario *&usuario_actual, char *user)
 {
     int opt;
-    if ((strcmp(usuario_activo->usuario.correo, "z") == 0) || (strcmp(usuario_activo->usuario.correo, usuario_actual->usuario.correo) == 0))
+    if ((strcmp(usuario_activo->usuario.correo, "admin@admin.com") == 0) || (strcmp(usuario_activo->usuario.correo, usuario_actual->usuario.correo) == 0))
     {
         std::cout << "El usuario actual tiene un permiso de \"";
         (usuario_actual->usuario.administrador) ? std::cout << "Administrador" : std::cout << "Personal";
@@ -423,13 +423,13 @@ void eliminarUsuario(lista_Usuario *&lista_usuario)
         delete[] correo;
         return;
     }
-    if ((strcmp(usuario_actual->usuario.correo, "z") == 0))
+    if ((strcmp(usuario_actual->usuario.correo, "admin@admin.com") == 0))
     {
         std::cout << "El usuario maestro no puede ser anulado.\n";
     }
     else if ((usuario_activo->usuario.administrador && usuario_actual->usuario.administrador))
     {
-        if ((strcmp(usuario_activo->usuario.correo, "z") == 0))
+        if ((strcmp(usuario_activo->usuario.correo, "admin@admin.com") == 0))
         {
             std::cout << "Usuario " << user << " eliminado.\n";
             usuario_actual->usuario.validacion = !usuario_actual->usuario.validacion;
@@ -513,7 +513,7 @@ void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario)
     }
     if (usuario_actual->usuario.validacion)
     {
-        if ((strcmp(usuario_actual->usuario.correo, "z") != 0) && (strcmp(usuario_activo->usuario.correo, "z") != 0))
+        if ((strcmp(usuario_actual->usuario.correo, "admin@admin.com") != 0) && (strcmp(usuario_activo->usuario.correo, "admin@admin.com") != 0))
         { // El usuario que buscamos es el admin                 el que estamos usando es el admin
             std::cout << "Usuario no encontrado.\n";
             std::cout << "Volviendo al menú anterior.\n";
@@ -541,14 +541,14 @@ void mostrarUsuarios(lista_Usuario *lista_usuario)
     lista_Usuario *aux = lista_usuario;
     while (aux != NULL)
     {
-        if (strcmp(usuario_activo->usuario.correo, "z") == 0)
+        if (strcmp(usuario_activo->usuario.correo, "admin@admin.com") == 0)
         {
             mostrarUsuario(aux->usuario);
             std::cout << "\n";
         }
         else if (usuario_activo->usuario.validacion)
         {
-            if ((strcmp(aux->usuario.correo, "z") != 0))
+            if ((strcmp(aux->usuario.correo, "admin@admin.com") != 0))
             {
                 mostrarUsuario(aux->usuario);
                 std::cout << "\n";

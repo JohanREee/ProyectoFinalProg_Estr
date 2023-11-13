@@ -227,7 +227,21 @@ void asignarReporteHistorico(lista_Reporte_Historico *lista, lista_Usuario *usua
 // General
 void agregarElementoPuntero(char *&dato, char *input)
 {
-    std::cin.getline(input, 250, '\n');
+    do
+    {
+        std::cin.getline(input, 250);
+        if(input[0] == '\0')
+        {
+            std::cout << "Ingresa nuevamente la informacion, \n";
+            input[0] = '\0';
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    } while(true);
+
     int length = strlen(input);
     dato = new char[length + 1];
     strcpy(dato, input);
