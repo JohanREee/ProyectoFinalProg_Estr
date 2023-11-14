@@ -3,11 +3,11 @@
 
 #include "structs.h"
 
-int soloEnteros(int numero);
+int soloEnteros();
 double soloFlotantes(double numero);
 char *primerNombre(char *nombre);
 char *primerApellido(char *apellido);
-char *nombreFormal(char *nombre, char *apellido);
+char *nombreFormal(Usuario usuario_actual);
 Lista_Año *buscarAñoActualDeProducto(lista_Producto *producto, int año);
 bool validarDiaPorMes(int dia, int mes, int año);
 bool esBisiesto(int año);
@@ -18,14 +18,35 @@ bool verificarModificacionEnProducto(int &op);
 bool verificarModificacionEnUsuario(int &op);
 bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario);
 
-int soloEnteros(int numero)
+int soloEnteros()
 {
-    if (std::cin >> numero)
+    int numero;
+    bool esNumeroValido;
+    do
     {
-        limpiarBuffer();
-        return numero;
-    }
-    limpiarBuffer();
+        esNumeroValido = true;
+        std::cin.getline(input, 250, '\n');
+        for (int i = 0; input[i] != '\0'; ++i)
+        {
+            if (!std::isdigit(input[i]))
+            {
+                esNumeroValido = false;
+                if (std::cin.fail())
+                {
+                    limpiarBuffer();
+                }
+                std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
+                std::cout << "Ingresar números: ";
+                break;
+            }
+        }
+
+        if (esNumeroValido)
+        {
+            numero = std::atoi(input);
+        }
+    } while (!esNumeroValido);
+    input[0] = '\0';
     return numero;
 }
 
@@ -210,7 +231,7 @@ bool verificarModificacionEnLote(int &op)
     std::cout << "¿Estás seguro de querer modificar este valor?\n";
     std::cout << "1.Sí\n2.No\n";
     std::cout << "Ingresar número: ";
-    op = soloEnteros(op);
+    op = soloEnteros();
     if (op == 1)
     {
         return true;
@@ -221,7 +242,7 @@ bool verificarModificacionEnProducto(int &op)
 {
     std::cout << "1.Sí\n2.No\n";
     std::cout << "Ingresar número: ";
-    op = soloEnteros(op);
+    op = soloEnteros();
     if (op == 1)
     {
         return true;
@@ -232,7 +253,7 @@ bool verificarModificacionEnUsuario(int &op)
 {
     std::cout << "\n1.Sí\n2.No\n";
     std::cout << "Ingresar número: ";
-    op = soloEnteros(op);
+    op = soloEnteros();
     if (op == 1)
     {
         return true;

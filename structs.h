@@ -41,9 +41,10 @@ struct Lote
     double precio_producto;
     int cantidad_de_producto;
     bool validacion = false;
-    int forma_validacion;
-    // 1 significa que fue borrado por el usuario
+    int forma_validacion = 1;
+    // 1 significa que fue borrado o activado por el usuario. Denota valor primario
     // 2 significa que fue borrado por el propio sistema y el producto caduco por su fecha.
+    // 3 significa que fue activado por el usuario cuando el sistema lo desactivó.
 };
 
 struct cola_Lote
@@ -145,31 +146,31 @@ void modificarElementoPuntero(char *&dato, char *input);
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto, lista_Unidad_Medida *&lista_unidad_medida);
 bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, int diae);
 void asociarMesConNumero(int mes);
-
+void inicioSesion(int &opcion);
+void ingresarDatos(lista_Usuario *lista_usuario);
 //Menu
 
 void menuPrincipal(int &opcion);
-void menuGestionProductos(int &opcion);
-void menuGestionLotes(int &opcion);
-void menuReporteHistorico(int &opcion);
-void menuGestionUsuarios(int &opcion);
+void menuGestionProductos(int &opcion, char *&user);
+void menuGestionLotes(int &opcion, char *&user);
+void menuReporteHistorico(int &opcion, char *&user);
+void menuGestionUsuarios(int &opcion, char *&user);
 // Usuarios
-
-void agregarUsuarioEnLista(lista_Usuario *&usuario);
+void agregarUsuarioMaestro(lista_Usuario *&lista_usuario);
+void agregarUsuarioEnLista(lista_Usuario *&lista_usuario);
 void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario);
 void mostrarUsuario(Usuario usuario);
 lista_Usuario *buscarUsuarioParaSesion(lista_Usuario *lista, char *correo, char *contraseña);
 lista_Usuario *buscarUsuario(lista_Usuario *lista, char *correo);
-void modificarUsuario(lista_Usuario *&usuario_actual);
-void eliminarTodaListaUsuario(lista_Usuario *&lista);
-void eliminarUsuario(lista_Usuario *&usuario_actual);
-void activarUsuario(lista_Usuario *&usuario_actual);
+void modificarUsuario(lista_Usuario *&lista_usuario, char *&user);
+void eliminarUsuario(lista_Usuario *&lista_usuario);
+void activarUsuario(lista_Usuario *&lista_usuario);
 void modificarNombreYApellido(lista_Usuario *&usuario_actual, char *user);
 void modificarTelefono(lista_Usuario *&usuario_actual, char *user);
 void modificarCorreo(lista_Usuario *&usuario_actual, char *user);
 void modificarContraseña(lista_Usuario *&usuario_actual, char *user);
 void modificarPermiso(lista_Usuario *&usuario_actual, char *user);
-
+void mostrarUsuarios(lista_Usuario *lista_usuario);
 // Unidades de medida
 
 void agregarUnidadMedida(lista_Unidad_Medida *&lista, char *input);

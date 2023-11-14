@@ -31,7 +31,7 @@ void agregarUsuarioMaestro(lista_Usuario *&lista_usuario) // Primer Usuario
     }
     nuevo_usuario->siguiente = aux; // nuevo_usuario apunta a NULL
 }
-void agregarUsuarioEnLista(lista_Usuario *&usuario)
+void agregarUsuarioEnLista(lista_Usuario *&lista_usuario)
 {
     lista_Usuario *nuevo_usuario = new lista_Usuario();
     int administrador;
@@ -42,7 +42,7 @@ void agregarUsuarioEnLista(lista_Usuario *&usuario)
     while (true)
     {
         std::cout << "Ingrese su telefono: ";
-        nuevo_usuario->usuario.telefono = soloEnteros(nuevo_usuario->usuario.telefono);
+        nuevo_usuario->usuario.telefono = soloEnteros();
         if (nuevo_usuario->usuario.telefono < 0)
         {
             std::cout << "Se ha producido un error al ingresar el numero de telefono.\n";
@@ -51,7 +51,6 @@ void agregarUsuarioEnLista(lista_Usuario *&usuario)
         }
         break;
     }
-    fflush(stdin);
     while (true)
     {
         std::cout << "Ingrese su correo: ";
@@ -67,10 +66,8 @@ void agregarUsuarioEnLista(lista_Usuario *&usuario)
     std::cout << "Ingrese su contraseña: ";
     agregarElementoPuntero(nuevo_usuario->usuario.contraseña, input);
     char *user = nombreFormal(nuevo_usuario->usuario);
-    int cont = 0;
     std::cout << "¿Desea otorgar permisos de administrador a \"" << user << "\"?\n";
     delete[] user;
-    std::cout << "Un valor incorrecto resultará en un permiso denegado.\n";
     std::cout << "Esta opción se puede modificar con la opción de modificar usuarios posteriormente.\n";
     verificarModificacionEnUsuario(administrador);
     if (administrador == 1)
@@ -84,16 +81,16 @@ void agregarUsuarioEnLista(lista_Usuario *&usuario)
     std::cout << "Usuario ingresado al sistema correctamente.\n";
     std::cout << "Permiso: ";
     (nuevo_usuario->usuario.administrador) ? std::cout << "Administrador\n" : std::cout << "Personal\n";
-    lista_Usuario *aux = usuario; // Reservamos el valor original de la lista
+    lista_Usuario *aux = lista_usuario; // Reservamos el valor original de la lista
     lista_Usuario *aux2;
     while (aux != NULL)
     {                         // Comprobamos que aux no apunte a null
         aux2 = aux;           // Reservamos el valor original de aux que por ahora es la llista
         aux = aux->siguiente; // Corre una posición, buscando NULL
     }
-    if (usuario == aux)
+    if (lista_usuario == aux)
     { // Nunca pasó por el while
-        usuario = nuevo_usuario;
+        lista_usuario = nuevo_usuario;
     }
     else
     { // Al pasar por el while, sabemos que aux2 apunta una posicion antes de NULL, que debe ser aux
@@ -115,7 +112,7 @@ lista_Usuario *buscarUsuarioParaSesion(lista_Usuario *lista, char *correo, char 
             }
             return aux;
         }
-        lista = lista->siguiente;
+        aux = aux->siguiente;
     }
     return NULL;
 }
@@ -124,18 +121,21 @@ lista_Usuario *buscarUsuario(lista_Usuario *lista, char *correo)
     lista_Usuario *aux = lista;
     while (aux != NULL)
     {
-        if ((strcmp(correo, aux->usuario.correo) == 0) && (!aux->usuario.validacion))
+        if ((strcmp(correo, aux->usuario.correo) == 0))
         {
-            int op;
-            std::cout << "Este usuario ha sido anulado anteriormente. ¿Deseas continuar de igual forma?\n";
-            verificarModificacionEnUsuario(op);
-            if (op != 1)
+            if (aux->usuario.validacion)
             {
-                return NULL;
+                int op;
+                std::cout << "Este usuario ha sido anulado anteriormente. ¿Deseas continuar de igual forma?\n";
+                verificarModificacionEnUsuario(op);
+                if (op != 1)
+                {
+                    return NULL;
+                }
             }
             return aux;
         }
-        lista = lista->siguiente;
+        aux = aux->siguiente;
     }
     return NULL;
 }
@@ -147,7 +147,7 @@ void mostrarUsuario(Usuario usuario)
     std::cout << "Contraseña: ";
     if (strcmp(usuario_activo->usuario.correo, "z") == 0)
     {
-        std::cout << usuario.contraseña << "\n"; 
+        std::cout << usuario.contraseña << "\n";
     }
     else
     {
@@ -159,12 +159,12 @@ void mostrarUsuario(Usuario usuario)
     std::cout << "\n";
 }
 
-void modificarUsuario(lista_Usuario *&lista_usuario)
+void modificarUsuario(lista_Usuario *&lista_usuario, char *&user)
 {
     char *correo;
     std::cout << "Ingrese el correo del usuario: ";
     agregarElementoPuntero(correo, input);
-    if (!comprobarCorreo(correo, lista_usuario))
+    if (comprobarCorreo(correo, lista_usuario))
     {
         std::cout << "Correo no valido.\n";
         std::cout << "Volviendo al menú anterior.\n";
@@ -180,7 +180,6 @@ void modificarUsuario(lista_Usuario *&lista_usuario)
         return;
     }
     delete[] correo;
-    char *user = nombreFormal(usuario_actual->usuario);
     int op;
     std::cout << "Usuario actual: " << user << "\n";
     std::cout << "\nSeleccione uno de los campos que desea modificar.\n";
@@ -190,7 +189,7 @@ void modificarUsuario(lista_Usuario *&lista_usuario)
     std::cout << "4. Contraseña.\n";
     std::cout << "5. Permisos de administrador.\n";
     std::cout << "Ingresar numero: ";
-    op = soloEnteros(op);
+    op = soloEnteros();
     int opt;
     switch (op)
     {
@@ -249,23 +248,27 @@ void modificarUsuario(lista_Usuario *&lista_usuario)
         std::cout << "Serás enviado al menú anterior.\n";
         break;
     }
-    delete[] user;
+    if (op == 1)
+    {
+        delete[] user;
+        char *user = nombreFormal(usuario_actual->usuario);
+    }
 }
 
 void modificarNombreYApellido(lista_Usuario *&usuario_actual, char *user)
 {
     char *nombre;
     char *apellido;
-    std::cout << "Ingrese los nuevos nombres del usuario" << user << ": ";
+    std::cout << "Ingrese los nuevos nombres del usuario " << user << ": ";
     agregarElementoPuntero(nombre, input);
-    std::cout << "Ingrese los nuevos apellidos del usuario" << user << ": ";
+    std::cout << "Ingrese los nuevos apellidos del usuario " << user << ": ";
     agregarElementoPuntero(apellido, input);
     std::cout << "El nombre completo de \"" << usuario_actual->usuario.nombres << " " << usuario_actual->usuario.apellidos << "\" ha sido reemplazado por \"";
     std::cout << nombre << " " << apellido << "\"\n";
     delete[] usuario_actual->usuario.nombres;
     delete[] usuario_actual->usuario.apellidos;
-    usuario_actual->usuario.nombres = new char[strlen(nombre)];
-    usuario_actual->usuario.apellidos = new char[strlen(apellido)];
+    usuario_actual->usuario.nombres = new char[strlen(nombre) + 1];
+    usuario_actual->usuario.apellidos = new char[strlen(apellido) + 1];
     strcpy(usuario_actual->usuario.nombres, nombre);
     strcpy(usuario_actual->usuario.apellidos, apellido);
     delete[] nombre;
@@ -277,7 +280,7 @@ void modificarTelefono(lista_Usuario *&usuario_actual, char *user)
     while (true)
     {
         std::cout << "Ingrese el nuevo teléfono del usuario " << user << ": ";
-        telefono = soloEnteros(telefono);
+        telefono = soloEnteros();
         if (telefono < 0)
         {
             std::cout << "Se ha producido un error al ingresar el número de teléfono.\n";
@@ -295,7 +298,7 @@ void modificarCorreo(lista_Usuario *&usuario_actual, char *user)
     char *correo;
     std::cout << "Ingrese el nuevo correo de " << user << ": ";
     agregarElementoPuntero(correo, input);
-    if (!comprobarCorreo(correo, lista_usuario))
+    if (comprobarCorreo(correo, lista_usuario))
     {
         std::cout << "Este correo no es valido.\n";
         std::cout << "Serás enviado al menú anterior/\n";
@@ -318,7 +321,7 @@ void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
         agregarElementoPuntero(contraseña, input);
         std::cout << "La contraseña ha sido modificada por \"" << contraseña << "\".\n";
         delete[] usuario_actual->usuario.contraseña;
-        usuario_actual->usuario.contraseña = new char[strlen(contraseña)];
+        usuario_actual->usuario.contraseña = new char[strlen(contraseña) + 1];
         strcpy(usuario_actual->usuario.contraseña, contraseña);
         delete[] contraseña;
     }
@@ -362,12 +365,12 @@ void modificarPermiso(lista_Usuario *&usuario_actual, char *user)
     }
 }
 
-void eliminarUsuario(lista_Usuario *&usuario_actual)
+void eliminarUsuario(lista_Usuario *&lista_usuario)
 {
     char *correo;
     std::cout << "Ingrese el correo del usuario: ";
     agregarElementoPuntero(correo, input);
-    if (!comprobarCorreo(correo, lista_usuario))
+    if (comprobarCorreo(correo, lista_usuario))
     {
         std::cout << "Correo no valido.\n";
         std::cout << "Volviendo al menú anterior.\n";
@@ -421,12 +424,12 @@ void eliminarUsuario(lista_Usuario *&usuario_actual)
     delete[] user;
 }
 
-void activarUsuario(lista_Usuario *&usuario_actual)
+void activarUsuario(lista_Usuario *&lista_usuario)
 {
     char *correo;
     std::cout << "Ingrese el correo del usuario: ";
     agregarElementoPuntero(correo, input);
-    if (!comprobarCorreo(correo, lista_usuario))
+    if (comprobarCorreo(correo, lista_usuario))
     {
         std::cout << "Correo no valido.\n";
         std::cout << "Volviendo al menú anterior.\n";
@@ -469,7 +472,7 @@ void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario)
     char *correo;
     std::cout << "Ingrese el correo del usuario: ";
     agregarElementoPuntero(correo, input);
-    if (!comprobarCorreo(correo, lista_usuario))
+    if (comprobarCorreo(correo, lista_usuario))
     {
         std::cout << "Correo no valido.\n";
         std::cout << "Volviendo al menú anterior.\n";
@@ -484,8 +487,16 @@ void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario)
         delete[] correo;
         return;
     }
-    char *user = nombreFormal(usuario_actual->usuario);
     mostrarUsuario(usuario_actual->usuario);
+}
+void mostrarUsuarios(lista_Usuario *lista_usuario)
+{
+    lista_Usuario *aux = lista_usuario;
+    while (aux != NULL)
+    {
+        mostrarUsuario(aux->usuario);
+        aux = aux->siguiente;
+    }
 }
 /*td::cout << "=== Bienvenido al módulo de gestión de usuarios ===" << std::endl;
         std::cout << "1. Añadir usuario." << std::endl;

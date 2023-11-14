@@ -6,10 +6,7 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
 
     int opcion = 0;
-
-    inicioSesion(opcion, lista_usuario);
-
-    eliminarTodo(lista_usuario, lista_producto,lista_unidad_medida);
-
+    agregarUsuarioMaestro(lista_usuario);
+    inicioSesion(opcion);
     return 0;
 }

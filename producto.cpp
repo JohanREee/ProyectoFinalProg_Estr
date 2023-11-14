@@ -91,7 +91,7 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
     std::cout << "-Si la cantidad es menor o igual a 0, su valor sera modificado para ser 0 en todos los casos.\n";
     std::cout << "Ingresar cantidad en existencia: ";
 
-    nuevo_producto->producto.existencia_cantidad = soloEnteros(nuevo_producto->producto.existencia_cantidad);
+    nuevo_producto->producto.existencia_cantidad = soloEnteros();
     if (nuevo_producto->producto.existencia_cantidad <= 0)
     {
         nuevo_producto->producto.existencia_cantidad = 0;
@@ -154,7 +154,7 @@ void obtenerProducto(lista_Producto *lista_producto)
 {
     int id_producto;
     std::cout << "Digite el ID del producto que desea buscar: ";
-    id_producto = soloEnteros(id_producto);
+    id_producto = soloEnteros();
     lista_Producto *producto_actual = buscarProductoParaInformacion(lista_producto, id_producto);
     if (producto_actual == NULL)
     {
@@ -174,7 +174,7 @@ lista_Producto *buscarProductoParaInformacion(lista_Producto *lista, int id_prod
             if (aux->producto.anulado)
             {
                 int op;
-                std::cout << "El producto \"" << aux->producto.nombre_producto << "\"ha sido anulado anteriormente del sistema. ¿Deseas continuar con tu acción?\n";
+                std::cout << "El producto \"" << aux->producto.nombre_producto << "\" ha sido anulado anteriormente del sistema. ¿Deseas continuar con tu acción?\n";
                 verificarModificacionEnProducto(op);
                 if (op == 1)
                 {
@@ -196,11 +196,11 @@ void mostrarProducto(lista_Producto *producto)
     std::cout << "Cantidad en existencia: " << producto->producto.existencia_cantidad << " " << producto->producto.unidad_medida;
     if (producto->producto.anulado)
     {
-        std::cout << "El producto está anulado\n";
+        std::cout << "\nEl producto está anulado\n";
     }
     else
     {
-        std::cout << "El producto no está anulado\n";
+        std::cout << "\nEl producto no está anulado\n";
     }
     return;
 }
@@ -245,7 +245,7 @@ void modificarProducto(lista_Producto *&lista_producto)
 {
     int id_producto;
     std::cout << "Ingrese el ID del producto: ";
-    id_producto = soloEnteros(id_producto);
+    id_producto = soloEnteros();
     lista_Producto *producto_actual = buscarProducto(lista_producto, id_producto);
     if (producto_actual == NULL)
     {
@@ -259,7 +259,7 @@ void modificarProducto(lista_Producto *&lista_producto)
     std::cout << "3. Unidad de medida\n";
     std::cout << "4. Cantidad actual en existencia\n";
     std::cout << "Ingresar número: ";
-    op = soloEnteros(op);
+    op = soloEnteros();
     switch (op)
     {
     case 1:
@@ -325,7 +325,7 @@ void eliminarProducto(lista_Producto *&lista)
 {
     int id_producto;
     std::cout << "Ingrese el ID del producto: ";
-    id_producto = soloEnteros(id_producto);
+    id_producto = soloEnteros();
     lista_Producto *producto_actual = buscarProducto(lista, id_producto);
     if (producto_actual == NULL)
     {
@@ -362,7 +362,7 @@ void activarProducto(lista_Producto *&lista_producto)
 {
     int id_producto;
     std::cout << "Ingrese el ID del producto: ";
-    id_producto = soloEnteros(id_producto);
+    id_producto = soloEnteros();
     lista_Producto *producto_actual = buscarProductoAnulado(lista_producto, id_producto);
     if (producto_actual == NULL)
     {
