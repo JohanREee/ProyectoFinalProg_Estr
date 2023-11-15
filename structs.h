@@ -232,7 +232,6 @@ void agregarElementoPuntero(char *&dato, char *input)
         std::cin.getline(input, 250);
         if(input[0] == '\0')
         {
-            std::cout << "Ingresa nuevamente la informacion, \n";
             input[0] = '\0';
             continue;
         }

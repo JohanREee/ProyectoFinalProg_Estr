@@ -28,8 +28,8 @@ int soloEnteros()
     do
     {
         esNumeroValido = true;
-        std::cin.getline(input, 250, '\n');
-        if (input[0] != '\n')
+        std::cin.getline(input, 250);
+        if (input[0] != '\0')
         {
             for (int i = 0; input[i] != '\0'; ++i)
             {
@@ -41,16 +41,17 @@ int soloEnteros()
                         limpiarBuffer();
                     }
                     std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
-                    std::cout << "Ingresar números: ";
+                    std::cout << "Ingresar número: ";
+                    input[0] = '\0';
                     break;
                 }
             }
         }
         else
         {
-            //continue
+            input[0] = '\0';
+            esNumeroValido = false;
         }
-
         if (esNumeroValido)
         {
             numero = std::atoi(input);

@@ -425,7 +425,9 @@ void eliminarUsuario(lista_Usuario *&lista_usuario)
     }
     if ((strcmp(usuario_actual->usuario.correo, "admin@admin.com") == 0))
     {
-        std::cout << "El usuario maestro no puede ser anulado.\n";
+        std::cout << "Usuario no encontrado.";
+        std::cout << "\nVolviendo al menú anterior.\n";
+        return;
     }
     else if ((usuario_activo->usuario.administrador && usuario_actual->usuario.administrador))
     {
@@ -511,15 +513,21 @@ void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario)
 
         return;
     }
-    if (usuario_actual->usuario.validacion)
+    if (strcmp(usuario_activo->usuario.correo, "admin@admin.com") == 0)
     {
-        if ((strcmp(usuario_actual->usuario.correo, "admin@admin.com") != 0) && (strcmp(usuario_activo->usuario.correo, "admin@admin.com") != 0))
-        { // El usuario que buscamos es el admin                 el que estamos usando es el admin
-            std::cout << "Usuario no encontrado.\n";
-            std::cout << "Volviendo al menú anterior.\n";
+        mostrarUsuario(usuario_actual->usuario);
+        return;
+    }
+    else if (usuario_activo->usuario.administrador) // Con esto se comprueba que es un admin
+    {
+        if (strcmp(usuario_actual->usuario.correo, "admin@admin.com") != 0)
+        {
+            mostrarUsuario(usuario_actual->usuario);
             return;
         }
-        mostrarUsuario(usuario_actual->usuario);
+
+        std::cout << "Usuario no encontrado.\n";
+        std::cout << "Volviendo al menú anterior.\n";
         return;
     }
     else if ((strcmp(usuario_actual->usuario.correo, usuario_activo->usuario.correo) == 0))
@@ -546,7 +554,7 @@ void mostrarUsuarios(lista_Usuario *lista_usuario)
             mostrarUsuario(aux->usuario);
             std::cout << "\n";
         }
-        else if (usuario_activo->usuario.validacion)
+        else if (usuario_activo->usuario.administrador)
         {
             if ((strcmp(aux->usuario.correo, "admin@admin.com") != 0))
             {
@@ -554,7 +562,6 @@ void mostrarUsuarios(lista_Usuario *lista_usuario)
                 std::cout << "\n";
             }
         }
-
         aux = aux->siguiente;
     }
 }
