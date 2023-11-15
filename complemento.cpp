@@ -13,13 +13,35 @@ bool validarDiaPorMes(int dia, int mes, int año);
 bool esBisiesto(int año);
 void asociarMesConNumero(int mes);
 void limpiarBuffer();
-bool verificarModificacionEnLote(int &op);
-bool verificarModificacionEnProducto(int &op);
+void verificarModificacionEnLote(int &op);
+void verificarModificacionEnProducto(int &op);
 bool verificarModificacionEnUsuario(int &op);
 bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario);
 void pausar();
 void limpiar();
 void pausarYLimpiar();
+
+void agregarElementoPuntero(char *&dato, char *input)
+{
+    do
+    {
+        std::cin.getline(input, 250);
+        if (input[0] == '\0')
+        {
+            input[0] = '\0';
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    } while (true);
+
+    int length = strlen(input);
+    dato = new char[length + 1];
+    strcpy(dato, input);
+    input[0] = '\0';
+}
 
 int soloEnteros()
 {
@@ -61,13 +83,44 @@ int soloEnteros()
     return numero;
 }
 
-double soloFlotantes(double numero)
+double soloFlotantes()
 {
-    if (std::cin >> numero)
+    double numero;
+    bool esNumeroValido;
+    do
     {
-        return numero;
-    }
-    limpiarBuffer();
+        esNumeroValido = true;
+        std::cin.getline(input, 250);
+        if (input[0] != '\0')
+        {
+            for (int i = 0; input[i] != '\0'; ++i)
+            {
+                if (!std::isdigit(input[i]))
+                {
+                    esNumeroValido = false;
+                    if (std::cin.fail())
+                    {
+                        limpiarBuffer();
+                    }
+                    std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
+                    std::cout << "Ingresar número: ";
+                    input[0] = '\0';
+                    break;
+                }
+            }
+        }
+        else
+        {
+            input[0] = '\0';
+            esNumeroValido = false;
+        }
+        if (esNumeroValido)
+        {
+            numero = std::atoi(input);
+        }
+    } while (!esNumeroValido);
+    input[0] = '\0';
+
     return numero;
 }
 
@@ -237,28 +290,18 @@ void limpiarBuffer()
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return;
 }
-bool verificarModificacionEnLote(int &op)
+void verificarModificacionEnLote(int &op)
 {
     std::cout << "¿Estás seguro de querer modificar este valor?\n";
     std::cout << "1.Sí\n2.No\n";
     std::cout << "Ingresar número: ";
     op = soloEnteros();
-    if (op == 1)
-    {
-        return true;
-    }
-    return false;
 }
-bool verificarModificacionEnProducto(int &op)
+void verificarModificacionEnProducto(int &op)
 {
     std::cout << "1.Sí\n2.No\n";
     std::cout << "Ingresar número: ";
     op = soloEnteros();
-    if (op == 1)
-    {
-        return true;
-    }
-    return false;
 }
 bool verificarModificacionEnUsuario(int &op)
 {

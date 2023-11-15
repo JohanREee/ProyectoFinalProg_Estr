@@ -62,14 +62,14 @@ void agregarPrimerLote(lista_Producto *&producto)
     int mes = obtenerMes();
     Informacion_Mes *mes_actual = &año_actual->año_producto.producto[mes - 1];
     int dia = obtenerDia();
-    Lote lote_actual;
     // Estructura cola_Lote dentro de Información_mes[mes] dentro de Año_Producto dentro de Lista_Año
     cola_Lote *nuevo_lote = new cola_Lote; // 4   01 02 03
+    nuevo_lote->siguiente = NULL;
     char *id_lote = generarIdLote(dia, mes, año, mes_actual, producto->producto);
-    lote_actual.id_lote = new char[strlen(id_lote) + 1];
-    strcpy(lote_actual.id_lote, id_lote);
+    nuevo_lote->lote.id_lote = new char[strlen(id_lote) + 1];
+    strcpy(nuevo_lote->lote.id_lote, id_lote);
     delete[] id_lote;
-    lote_actual.ingreso_fecha = {dia, mes, año};
+    nuevo_lote->lote.ingreso_fecha = {dia, mes, año};
     int añoe, mese, diae;
     while (true)
     // bool ingresarFechaExpiracion(int año, int mes, int dia);
@@ -78,7 +78,7 @@ void agregarPrimerLote(lista_Producto *&producto)
         scanf("%2d/%2d/%4d", &diae, &mese, &añoe);
         if (ingresarFechaExpiracion(año, mes, dia, añoe, mese, diae))
         {
-            lote_actual.expiracion_fecha = {diae, mese, añoe};
+            nuevo_lote->lote.expiracion_fecha = {diae, mese, añoe};
             break;
         }
         std::cout << "Error al ingresar la fecha. Vuelve a intentarlo.\n";
@@ -88,62 +88,35 @@ void agregarPrimerLote(lista_Producto *&producto)
     while (true) // Ingresar precio actual de producto
     {
         std::cout << "Ingrese el precio actual del producto: ";
-        if (std::cin >> lote_actual.precio_producto)
-        {
-            if (lote_actual.precio_producto > 0)
-                break;
-        }
+        nuevo_lote->lote.precio_producto = soloFlotantes();
+        if (nuevo_lote->lote.precio_producto > 0)
+            break;
         std::cout << "Error al ingresar el precio. Vuelve a intentarlo.\n";
         limpiarBuffer();
         system("pause");
     }
-
     // Actualizar la existencia actual con lo puesto en el último lote
-    lote_actual.cantidad_de_producto = producto->producto.existencia_cantidad;
-    std::cout << "El ID del lote es: " << lote_actual.id_lote << "\n";
+    nuevo_lote->lote.cantidad_de_producto += producto->producto.existencia_cantidad;
+    std::cout << "El ID del lote es: " << nuevo_lote->lote.id_lote << "\n";
     // Guardar el nuevo lote en la cola de todos los lotes
-    nuevo_lote->lote = lote_actual;
-    nuevo_lote->siguiente = NULL;
-
-    if (mes_actual->lotes == NULL)
-    {
-        // Si no hay lotes para este mes, el nuevo lote será el primero
-        mes_actual->lotes = nuevo_lote;
-    }
-    else
-    {
-        // Si ya hay otros lotes, agregar el nuevo ltoe al final de la cola
-        cola_Lote *aux_lote = mes_actual->lotes;
-        while (aux_lote->siguiente != NULL) // Bucle para encontrar el penúltimo
-        {
-            aux_lote = aux_lote->siguiente;
-        }
-        aux_lote->siguiente = nuevo_lote; // Hacer que el penúltimo apunte al nuevo, que ahora es el último
-    }
+    guardarLoteEnProducto(mes_actual, nuevo_lote);
     // Actualizar la cantidad de lotes de toda la cola
     mes_actual->lotes_cantidad++;
-
-    // Agregar el año actual en la cabecera de la lista de todos los años
     producto->producto.años_producto = año_actual;
 }
 
 void agregarLotesAProducto(lista_Producto *&producto)
 {
-    int id_producto;
-    std::cout << "Ingrese el id del producto: ";
-    id_producto = soloEnteros();
-    fflush(stdin);
-    lista_Producto *producto_actual = buscarProducto(producto, id_producto);
-    if (producto_actual == NULL)
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
     {
-        std::cout << "El producto no fue encontrado.\n";
         return;
     }
+    int dia = obtenerDia();
+    int mes = obtenerMes();
+    int año = obtenerAño();
     while (true)
     {
-        int dia = obtenerDia();
-        int mes = obtenerMes();
-        int año = obtenerAño();
         bool band = false;
         Lista_Año *año_actual = buscarAñoActualDeProducto(producto_actual, año);
         if (año_actual == NULL)
@@ -153,72 +126,39 @@ void agregarLotesAProducto(lista_Producto *&producto)
             band = true;
         }
         Informacion_Mes *mes_actual = &año_actual->año_producto.producto[mes - 1];
-        Lote lote_actual;
         // Estructura cola_Lote dentro de Información_mes[mes] dentro de Año_Producto dentro de Lista_Año
         cola_Lote *nuevo_lote = new cola_Lote; // 4   01 02 03
+        nuevo_lote->siguiente = NULL;
         char *id_lote = generarIdLote(dia, mes, año, mes_actual, producto_actual->producto);
-        lote_actual.id_lote = new char[strlen(id_lote) + 1];
-        strcpy(lote_actual.id_lote, id_lote);
+        nuevo_lote->lote.id_lote = new char[strlen(id_lote) + 1];
+        strcpy(nuevo_lote->lote.id_lote, id_lote);
         delete[] id_lote;
-        lote_actual.ingreso_fecha = {dia, mes, año};
+        nuevo_lote->lote.ingreso_fecha = {dia, mes, año};
         int añoe, mese, diae;
-
         while (true) // Ingresar fecha de expiracion del producto
         {
             std::cout << "\nIngrese la fecha de expiración del lote en formato dd/mm/yyyy: ";
             scanf("%2d/%2d/%4d", &diae, &mese, &añoe);
             if (ingresarFechaExpiracion(año, mes, dia, añoe, mese, diae))
             {
-                lote_actual.expiracion_fecha = {diae, mese, añoe};
+                nuevo_lote->lote.expiracion_fecha = {diae, mese, añoe};
                 break;
             }
             std::cout << "Error al ingresar la fecha. Vuelve a intentarlo.\n";
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            limpiarBuffer();
             system("pause");
         }
-        registroDeInformacionLote(lote_actual);
-        producto_actual->producto.existencia_cantidad += lote_actual.cantidad_de_producto;
-        nuevo_lote->lote = lote_actual;
-        nuevo_lote->siguiente = NULL;
-        if (mes_actual->lotes == NULL)
-        {
-            // Si no hay lotes para este mes, el nuevo lote será el primero
-            mes_actual->lotes = nuevo_lote;
-        }
-        else
-        {
-            // Si ya hay otros lotes, agregar el nuevo ltoe al final de la cola
-            cola_Lote *aux_lote = mes_actual->lotes;
-            while (aux_lote->siguiente != NULL) // Bucle para encontrar el penúltimo
-            {
-                aux_lote = aux_lote->siguiente;
-            }
-            aux_lote->siguiente = nuevo_lote; // Hacer que el penúltimo apunte al nuevo, que ahora es el último
-        }
+        registroDeInformacionLote(nuevo_lote->lote);
+        producto_actual->producto.existencia_cantidad += nuevo_lote->lote.cantidad_de_producto;
+        guardarLoteEnProducto(mes_actual, nuevo_lote);
         // Actualizar la cantidad de lotes de toda la cola
         mes_actual->lotes_cantidad++;
         if (band)
         {
-            Lista_Año *aux = producto_actual->producto.años_producto; // Reservamos el valor original de la lista
-            Lista_Año *aux2;
-            while (aux != NULL)
-            {                         // Comprobamos que aux no apunte a null
-                aux2 = aux;           // Reservamos el valor original de aux que por ahora es la llista
-                aux = aux->siguiente; // Corre una posición, buscando NULL
-            }
-            if (aux == producto_actual->producto.años_producto) // Nunca pasó por el while
-            {
-                producto_actual->producto.años_producto = año_actual;
-            }
-            else // Al pasar por el while, sabemos que aux2 apunta una posicion antes de NULL, que debe ser aux
-            {
-                aux2->siguiente = año_actual;
-            }
-            año_actual->siguiente = aux; // año_actual apunta a NULL
+            guardarProductoEnLista(lista_producto, producto_actual);
         }
         std::cout << "\nLote agregado con exito.\n";
-        std::cout << "El ID del lote es: " << lote_actual.id_lote << "\n";
+        std::cout << "El ID del lote es: " << nuevo_lote->lote.id_lote << "\n";
         int op;
         std::cout << "¿Desea agregar otro lote para este producto?\n";
         std::cout << "1. Sí\n";
@@ -229,32 +169,54 @@ void agregarLotesAProducto(lista_Producto *&producto)
             break;
         }
     }
+    return;
+}
+void guardarLoteEnProducto(Informacion_Mes *mes_actual, cola_Lote *&lote_lista)
+{
+    if (mes_actual->lotes == NULL)
+    {
+        // Si no hay lotes para este mes, el nuevo lote será el primero
+        mes_actual->lotes = lote_lista;
+    }
+    else
+    {
+        // Si ya hay otros lotes, agregar el nuevo lotee al final de la cola
+        cola_Lote *aux_lote = mes_actual->lotes;
+        while (aux_lote->siguiente != NULL) // Bucle para encontrar el penúltimo
+        {
+            aux_lote = aux_lote->siguiente;
+        }
+        aux_lote->siguiente = lote_lista; // Hacer que el penúltimo apunte al nuevo, que ahora es el último
+    }
+}
+bool ingresarLote(lista_Producto *producto_actual, cola_Lote *&lote_actual)
+{
+    char *id_lote;
+    std::cout << "Para el producto \"" << producto_actual->producto.nombre_producto << "\", Digite el ID de lote que desea buscar: ";
+    agregarElementoPuntero(id_lote, input);
+    lote_actual = obtenerLote(producto_actual, id_lote);
+    delete[] id_lote;
+    if (lote_actual != NULL)
+    {
+        std::cout << "Lote no encontrado.\n";
+        return false;
+    }
+    return true;
 }
 
 void buscarLote(lista_Producto *lista_producto)
 {
-    int id_producto;
-    std::cout << "Digite el ID del producto para buscar un lote: ";
-    id_producto = soloEnteros();
-    lista_Producto *producto_actual = buscarProducto(lista_producto, id_producto);
-    if (producto_actual == NULL)
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
     {
-        std::cout << "Producto no encontrado.\n";
         return;
     }
-    char *id_lote;
-    std::cout << "Para el producto " << producto_actual->producto.nombre_producto << ", Digite el ID de lote que desea buscar: ";
-    agregarElementoPuntero(id_lote, input);
-    cola_Lote *lote_actual = obtenerLote(producto_actual, id_lote);
-    delete[] id_lote;
-    if (lote_actual == NULL)
+    cola_Lote *lote_actual = NULL;
+    if (!ingresarLote(producto_actual, lote_actual))
     {
-        std::cout << "\nLote no encontrado.\n";
         return;
     }
-
     mostrarLotesDeProducto(lote_actual);
-    // Mostrar el lote
 }
 
 cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote)
@@ -273,7 +235,10 @@ cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote)
                     if (lote_actual->lote.validacion)
                     {
                         int op;
-                        std::cout << "\nEste lote ha sido eliminado con anterioridad. ¿Deseas mostrarlo igualmente?\n";
+                        std::cout << "\nEste lote fue eliminado por el sistema.\n";
+                        std::cout << "Motivo:";
+                        (lote_actual->lote.motivo == 1) ? std::cout << "Fecha de caducidad.\n" : std::cout << "Stock en 0.\n";
+                        std::cout << "¿Deseas continuar con tu accion?\n";
                         std::cout << "1.Sí\n2.No";
                         std::cout << "\nIngresar numero: ";
                         op = soloEnteros();
@@ -303,14 +268,9 @@ void mostrarLotesDeProducto(cola_Lote *cola)
 
 void mostrarTodosLotesDeProducto(lista_Producto *lista_producto)
 {
-    int id_producto;
-    lista_Producto *aux = lista_producto;
-    std::cout << "Digite el ID del producto para buscar un lote: ";
-    id_producto = soloEnteros();
-    lista_Producto *producto_actual = buscarProducto(aux, id_producto);
-    if (producto_actual == NULL)
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
     {
-        std::cout << "Producto no encontrado.\n";
         return;
     }
     int op;
@@ -331,7 +291,7 @@ void mostrarTodosLotesDeProducto(lista_Producto *lista_producto)
             {
                 if (op != 1) // si por ejemplo el valor es 2
                 {
-                    if (lote_actual->lote.validacion) //true = no valido
+                    if (lote_actual->lote.validacion) // true = no valido
                     {
                         asociarMesConNumero(i);
                         std::cout << "\n";
@@ -396,7 +356,7 @@ void mostrarTodosLotesDeTodosProductos(lista_Producto *lista_producto)
             }
             año_actual = año_actual->siguiente;
         }
-        std::cout << "\nFin de todos los productos de " << aux->producto.nombre_producto << ".\n";
+        std::cout << "\nFin de todos los lotes de \"" << aux->producto.nombre_producto << "\".\n";
         aux = aux->siguiente;
     }
     return;
@@ -404,24 +364,14 @@ void mostrarTodosLotesDeTodosProductos(lista_Producto *lista_producto)
 
 void modificarLoteDeProducto(lista_Producto *&lista_producto)
 {
-    int id_producto;
-    std::cout << "Digite el ID del producto para buscar un lote: ";
-    id_producto = soloEnteros();
-    lista_Producto *aux = lista_producto;
-    lista_Producto *producto_actual = buscarProducto(aux, id_producto);
-    if (producto_actual == NULL)
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
     {
-        std::cout << "Producto no encontrado.\n";
         return;
     }
-    char *id_lote;
-    std::cout << "Para el producto " << producto_actual->producto.nombre_producto << ", Digite el ID de lote que desea buscar: ";
-    agregarElementoPuntero(id_lote, input);
-    cola_Lote *lote_actual = obtenerLote(producto_actual, id_lote);
-    delete[] id_lote;
-    if (lote_actual == NULL)
+    cola_Lote *lote_actual = NULL;
+    if (!ingresarLote(producto_actual, lote_actual))
     {
-        std::cout << "Lote no encontrado.\n";
         return;
     }
     int op, añoe, mese, diae;
@@ -450,15 +400,7 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
 
             std::cout << "La fecha de expiración de este lote \"" << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\" ha sido reemplazada por ";
             std::cout << "\"" << diae << "/" << mese << "/" << añoe << "\"\n";
-            lote_actual->lote.expiracion_fecha = {diae, mese, añoe}; // Se le asigna la nueva fecha
-            if (lote_actual->lote.forma_validacion == 2)             // 1= eliminado por el usuario // 3 = activado luego
-            {                                                        // de ser eliminado por el sistema
-                std::cout << "\nEste lote fue eliminado con anterioridad por el sistema.\n";
-                std::cout << "Motivo: Fecha de caducidad.\n";
-                std::cout << "El lote ha vuelto a ser funcional.\n";
-                lote_actual->lote.forma_validacion = 1;
-                lote_actual->lote.validacion = !lote_actual->lote.validacion; // 3
-            }
+            lote_actual->lote.expiracion_fecha = {diae, mese, añoe};
             break;
         }
         std::cout << "Error al ingresar la fecha.\n";
@@ -475,17 +417,17 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
         }
         double precio;
         std::cout << "Ingrese el nuevo precio del producto para este lote: ";
-        if (std::cin >> precio)
+        precio = soloFlotantes();
+        if (precio > 0)
         {
-            if (precio > 0)
-            {
-                std::cout << "El precio de \"" << lote_actual->lote.cantidad_de_producto << " \"ha sido reemplazado por \"" << precio << "\" para este lote.\n";
-                lote_actual->lote.cantidad_de_producto = precio;
-                break;
-            }
+            std::cout << "El precio de \"" << lote_actual->lote.cantidad_de_producto << " \"ha sido reemplazado por \"" << precio << "\" para este lote.\n";
+            lote_actual->lote.cantidad_de_producto = precio;
+            break;
+        }
+        else
+        {
             std::cout << "El precio debe ser mayor a 0.\n";
         }
-        std::cout << "Error al ingresar el precio.\n";
         std::cout << "Volviendo al menu anterior.\n";
         limpiarBuffer();
         break;
@@ -498,27 +440,17 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
         }
         int cantidad_producto;
         std::cout << "Ingrese la nueva cantidad del producto para este lote: ";
-        if (std::cin >> cantidad_producto)
+        cantidad_producto = soloEnteros();
+        if (cantidad_producto > 0)
         {
-            if (cantidad_producto > 0)
-            {
-                std::cout << "La cantidad de \"" << lote_actual->lote.cantidad_de_producto << "\" ha sido reemplazada por \"" << cantidad_producto << "\".\n";
-                if (lote_actual->lote.validacion || lote_actual->lote.forma_validacion == 3)
-                {
-                    std::cout << "Cambios no reflejados en la cantidad de existencia actual del producto.\n";
-                    (lote_actual->lote.validacion) ? std::cout << "Motivo: lote anulado\n" : std::cout << "Motivo: lote no activado correctamente.\n";
-                    std::cout << "Volviendo al menú anterior.\n";
-                    lote_actual->lote.cantidad_de_producto = cantidad_producto;
-                    break;
-                }
-                std::cout << "Cambios reflejados en la cantidad en existencia actual del producto.\n";
-                producto_actual->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
-                lote_actual->lote.cantidad_de_producto = cantidad_producto;
-                producto_actual->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
-                break;
-            }
+            std::cout << "La cantidad de \"" << lote_actual->lote.cantidad_de_producto << "\" ha sido reemplazada por \"" << cantidad_producto << "\".\n";
+            std::cout << "Cambios reflejados en la cantidad en existencia actual del producto.\n";
+            producto_actual->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
+            lote_actual->lote.cantidad_de_producto = cantidad_producto;
+            producto_actual->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
+            break;
         }
-        std::cout << "Valor ingresado incorrecto. La cantidad del producto para un lote debe ser mayor a 0.\n";
+        std::cout << "La cantidad del producto para un lote debe ser mayor a 0.\n";
         std::cout << "Volviendo al menú anterior.\n";
         limpiarBuffer();
         break;
@@ -531,104 +463,70 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
 }
 void eliminarLoteDeProducto(lista_Producto *&lista_producto)
 {
-    int id_producto;
-    std::cout << "Digite el ID del producto para buscar un lote: ";
-    id_producto = soloEnteros();
-    lista_Producto *aux = lista_producto;
-    lista_Producto *producto_actual = buscarProducto(aux, id_producto);
-    if (producto_actual == NULL)
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
     {
-        std::cout << "Producto no encontrado.\n";
-        return;
-    }
-    char *id_lote;
-    std::cout << "Para el producto \"" << producto_actual->producto.nombre_producto << "\", Digite el ID de lote que desea buscar: ";
-    agregarElementoPuntero(id_lote, input);
-    cola_Lote *lote_actual = obtenerLote(producto_actual, id_lote);
-    delete[] id_lote;
-    if (lote_actual == NULL)
-    {
-        std::cout << "Lote no encontrado.\n";
-        return;
-    }
-    if (lote_actual->lote.validacion)
-    {
-        std::cout << "Error. Este lote ya fue eliminado con anterioridad.\n";
         return;
     }
     int op;
-    std::cout << "¿Estás seguro de eliminar el lote seleccionado?\n";
-    std::cout << "1.Sí\n2.No\n";
-    std::cout << "Ingresar numero: ";
-    op = soloEnteros();
-    if (op == 1) // 1 = borrado o activado por el usuario 3 = activado por el usuario cuando fue elminado por el sistema
+    char *id_lote = NULL;
+    std::cout << "Para el producto \"" << producto_actual->producto.nombre_producto << "\", Digite el ID de lote que desea buscar: ";
+    agregarElementoPuntero(id_lote, input);
+    std::cout << "¿Estás seguro de que quieres eliminar este lote?\n";
+    verificarModificacionEnProducto(op);
+    if (op != 1)
     {
-        lote_actual->lote.validacion = !lote_actual->lote.validacion;
-        if (lote_actual->lote.forma_validacion == 1) // no puede ser 2 porque 2 es el unico estado de unicamente borrado
-        {
-            producto_actual->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
-        }
-        lote_actual->lote.forma_validacion = 1; // El lote vuelve a su estado primario.
-        std::cout << "Lote eliminado del producto \"" << producto_actual->producto.nombre_producto << "\" exitosamente. \n";
+        std::cout << "Volviendo al menú anterior.\n";
+        delete[] id_lote;
         return;
     }
-    std::cout << "Volviendo al menú anterior...\n";
-    return;
+    borrarLote(producto_actual, id_lote);
+    delete[] id_lote;
 }
-void activarLoteDeProducto(lista_Producto *&lista_producto)
+void borrarLote(lista_Producto *&producto_actual, char *id_lote)
 {
-    int id_producto;
-    std::cout << "Digite el ID del producto para buscar un lote: ";
-    id_producto = soloEnteros();
-    lista_Producto *aux = lista_producto;
-    lista_Producto *producto_actual = buscarProducto(aux, id_producto);
-    if (producto_actual == NULL)
+    cola_Lote *aux = NULL;
+    cola_Lote *aux2 = NULL;
+    lista_Producto *aux_p = producto_actual;
+    Lista_Año *año_actual = aux_p->producto.años_producto;
+    while (año_actual != NULL)
     {
-        std::cout << "Producto no encontrado.\n";
-        return;
-    }
-    char *id_lote;
-    std::cout << "Para el producto \"" << producto_actual->producto.nombre_producto << "\", Digite el ID de lote que desea buscar: ";
-    agregarElementoPuntero(id_lote, input);
-    cola_Lote *lote_actual = obtenerLote(producto_actual, id_lote);
-    delete[] id_lote;
-    if (lote_actual == NULL)
-    {
-        std::cout << "Lote no encontrado.\n";
-        return;
-    }
-    if (!lote_actual->lote.validacion)
-    {
-        std::cout << "Error. Este lote ya está activo.\n";
-        return;
-    }
-    if (lote_actual->lote.forma_validacion == 2)
-    {
-        std::cout << "Se ha detectado que este lote fue eliminado por el sistema.\n";
-        std::cout << "Activarlo provocará que el lote solo pueda volver a ser eliminado por un usuario.\n";
-    }
-    int op;
-    std::cout << "¿Estás seguro de activar el lote seleccionado?\n";
-    std::cout << "1.Sí\n2.No\n";
-    std::cout << "Ingresar numero: ";
-    op = soloEnteros();
-    if (op == 1)
-    {
-        lote_actual->lote.validacion = !lote_actual->lote.validacion;
-        if (lote_actual->lote.forma_validacion == 2) // Indica que el lote fue borrado por el sistema,
+        for (int i = 0; i < 12; i++)
         {
-            lote_actual->lote.forma_validacion = 3; // Ahora esta activo, pero no es totalmente funcional
+            Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+            cola_Lote *lote_actual = mes_actual->lotes;
+            if (lote_actual != NULL && strcmp(lote_actual->lote.id_lote, id_lote) == 0)
+            {
+                mes_actual->lotes = mes_actual->lotes->siguiente;
+                delete[] lote_actual->lote.id_lote;
+                delete lote_actual;
+                std::cout << "Lote eliminado del sistema.\n";
+                return;
+            }
+            while (lote_actual->siguiente != NULL)
+            {
+                if (strcmp(lote_actual->siguiente->lote.id_lote, id_lote) == 0)
+                {
+                    aux = lote_actual->siguiente; 
+                    if (aux->siguiente != NULL)
+                    {
+                        lote_actual->siguiente = aux->siguiente;
+                    }
+                    else 
+                    {
+                        lote_actual->siguiente = NULL; 
+                    }
+                    delete[] aux->lote.id_lote;
+                    delete aux;
+                    std::cout << "Lote eliminado del sistema.\n";
+                    return;
+                }
+                lote_actual = lote_actual->siguiente; 
+            }
         }
-        else if (lote_actual->lote.forma_validacion == 1) // Si se borro con la forma 1, puede volver a ser validado.
-        {                                                 // Este 1 tambien puede decir que el lote antes era 3
-            producto_actual->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
-        }
-        std::cout << "Lote activado del producto \"" << producto_actual->producto.nombre_producto << "\" exitosamente. \n";
-        return;
+        año_actual = año_actual->siguiente;
     }
-    std::cout << "Volviendo al menú anterior...\n";
-    return;
-    // continuar
+    std::cout << "Lote no encontrado.\n";
 }
 void vencerLotes(lista_Producto *&producto)
 {
@@ -647,14 +545,31 @@ void vencerLotes(lista_Producto *&producto)
                 cola_Lote *lote_actual = mes_actual->lotes;
                 while (lote_actual != NULL)
                 {
-                    if (!comprobarEstadoFecha(dia, mes, año, lote_actual))
-                    {
-                        if (lote_actual->lote.forma_validacion != 3) /// puede ser 1 nada mas
-                        {                                            // No puede ser 2 porque antes de este if se comprueba una fecha valida
+                    bool fecha = comprobarEstadoFecha(dia, mes, año, lote_actual);
+                    if (!fecha)                            // Anula por caducidad
+                    {                                      // La fecha de expiracion del lote esta antes que la actual
+                        if (!lote_actual->lote.validacion) // Si el lote es valido...
+                        {
                             lote_actual->lote.validacion = !lote_actual->lote.validacion;
-                            lote_actual->lote.forma_validacion = 2;
                             aux->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
+                            lote_actual->lote.motivo = 1;
                         }
+                    }
+                    else if (lote_actual->lote.cantidad_de_producto == 0) // Anula por cantidad
+                    {
+                        if (!lote_actual->lote.validacion)
+                        {
+                            lote_actual->lote.validacion = !lote_actual->lote.validacion;
+                            aux->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
+                            lote_actual->lote.motivo = 2;
+                        }
+                    }
+                    else if ((fecha && lote_actual->lote.cantidad_de_producto > 0) && (lote_actual->lote.validacion))
+                    { // Reactiva lote si la fecha es valida y la cantidad es mayor a 0, si el lote ya estaba anulado
+                        lote_actual->lote.validacion = !lote_actual->lote.validacion;
+                        aux->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
+                        lote_actual->lote.motivo = 0;
+                        // Se reactiva
                     }
                     lote_actual = lote_actual->siguiente;
                 }

@@ -46,7 +46,7 @@ void menuPrincipal(int &opcion)
         case 6:
             std::cout << "Saliendo del programa.\n";
             delete[] user;
-            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida.\n";
@@ -83,7 +83,7 @@ void menuGestionProductos(int &opcion, char *&user)
             obtenerProducto(lista_producto);
             break;
         case 3:
-            eliminarProducto(lista_producto);
+            anularProducto(lista_producto);
             break;
         case 4:
             activarProducto(lista_producto);
@@ -100,7 +100,7 @@ void menuGestionProductos(int &opcion, char *&user)
         case 8:
             std::cout << "Saliendo del sistema." << std::endl;
             delete[] user;
-            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
@@ -115,16 +115,22 @@ void menuGestionLotes(int &opcion, char *&user)
     opcion = 0;
     do
     {
+        /*1. Compra de producto(agregar lote)
+2. Buscar lote
+3. Venta de producto (restar cantidad en existencia)
+4. Modificar lote
+5. Mostrar todos los lotes (información básica)
+6. Mostrar lotes por producto
+*/
         std::cout << "=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
-        std::cout << "1. Agregar lote" << std::endl;
+        std::cout << "1. Compra de producto" << std::endl;
         std::cout << "2. Buscar lote" << std::endl;
-        std::cout << "3. Eliminar lote" << std::endl;
-        std::cout << "4. Activar lote" << std::endl;
+        std::cout << "3. Registrar venta de producto" << std::endl;
+        std::cout << "4. Modificar lote\n";
         std::cout << "5. Mostrar todos los lotes" << std::endl;
         std::cout << "6. Mostrar todos los lotes por producto" << std::endl;
-        std::cout << "7. Modificar lote\n";
-        std::cout << "8. Volver al menu anterior" << std::endl;
-        std::cout << "9. Salir" << std::endl;
+        std::cout << "7. Volver al menu anterior" << std::endl;
+        std::cout << "8. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros();
         std::cout << std::endl;
@@ -157,7 +163,7 @@ void menuGestionLotes(int &opcion, char *&user)
         case 9:
             std::cout << "Saliendo del programa." << std::endl;
             delete[] user;
-            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
@@ -205,7 +211,7 @@ void menuReporteHistorico(int &opcion, char *&user)
         case 6:
             std::cout << "Saliendo del programa.\n";
             delete[] user;
-            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
@@ -298,7 +304,7 @@ void menuGestionUsuarios(int &opcion, char *&user)
         case 8:
             std::cout << "Saliendo del programa." << std::endl;
             delete[] user;
-            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
             std::cout << "Opcion inválida. Por favor, seleccione una opcion válida." << std::endl;
