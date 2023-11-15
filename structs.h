@@ -21,23 +21,25 @@ struct Fecha
 
 struct Movimiento
 {
-    int id_movimiento;
-    char *tipo_movimiento;
-    int cantidad;
+    int id_movimiento = 0;
+    int id_producto = 0;
+    char *id_lote = NULL;
+    char *tipo_movimiento = NULL;
+    int cantidad = 0;
     Fecha fecha;
 };
 
 struct Lote
 {
-    char *id_lote;
+    char *id_lote = NULL;
     Fecha ingreso_fecha;
     Fecha expiracion_fecha;
     double precio_producto;
     int cantidad_de_producto;
     bool validacion = false;
     int motivo = 0;
-    //1 significa caducidad
-    //2 significa que no tiene productos en existencia
+    // 1 significa fecha de caducidad
+    // 2 significa que no tiene productos en existencia
 };
 
 struct cola_Lote
@@ -57,7 +59,6 @@ struct Informacion_Mes
     int mes;
     cola_Lote *lotes = NULL;
     int lotes_cantidad = 0;
-    lista_Movimiento *movimientos = NULL;
 };
 
 struct Año_Producto
@@ -125,8 +126,9 @@ struct lista_Reporte_Historico
 lista_Usuario *lista_usuario = NULL;
 lista_Reporte_Historico *lista_reporte_historico = NULL;
 lista_Producto *lista_producto = NULL;
-lista_Usuario *usuario_activo = NULL; 
-int conteo_id_producto = 0;
+lista_Usuario *usuario_activo = NULL;
+lista_Movimiento *movimientos = NULL;
+int conteo_id_producto = 0, conteo_id_movimiento = 0;
 
 // Prototipado de funcionaes
 
@@ -139,13 +141,14 @@ bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, in
 void asociarMesConNumero(int mes);
 void inicioSesion(int &opcion);
 void ingresarDatos(lista_Usuario *lista_usuario);
-//Menu
+// Menu
 
 void menuPrincipal(int &opcion);
 void menuGestionProductos(int &opcion, char *&user);
 void menuGestionLotes(int &opcion, char *&user);
 void menuReporteHistorico(int &opcion, char *&user);
 void menuGestionUsuarios(int &opcion, char *&user);
+
 // Usuarios
 void agregarUsuarioMaestro(lista_Usuario *&lista_usuario);
 void agregarUsuarioEnLista(lista_Usuario *&lista_usuario);
@@ -191,13 +194,13 @@ void modificarLoteDeProducto(lista_Producto *&producto_actual);
 void eliminarLoteDeProducto(lista_Producto *&lista_producto);
 bool comprobarEstadoFecha(int dia, int mes, int año, cola_Lote *lote_actual);
 void registroDeInformacionLote(Lote &lote);
+void registroDeVentas(cola_Lote *lote_actual);
 
 // Movimiento
-
-void agregarMovimientoDeProducto(lista_Movimiento *&cola);
-void mostrarMovimientosDeProducto(lista_Movimiento *cola, char *id_producto);
-void mostrarMovimientosDeTodoProductos(lista_Movimiento *cola, char *id_producto);
-
+void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_actual, cola_Lote *lote_actual, bool band = false, int cantidad);
+void agregarIdLote(Movimiento *&movimiento_actual, cola_Lote *lote_actual);
+void agregarMovimiento(Movimiento *&movimiento_actual, bool band);
+void guardarMovimientoEnLista(lista_Movimiento *&movimientos, lista_Movimiento *&nuevo_movimiento);
 // Reporte
 
 void generarReporteHistorico(lista_Reporte_Historico *&lista, lista_Producto *listaproducto);
@@ -208,7 +211,6 @@ void asignarReporteHistorico(lista_Reporte_Historico *lista, lista_Usuario *usua
 // Definicion funciones
 
 // General
-
 
 // Usuario
 
@@ -251,15 +253,6 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
                     delete lote_actual;
                     lote_actual = NULL;
                 }
-                while (año_actual->año_producto.producto[i].movimientos != NULL)
-                {
-                    lista_Movimiento *movimiento_actual = año_actual->año_producto.producto[i].movimientos;
-                    delete[] movimiento_actual->movimiento.tipo_movimiento;
-                    movimiento_actual->movimiento.tipo_movimiento = NULL;
-                    año_actual->año_producto.producto[i].movimientos = año_actual->año_producto.producto[i].movimientos->siguiente;
-                    delete movimiento_actual;
-                    movimiento_actual = NULL;
-                }
             }
             lista_producto->producto.años_producto = lista_producto->producto.años_producto->siguiente;
             delete año_actual;
@@ -270,7 +263,16 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
         delete aux;
         aux = NULL;
     }
-
+    while (movimientos != NULL)
+    {
+        lista_Movimiento *aux = movimientos;
+        delete[] aux->movimiento.id_lote;
+        aux->movimiento.id_lote = NULL;
+        delete[] aux->movimiento.tipo_movimiento;
+        aux->movimiento.tipo_movimiento = NULL;
+        delete aux;
+        movimientos = movimientos->siguiente;
+    }
     exit(0);
 }
 

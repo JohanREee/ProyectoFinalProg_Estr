@@ -100,7 +100,9 @@ void agregarPrimerLote(lista_Producto *&producto)
     std::cout << "El ID del lote es: " << nuevo_lote->lote.id_lote << "\n";
     // Guardar el nuevo lote en la cola de todos los lotes
     guardarLoteEnProducto(mes_actual, nuevo_lote);
-    // Actualizar la cantidad de lotes de toda la cola
+    crearMovimiento(movimientos, producto, nuevo_lote, true, nuevo_lote->lote.cantidad_de_producto);
+    // void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_actual, cola_Lote *lote_actual, bool band = false, int cantidad)
+    //  Actualizar la cantidad de lotes de toda la cola
     mes_actual->lotes_cantidad++;
     producto->producto.años_producto = año_actual;
 }
@@ -157,6 +159,7 @@ void agregarLotesAProducto(lista_Producto *&producto)
         {
             guardarProductoEnLista(lista_producto, producto_actual);
         }
+        crearMovimiento(movimientos, producto, nuevo_lote, true, nuevo_lote->lote.cantidad_de_producto);
         std::cout << "\nLote agregado con exito.\n";
         std::cout << "El ID del lote es: " << nuevo_lote->lote.id_lote << "\n";
         int op;
@@ -439,8 +442,17 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
             break;
         }
         int cantidad_producto;
-        std::cout << "Ingrese la nueva cantidad del producto para este lote: ";
+        int opti;
+        std::cout << "¿Desea ingresar o eliminar una cantidad? por defecto la opción será eliminar\n";
+        std::cout << "1. Ingresar\n2. Eliminar\n";
+        std::cout << "Ingresar número: ";
+        opti = soloEnteros();
+        std::cout << "Ingrese la nueva cantidad a ";
+        (opti == 1)? std::cout << "Ingresar " : std::cout << "Eliminar ";
+        std::cout << "para este lote: ";
         cantidad_producto = soloEnteros();
+        if(opti !=1) cantidad_producto *-1; //continue
+        if(cantidad_producto > 0 && (lote_actual->lote.cantidad_de_producto < cantidad_producto || )) //error
         if (cantidad_producto > 0)
         {
             std::cout << "La cantidad de \"" << lote_actual->lote.cantidad_de_producto << "\" ha sido reemplazada por \"" << cantidad_producto << "\".\n";
@@ -460,6 +472,29 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
         break;
     }
     return;
+}
+void registroDeVentas(lista_Producto *producto_actual)
+{
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
+    {
+        return;
+    }
+    cola_Lote *lote_actual = NULL;
+    if (!ingresarLote(producto_actual, lote_actual))
+    {
+        return;
+    }
+    int cantidad;
+    std::cout << "Ingrese la cantidad que vendió: ";
+    cantidad = soloEnteros();
+    if (cantidad < 0 && lote_actual->lote.cantidad_de_producto >= cantidad)
+    {
+        std::cout << "Error al ingresar la cantidad vendida.\n";
+        return;
+    }
+    lote_actual->lote.cantidad_de_producto -= cantidad;
+    crearMovimiento(movimientos, producto_actual, lote_actual, false, cantidad);
 }
 void eliminarLoteDeProducto(lista_Producto *&lista_producto)
 {
@@ -483,7 +518,7 @@ void eliminarLoteDeProducto(lista_Producto *&lista_producto)
     borrarLote(producto_actual, id_lote);
     delete[] id_lote;
 }
-void borrarLote(lista_Producto *&producto_actual, char *id_lote)
+void borrarLote(lista_Producto *&producto_actual, char *id_lote) // eliminación permanente
 {
     cola_Lote *aux = NULL;
     cola_Lote *aux2 = NULL;
@@ -507,21 +542,21 @@ void borrarLote(lista_Producto *&producto_actual, char *id_lote)
             {
                 if (strcmp(lote_actual->siguiente->lote.id_lote, id_lote) == 0)
                 {
-                    aux = lote_actual->siguiente; 
+                    aux = lote_actual->siguiente;
                     if (aux->siguiente != NULL)
                     {
                         lote_actual->siguiente = aux->siguiente;
                     }
-                    else 
+                    else
                     {
-                        lote_actual->siguiente = NULL; 
+                        lote_actual->siguiente = NULL;
                     }
                     delete[] aux->lote.id_lote;
                     delete aux;
                     std::cout << "Lote eliminado del sistema.\n";
                     return;
                 }
-                lote_actual = lote_actual->siguiente; 
+                lote_actual = lote_actual->siguiente;
             }
         }
         año_actual = año_actual->siguiente;
@@ -553,6 +588,7 @@ void vencerLotes(lista_Producto *&producto)
                             lote_actual->lote.validacion = !lote_actual->lote.validacion;
                             aux->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
                             lote_actual->lote.motivo = 1;
+                            crearMovimiento(movimientos, aux, lote_actual, false, lote_actual->lote.cantidad_de_producto);
                         }
                     }
                     else if (lote_actual->lote.cantidad_de_producto == 0) // Anula por cantidad
@@ -569,6 +605,7 @@ void vencerLotes(lista_Producto *&producto)
                         lote_actual->lote.validacion = !lote_actual->lote.validacion;
                         aux->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
                         lote_actual->lote.motivo = 0;
+                        crearMovimiento(movimientos, aux, lote_actual, true, lote_actual->lote.cantidad_de_producto);
                         // Se reactiva
                     }
                     lote_actual = lote_actual->siguiente;

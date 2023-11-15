@@ -50,7 +50,7 @@ void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nu
 
     lista_Producto *aux = lista_producto; // Reservamos el valor original de la lista
     lista_Producto *aux2;
-    while (aux != NULL && aux->producto.id_producto)
+    while (aux != NULL)
     {                         // Comprobamos que aux no apunte a null
         aux2 = aux;           // Reservamos el valor original de aux que por ahora es la lista
         aux = aux->siguiente; // Corre una posición, buscando NULL
