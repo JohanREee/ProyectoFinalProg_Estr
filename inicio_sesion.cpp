@@ -4,7 +4,8 @@
 #include "producto.cpp"
 #include "lote.cpp"
 #include "usuario.cpp"
-
+#include "movimientos.cpp"
+#include "alertas.cpp"
 /*
 void agregarUsuarioEnLista(lista_Usuario *&usuario, char *input, int &administrador);
 void mostrarTodosUsuario(lista_Usuario *lista);
@@ -32,7 +33,7 @@ void inicioSesion(int &opcion)
             break;
         case 2:
             std::cout << "Saliendo del sistema...\n";
-            eliminarTodo(lista_usuario, lista_producto, lista_unidad_medida);
+            eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
             std::cout << "Opcion invalida. Volver a intentar.\n";
@@ -49,7 +50,7 @@ void ingresarDatos(lista_Usuario *lista_usuario)
     std::cout << "Digite el correo electrónico del usuario: ";
     agregarElementoPuntero(correo, input);
     std::cout << "Digite la contraseña del usuario: ";
-    agregarElementoPuntero(contraseña, input);
+    contraseña = digitarContraseña();
     lista_Usuario *usuario_actual = buscarUsuarioParaSesion(lista_usuario, correo, contraseña);
     delete[] correo;
     delete[] contraseña;

@@ -9,6 +9,8 @@
 #include <limits>
 #include <windows.h>
 #include <ctime>
+#include <conio.h>
+#include <stdio.h>
 
 char input[MAXCHAR];
 
@@ -34,8 +36,8 @@ struct Lote
     char *id_lote = NULL;
     Fecha ingreso_fecha;
     Fecha expiracion_fecha;
-    double precio_producto;
-    int cantidad_de_producto;
+    double precio_producto = 0;
+    int cantidad_de_producto = 0;
     bool validacion = false;
     int motivo = 0;
     // 1 significa fecha de caducidad
@@ -91,6 +93,7 @@ struct Producto
     char *descripcion_producto = NULL;
     Lista_Año *años_producto = NULL;
     int existencia_cantidad = 0;
+    int minima_cantidad = 0;
     bool anulado = false;
 };
 
@@ -123,11 +126,41 @@ struct lista_Reporte_Historico
     lista_Reporte_Historico *siguiente;
 };
 
+struct lote_Alerta_Caducidad
+{
+    char *nombre_producto = NULL;
+    char *id_lote = NULL;
+    Fecha fecha_expiracion;
+};
+
+struct lista_Lote_Alerta_Caducidad
+{
+    lote_Alerta_Caducidad lote;
+    lista_Lote_Alerta_Caducidad *siguiente;
+};
+
+struct producto_Alerta_Cantidad
+{
+    char *nombre_producto = NULL;
+    int id_producto = 0;
+    int actual_cantidad = 0;
+    int minima_cantidad = 0;
+};
+
+struct lista_Producto_Alerta_Cantidad
+{
+    producto_Alerta_Cantidad producto;
+    lista_Producto_Alerta_Cantidad *siguiente;
+}; 
+
 lista_Usuario *lista_usuario = NULL;
 lista_Reporte_Historico *lista_reporte_historico = NULL;
 lista_Producto *lista_producto = NULL;
 lista_Usuario *usuario_activo = NULL;
 lista_Movimiento *movimientos = NULL;
+lista_Lote_Alerta_Caducidad *lote_caducidad = NULL;
+lista_Producto_Alerta_Cantidad *producto_cantidad = NULL;
+
 int conteo_id_producto = 0, conteo_id_movimiento = 0;
 
 // Prototipado de funcionaes
@@ -178,6 +211,8 @@ void obtenerProducto(lista_Producto *lista_producto);
 void activarProducto(lista_Producto *&lista_producto);
 bool ingresarProducto(lista_Producto *&producto_actual);
 void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nuevo_producto);
+void mostrarProducto(lista_Producto *producto);
+void mostrarProductos(lista_Producto *producto, bool show);
 // Lote
 void agregarPrimerLote(lista_Producto *&producto);
 char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual, Producto producto_actual);
@@ -191,16 +226,33 @@ void buscarLote(lista_Producto *lista_producto);
 cola_Lote *obtenerLote(lista_Producto *producto, char *id_lote);
 void vencerLotes(lista_Producto *&producto);
 void modificarLoteDeProducto(lista_Producto *&producto_actual);
-void eliminarLoteDeProducto(lista_Producto *&lista_producto);
+void eliminarLoteDeProducto();
 bool comprobarEstadoFecha(int dia, int mes, int año, cola_Lote *lote_actual);
 void registroDeInformacionLote(Lote &lote);
-void registroDeVentas(cola_Lote *lote_actual);
+void borrarLote(lista_Producto *&producto_actual, char *id_lote);
+void registroDeVentas();
 
 // Movimiento
-void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_actual, cola_Lote *lote_actual, bool band = false, int cantidad);
+void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_actual, cola_Lote *lote_actual, bool band = false, int cantidad = 0);
 void agregarIdLote(Movimiento *&movimiento_actual, cola_Lote *lote_actual);
 void agregarMovimiento(Movimiento *&movimiento_actual, bool band);
 void guardarMovimientoEnLista(lista_Movimiento *&movimientos, lista_Movimiento *&nuevo_movimiento);
+
+// Alerta de caducidad
+
+void generarAlertaCaducidad();
+void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual);
+void sumarFecha(int &año, int &mes, int &dia);
+void guardarLoteEnLista(lista_Lote_Alerta_Caducidad *&lista_lote);
+void eliminarListaDeAlerta(lista_Lote_Alerta_Caducidad *&lista);
+
+// Alerta de cantidad minima en stock
+
+void generarAlertarCantidadMinima();
+void mostrarAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual);
+void guardarProductoEnLista(lista_Producto_Alerta_Cantidad *&producto_actual);
+void eliminarListaProductoCantidadMinima();
+
 // Reporte
 
 void generarReporteHistorico(lista_Reporte_Historico *&lista, lista_Producto *listaproducto);
@@ -208,13 +260,6 @@ void buscarReporteHistorico(lista_Reporte_Historico *lista, char *id_producto, c
 void eliminarReporteHistorico(lista_Reporte_Historico *&lista);
 void asignarReporteHistorico(lista_Reporte_Historico *lista, lista_Usuario *usuario);
 
-// Definicion funciones
-
-// General
-
-// Usuario
-
-// Si
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto) //! IMPORTANT
 {
     while (lista_usuario != NULL)
@@ -273,6 +318,7 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
         delete aux;
         movimientos = movimientos->siguiente;
     }
+    eliminarListaDeAlerta(lote_caducidad);
     exit(0);
 }
 

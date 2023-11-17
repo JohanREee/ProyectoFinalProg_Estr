@@ -64,7 +64,7 @@ void agregarUsuarioEnLista(lista_Usuario *&lista_usuario)
         break;
     }
     std::cout << "Ingrese su contraseña: ";
-    agregarElementoPuntero(nuevo_usuario->usuario.contraseña, input);
+    nuevo_usuario->usuario.contraseña = digitarContraseña();
     char *user = nombreFormal(nuevo_usuario->usuario);
     std::cout << "¿Desea otorgar permisos de administrador a \"" << user << "\"?\n";
     delete[] user;
@@ -333,9 +333,9 @@ void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
         char *contraseña = NULL;
         char *contraseña2 = NULL;
         std::cout << "Ingrese la nueva contraseña de " << user << ": ";
-        agregarElementoPuntero(contraseña, input);
-
+        contraseña = digitarContraseña();
         std::cout << "Valide la contraseña: ";
+        contraseña2 = digitarContraseña();
         agregarElementoPuntero(contraseña2, input);
         if (strcmp(contraseña, contraseña2) == 0)
         {

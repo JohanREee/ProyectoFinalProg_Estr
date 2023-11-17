@@ -62,6 +62,7 @@ void menuGestionProductos(int &opcion, char *&user)
     opcion = 0;
     do
     {
+        generarAlertarCantidadMinima();
         std::cout << "=== Bienvenido al módulo de gestión de productos ===" << std::endl;
         std::cout << "1. Agregar producto" << std::endl;
         std::cout << "2. Buscar producto" << std::endl;
@@ -83,9 +84,19 @@ void menuGestionProductos(int &opcion, char *&user)
             obtenerProducto(lista_producto);
             break;
         case 3:
+            if (!usuario_activo->usuario.administrador)
+            {
+                std::cout << "No tienes los permisos acceder a esta opción.\n";
+                break;
+            }
             anularProducto(lista_producto);
             break;
         case 4:
+            if (!usuario_activo->usuario.administrador)
+            {
+                std::cout << "No tienes los permisos acceder a esta opción.\n";
+                break;
+            }
             activarProducto(lista_producto);
             break;
         case 5:
@@ -113,24 +124,20 @@ void menuGestionProductos(int &opcion, char *&user)
 void menuGestionLotes(int &opcion, char *&user)
 {
     opcion = 0;
+    vencerLotes(lista_producto);
     do
     {
-        /*1. Compra de producto(agregar lote)
-2. Buscar lote
-3. Venta de producto (restar cantidad en existencia)
-4. Modificar lote
-5. Mostrar todos los lotes (información básica)
-6. Mostrar lotes por producto
-*/
-        std::cout << "=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
+        generarAlertaCaducidad();
+        std::cout << "\n=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
         std::cout << "1. Compra de producto" << std::endl;
         std::cout << "2. Buscar lote" << std::endl;
         std::cout << "3. Registrar venta de producto" << std::endl;
-        std::cout << "4. Modificar lote\n";
-        std::cout << "5. Mostrar todos los lotes" << std::endl;
-        std::cout << "6. Mostrar todos los lotes por producto" << std::endl;
-        std::cout << "7. Volver al menu anterior" << std::endl;
-        std::cout << "8. Salir" << std::endl;
+        std::cout << "4. Eliminar lote\n";
+        std::cout << "5. Modificar lote\n";
+        std::cout << "6. Mostrar todos los lotes" << std::endl;
+        std::cout << "7. Mostrar todos los lotes por producto" << std::endl;
+        std::cout << "8. Volver al menu anterior" << std::endl;
+        std::cout << "9. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros();
         std::cout << std::endl;
@@ -143,19 +150,34 @@ void menuGestionLotes(int &opcion, char *&user)
             buscarLote(lista_producto);
             break;
         case 3:
-            eliminarLoteDeProducto(lista_producto);
+            registroDeVentas();
             break;
         case 4:
-            activarLoteDeProducto(lista_producto);
+            if (!usuario_activo->usuario.administrador)
+            {
+                std::cout << "No tienes los permisos acceder a esta opción.\n";
+                break;
+            }
+            eliminarLoteDeProducto();
             break;
         case 5:
-            mostrarTodosLotesDeTodosProductos(lista_producto);
+            if (!usuario_activo->usuario.administrador)
+            {
+                std::cout << "No tienes los permisos acceder a esta opción.\n";
+                break;
+            }
+            modificarLoteDeProducto(lista_producto);
             break;
         case 6:
-            mostrarTodosLotesDeProducto(lista_producto);
+            if (!usuario_activo->usuario.administrador)
+            {
+                std::cout << "No tienes los permisos acceder a esta opción.\n";
+                break;
+            }
+            mostrarTodosLotesDeTodosProductos(lista_producto);
             break;
         case 7:
-            modificarLoteDeProducto(lista_producto);
+            mostrarTodosLotesDeProducto(lista_producto);
             break;
         case 8:
             std::cout << "Volviendo al menú principal.";
@@ -168,6 +190,7 @@ void menuGestionLotes(int &opcion, char *&user)
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
+        std::cout << "1";
         vencerLotes(lista_producto);
     } while (opcion != 8);
     std::cout << std::endl;

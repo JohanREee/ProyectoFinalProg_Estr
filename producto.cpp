@@ -27,7 +27,7 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
     agregarElementoPuntero(nuevo_producto->producto.descripcion_producto, input);
     std::cout << "Consideraciones a tomar en cuenta para ingresar la cantidad del producto.\n";
     std::cout << "-Si la cantidad es menor o igual a 0, su valor sera modificado para ser 0 en todos los casos.\n";
-    std::cout << "-De otra forma, se creara un nuevo lote con la cantidad ingresada.";
+    std::cout << "-De otra forma, se creara un nuevo lote con la cantidad ingresada.\n";
     std::cout << "Ingresar cantidad en existencia: ";
     nuevo_producto->producto.existencia_cantidad = soloEnteros();
     if (nuevo_producto->producto.existencia_cantidad <= 0)
@@ -38,8 +38,42 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
     { // Codigo para ingresar el lote del producto nuevo
         agregarPrimerLote(nuevo_producto);
     }
+    int op;
+    while (true)
+    {
+        std::cout << "¿Desea estandarizar la cantidad mínima de este producto en 10?\n";
+        std::cout << "1. Sí\n";
+        std::cout << "2. No\n";
+        std::cout << "Ingresar número: ";
+        op = soloEnteros();
+
+        if (op == 1)
+        {
+            nuevo_producto->producto.minima_cantidad = 10;
+            break;
+        }
+        else if (op == 2)
+        {
+            while (true)
+            {
+                std::cout << "Digite la cantidad mínima para este producto: ";
+                nuevo_producto->producto.minima_cantidad = soloEnteros();
+                if (nuevo_producto->producto.minima_cantidad >= 0)
+                {
+                    break;
+                }
+                std::cout << "La cantidad no puede ser menor a 0.\nIntente de nuevo.\n";
+            }
+            break;
+        }
+        else
+        {
+            std::cout << "Numero incorrecto.\nIntente de nuevo.\n";
+        }
+    }
 
     guardarProductoEnLista(lista_producto, nuevo_producto);
+
     std::cout << "Producto ingresado exitosamente.\n";
     std::cout << "El ID del producto es: " << nuevo_producto->producto.id_producto << "\n";
     system("pause");
@@ -65,6 +99,7 @@ void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nu
     }
     nuevo_producto->siguiente = aux; // nuevo_producto apunta a NULL
 }
+
 bool ingresarProducto(lista_Producto *&producto_actual)
 {
     int id_producto;
@@ -86,7 +121,7 @@ lista_Producto *buscarProducto(lista_Producto *lista, int id_producto) // Leche 
     {
         if ((aux->producto.id_producto == id_producto))
         {
-            if (!aux->producto.anulado)
+            if (aux->producto.anulado)
             {
                 int op;
                 std::cout << "El producto \"" << aux->producto.nombre_producto << "\" ha sido anulado anteriormente del sistema. ¿Deseas continuar con tu acción?\n";
@@ -118,6 +153,7 @@ void mostrarProducto(lista_Producto *producto)
     std::cout << "Nombre: " << producto->producto.nombre_producto << "\n";
     std::cout << "Descripcion: " << producto->producto.descripcion_producto << "\n"; // Controlar el flujo
     std::cout << "Cantidad en existencia: " << producto->producto.existencia_cantidad << "\n";
+    std::cout << "Cantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
     if (producto->producto.anulado)
     {
         std::cout << "\nEl producto está anulado\n";
@@ -134,10 +170,10 @@ void mostrarTodosProducto(lista_Producto *lista_producto)
     int op;
     std::cout << "ADVERTENCIA. ¿Desea mostrar los productos anulados?\n";
     verificarModificacionEnProducto(op);
-    (op == 1) ? mostrarProductos(lista_producto, true) : mostrarProductos(lista_producto);
+    (op == 1) ? mostrarProductos(lista_producto, true) : mostrarProductos(lista_producto, false);
 }
 
-void mostrarProductos(lista_Producto *producto, bool show = false)
+void mostrarProductos(lista_Producto *producto, bool show)
 { // mostrarProducto
     lista_Producto *aux = producto;
     while (aux != NULL)
@@ -147,6 +183,16 @@ void mostrarProductos(lista_Producto *producto, bool show = false)
             std::cout << "Nombre del producto: " << producto->producto.nombre_producto << "\n";
             std::cout << "Descripción del producto: " << producto->producto.descripcion_producto << "\n";
             std::cout << "Cantidad en existencia:" << producto->producto.existencia_cantidad << "\n";
+            std::cout << "Cantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
+            if (producto->producto.anulado)
+            {
+                std::cout << "\nEl producto está anulado\n";
+            }
+            else
+            {
+                std::cout << "\nEl producto no está anulado\n";
+            }
+            return;
         }
         aux = aux->siguiente;
     }
@@ -163,6 +209,7 @@ void modificarProducto(lista_Producto *&lista_producto)
     std::cout << "Seleccione el campo de \"" << producto_actual->producto.nombre_producto << "\" que desea modificar\n";
     std::cout << "1. Nombre\n";
     std::cout << "2. Descripción\n";
+    std::cout << "3. Cantidad minima en existencia.\n";
     std::cout << "Ingresar número: ";
     op = soloEnteros();
     switch (op)
@@ -181,7 +228,7 @@ void modificarProducto(lista_Producto *&lista_producto)
         break;
     case 2:
         char *descripcion;
-        std::cout << "Digite la nueva descripcion del producto: ";
+        std::cout << "Digite la nueva descripcion del producto \"" << producto_actual->producto.nombre_producto << "\": ";
         agregarElementoPuntero(descripcion, input);
         std::cout << "Descripcion anterior: " << producto_actual->producto.descripcion_producto << "\n";
         std::cout << "Descripcion nueva: " << descripcion << "\n";
@@ -189,6 +236,21 @@ void modificarProducto(lista_Producto *&lista_producto)
         producto_actual->producto.descripcion_producto = new char[strlen(descripcion) + 1];
         strcpy(producto_actual->producto.descripcion_producto, descripcion);
         delete[] descripcion;
+        break;
+    case 3:
+        int cantidad;
+        std::cout << "Ingrese la nueva cantidad minima para el producto\"" << producto_actual->producto.nombre_producto << "\": ";
+        cantidad = soloEnteros();
+        if (cantidad >= 0)
+        {
+            std::cout << "La cantidad minima para el producto \"" << producto_actual->producto.nombre_producto << "\"";
+            std::cout << " de " << producto_actual->producto.minima_cantidad << ".";
+            std::cout << "\nHa sido reemplazada por: " << cantidad << "\n";
+            producto_actual->producto.minima_cantidad = cantidad;
+            break;
+        }
+        std::cout << "La cantidad minima no puede ser menor a 0.\n";
+        std::cout << "Volviendo al menú anterior.\n";
         break;
     default:
         std::cout << "Has digitado un valor invalido.\n";

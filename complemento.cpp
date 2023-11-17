@@ -4,9 +4,7 @@
 #include "structs.h"
 
 int soloEnteros();
-double soloFlotantes(double numero);
-char *primerNombre(char *nombre);
-char *primerApellido(char *apellido);
+double soloFlotantes();
 char *nombreFormal(Usuario usuario_actual);
 Lista_Año *buscarAñoActualDeProducto(lista_Producto *producto, int año);
 bool validarDiaPorMes(int dia, int mes, int año);
@@ -20,7 +18,45 @@ bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario);
 void pausar();
 void limpiar();
 void pausarYLimpiar();
+char *digitarContraseña();
 
+char *digitarContraseña()
+{
+    int i = 0;
+    char ch;
+
+    while (true)
+    {
+        ch = _getch();
+
+        if (ch == 13) // Presiono enter
+        {
+            if (i != 0) // Verifica si el primero que puso no es un enter
+            {
+                break;
+            }
+        }
+        else if (ch == 8)
+        {
+            if (i > 0)
+            {
+                i--;
+                std::cout << "\b \b";
+            }
+        }
+        else
+        {
+            input[i] = ch;
+            i++;
+            std::cout << "*";
+        }
+    }
+    input[i] = '\0';
+    char *contraseña = new char[strlen(input) + 1];
+    strcpy(contraseña, input);
+    input[0] = '\0';
+    return contraseña;
+}
 void agregarElementoPuntero(char *&dato, char *input)
 {
     do
@@ -53,19 +89,22 @@ int soloEnteros()
         std::cin.getline(input, 250);
         if (input[0] != '\0')
         {
-            for (int i = 0; input[i] != '\0'; ++i)
+            if (input[0] == '-' || std::isdigit(input[0]))
             {
-                if (!std::isdigit(input[i]))
+                for (int i = 1; input[i] != '\0'; ++i)
                 {
-                    esNumeroValido = false;
-                    if (std::cin.fail())
+                    if (!std::isdigit(input[i]))
                     {
-                        limpiarBuffer();
+                        esNumeroValido = false;
+                        if (std::cin.fail())
+                        {
+                            limpiarBuffer();
+                        }
+                        std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
+                        std::cout << "Ingresar número: ";
+                        input[0] = '\0';
+                        break;
                     }
-                    std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
-                    std::cout << "Ingresar número: ";
-                    input[0] = '\0';
-                    break;
                 }
             }
         }
@@ -87,25 +126,37 @@ double soloFlotantes()
 {
     double numero;
     bool esNumeroValido;
+    bool decimal = false;
     do
     {
         esNumeroValido = true;
         std::cin.getline(input, 250);
         if (input[0] != '\0')
         {
-            for (int i = 0; input[i] != '\0'; ++i)
+            if (input[0] == '-' || std::isdigit(input[0]))
             {
-                if (!std::isdigit(input[i]))
+                for (int i = 0; input[i] != '\0'; ++i)
                 {
-                    esNumeroValido = false;
-                    if (std::cin.fail())
+                    if (input[i] == '.')
                     {
-                        limpiarBuffer();
+                        if (decimal)
+                        {
+                            esNumeroValido = false;
+                            break;
+                        }
                     }
-                    std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
-                    std::cout << "Ingresar número: ";
-                    input[0] = '\0';
-                    break;
+                    else if ((!std::isdigit(input[i])))
+                    {
+                        esNumeroValido = false;
+                        if (std::cin.fail())
+                        {
+                            limpiarBuffer();
+                        }
+                        std::cout << "Entrada inválida. Por favor, ingrese números válidos.\n";
+                        std::cout << "Ingresar número: ";
+                        input[0] = '\0';
+                        break;
+                    }
                 }
             }
         }
@@ -116,7 +167,7 @@ double soloFlotantes()
         }
         if (esNumeroValido)
         {
-            numero = std::atoi(input);
+            numero = std::atof(input);
         }
     } while (!esNumeroValido);
     input[0] = '\0';
@@ -278,6 +329,16 @@ bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, in
 bool comprobarEstadoFecha(int dia, int mes, int año, cola_Lote *lote_actual)
 {
     Fecha fecha_expira = lote_actual->lote.expiracion_fecha; // 11/11/2023         //18/11/2023
+    if (ingresarFechaExpiracion(año, mes, dia, fecha_expira.año, fecha_expira.mes, fecha_expira.dia))
+    {
+        return true;
+    }
+    return false;
+}
+
+bool comprobarEstadoFecha2(int dia, int mes, int año, lista_Lote_Alerta_Caducidad *lote_actual)
+{
+    Fecha fecha_expira = lote_actual->lote.fecha_expiracion; // 11/11/2023         //18/11/2023
     if (ingresarFechaExpiracion(año, mes, dia, fecha_expira.año, fecha_expira.mes, fecha_expira.dia))
     {
         return true;

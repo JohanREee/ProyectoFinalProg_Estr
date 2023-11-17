@@ -1,7 +1,7 @@
 #include "structs.h"
 #include "complemento.cpp"
 
-void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_actual, cola_Lote *lote_actual, bool band = false, int cantidad)
+void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_actual, cola_Lote *lote_actual, bool band , int cantidad)
 { // true = entrada, false = salida
     lista_Movimiento *nuevo_movimiento = new lista_Movimiento();
     Movimiento *movimiento = &nuevo_movimiento->movimiento;
@@ -10,7 +10,7 @@ void crearMovimiento(lista_Movimiento *&movimientos, lista_Producto *producto_ac
     agregarIdLote(movimiento, lote_actual);
     (band) ? agregarMovimiento(movimiento, true) : agregarMovimiento(movimiento, false);
     // true para entrada, false para salida
-    if(!band) cantidad = cantidad*-1;
+    if(!band) cantidad *= -1;
     movimiento->cantidad += cantidad;
     movimiento->fecha = {obtenerDia(), obtenerMes(), obtenerAño()};
     guardarMovimientoEnLista(movimientos,nuevo_movimiento);
@@ -47,34 +47,3 @@ void guardarMovimientoEnLista(lista_Movimiento *&movimientos, lista_Movimiento *
     }
     nuevo_movimiento->siguiente = aux;
 }
-/*
-void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nuevo_producto)
-{
-
-    lista_Producto *aux = lista_producto; // Reservamos el valor original de la lista
-    lista_Producto *aux2;
-    while (aux != NULL && aux->producto.id_producto)
-    {                         // Comprobamos que aux no apunte a null
-        aux2 = aux;           // Reservamos el valor original de aux que por ahora es la lista
-        aux = aux->siguiente; // Corre una posición, buscando NULL
-    }
-    if (lista_producto == aux)
-    { // Nunca pasó por el while
-        lista_producto = nuevo_producto;
-    }
-    else
-    { // Al pasar por el while, sabemos que aux2 apunta una posicion antes de NULL, que debe ser aux
-        aux2->siguiente = nuevo_producto;
-    }
-    nuevo_producto->siguiente = aux; // nuevo_producto apunta a NULL
-}
-*/
-/*struct Movimiento
-{
-    int id_movimiento;
-    int id_producto;
-    char *id_lote;
-    char *tipo_movimiento;
-    int cantidad;
-    Fecha fecha;
-};*/
