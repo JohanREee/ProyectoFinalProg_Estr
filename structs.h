@@ -151,7 +151,7 @@ struct lista_Producto_Alerta_Cantidad
 {
     producto_Alerta_Cantidad producto;
     lista_Producto_Alerta_Cantidad *siguiente;
-}; 
+};
 
 lista_Usuario *lista_usuario = NULL;
 lista_Reporte_Historico *lista_reporte_historico = NULL;
@@ -319,6 +319,9 @@ void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto
         movimientos = movimientos->siguiente;
     }
     eliminarListaDeAlerta(lote_caducidad);
+    std::cout << "\nPresione ENTER para continuar...\n";
+    std::cin.get();
+    system("cls || clear");
     exit(0);
 }
 

@@ -5,6 +5,7 @@
 
 void menuPrincipal(int &opcion)
 {
+    pausarYLimpiar();
     char *user = nombreFormal(usuario_activo->usuario);
     opcion = 0;
     do
@@ -52,13 +53,13 @@ void menuPrincipal(int &opcion)
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida.\n";
             break;
         }
-        std::cout << std::endl;
-        system("pause");
     } while (opcion != 5);
+    pausarYLimpiar();
 }
 
 void menuGestionProductos(int &opcion, char *&user)
 {
+    pausarYLimpiar();
     opcion = 0;
     do
     {
@@ -117,12 +118,13 @@ void menuGestionProductos(int &opcion, char *&user)
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
     } while (opcion != 7);
+    pausarYLimpiar();
     opcion = 0;
     std::cout << "\n";
-    system("pause");
 }
 void menuGestionLotes(int &opcion, char *&user)
 {
+    pausarYLimpiar();
     opcion = 0;
     vencerLotes(lista_producto);
     do
@@ -190,7 +192,7 @@ void menuGestionLotes(int &opcion, char *&user)
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
-        std::cout << "1";
+        pausarYLimpiar();
         vencerLotes(lista_producto);
     } while (opcion != 8);
     std::cout << std::endl;
@@ -247,6 +249,7 @@ void menuReporteHistorico(int &opcion, char *&user)
 
 void menuGestionUsuarios(int &opcion, char *&user)
 {
+    pausarYLimpiar();
     opcion = 0;
     do
     {
@@ -332,7 +335,6 @@ void menuGestionUsuarios(int &opcion, char *&user)
         default:
             std::cout << "Opcion inválida. Por favor, seleccione una opcion válida." << std::endl;
         }
-        std::cout << std::endl;
-        system("pause");
+        pausarYLimpiar();
     } while (opcion != 7);
 }

@@ -498,6 +498,7 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
         std::cout << "una cantidad de ";
         (cantidad_producto < 0) ? std::cout << cantidad_producto * -1 : std::cout << cantidad_producto;
         std::cout << ".\nCambios reflejados en la existencia actual del producto.\n";
+        //10    -5    50 ¿ 60             60  -5
         lote_actual->lote.cantidad_de_producto += cantidad_producto;
         producto_actual->producto.existencia_cantidad += cantidad_producto;
         break;
@@ -606,7 +607,7 @@ void vencerLotes(lista_Producto *&producto)
     int mes = obtenerMes();
     int año = obtenerAño();
     
-    while (aux != NULL)
+    while (aux != NULL && !aux->producto.anulado)
     {
         
         Lista_Año *año_actual = aux->producto.años_producto;

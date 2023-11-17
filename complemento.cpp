@@ -107,6 +107,17 @@ int soloEnteros()
                     }
                 }
             }
+            else
+            {
+                esNumeroValido = false;
+                if (std::cin.fail())
+                {
+                    limpiarBuffer();
+                }
+                std::cout << "entrada inválida. Por favor, ingrese solo números enteros.\n";
+                std::cout << "Ingresar número: ";
+                input[0] = '\0';
+            }
         }
         else
         {
@@ -285,6 +296,11 @@ bool validarDiaPorMes(int dia, int mes, int año)
     if (esBisiesto(año))
     {
         diasEnMes[1] = 29;
+    }
+
+    if (mes < 1 || mes > 12)
+    {
+        return false; // Mes inválido
     }
 
     if (dia < 1 || dia > diasEnMes[mes - 1])

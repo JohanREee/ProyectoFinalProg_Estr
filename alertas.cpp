@@ -63,7 +63,7 @@ void generarAlertaCaducidad()
 void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual)
 {
     Fecha fecha = {lote_actual->lote.fecha_expiracion.dia, lote_actual->lote.fecha_expiracion.mes, lote_actual->lote.fecha_expiracion.año};
-    std::cout << "Nombre: " << lote_actual->lote.nombre_producto << "\n";
+    std::cout << "\n\nNombre: " << lote_actual->lote.nombre_producto << "\n";
     std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
     std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\n";
 }
@@ -138,7 +138,7 @@ void generarAlertarCantidadMinima()
     lista_Producto *aux = lista_producto;
     while (aux != NULL)
     {
-        if (aux->producto.existencia_cantidad < aux->producto.minima_cantidad) // La condicional
+        if (aux->producto.existencia_cantidad < aux->producto.minima_cantidad && !aux->producto.anulado) // La condicional
         {
             lista_Producto_Alerta_Cantidad *nuevo_producto = new lista_Producto_Alerta_Cantidad();
             nuevo_producto->producto.nombre_producto = aux->producto.nombre_producto;
@@ -168,7 +168,7 @@ void generarAlertarCantidadMinima()
 
 void mostrarAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual)
 {
-    std::cout << "Nombre del producto: " << producto_actual->producto.nombre_producto << "\n";
+    std::cout << "\n\nNombre del producto: " << producto_actual->producto.nombre_producto << "\n";
     std::cout << "ID del producto: " << producto_actual->producto.id_producto << "\n";
     std::cout << "Cantidad total: " << producto_actual->producto.actual_cantidad << "\n";
     std::cout << "Cantidad mínima: " << producto_actual->producto.minima_cantidad << "\n";
