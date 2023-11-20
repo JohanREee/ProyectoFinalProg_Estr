@@ -591,52 +591,55 @@ void vencerLotes(lista_Producto *&producto)
     int mes = obtenerMes();
     int año = obtenerAño();
 
-    while (aux != NULL && !aux->producto.anulado)
+    while (aux != NULL)
     {
-
-        Lista_Año *año_actual = aux->producto.años_producto;
-        while (año_actual != NULL)
+        if (!aux->producto.anulado)
         {
-
-            for (int i = 0; i < 12; i++)
+            Lista_Año *año_actual = aux->producto.años_producto;
+            while (año_actual != NULL)
             {
-                Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
-                cola_Lote *lote_actual = mes_actual->lotes;
-                while (lote_actual != NULL)
-                {
 
-                    bool fecha = comprobarEstadoFecha(dia, mes, año, lote_actual); // true = fecha valida, false = fecha menor a la actual
-                    if (!fecha)                                                    // Anula por caducidad
-                    {                                                              // La fecha de expiracion del lote esta antes que la actual
-                        if (!lote_actual->lote.validacion)                         // Si el lote es valido...
-                        {
-                            lote_actual->lote.validacion = !lote_actual->lote.validacion;
-                            aux->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
-                            lote_actual->lote.motivo = 1;
-                            crearMovimiento(movimientos, aux, lote_actual, false, lote_actual->lote.cantidad_de_producto);
-                        }
-                    }
-                    else if (lote_actual->lote.cantidad_de_producto == 0) // Anula por cantidad
+                for (int i = 0; i < 12; i++)
+                {
+                    Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+                    cola_Lote *lote_actual = mes_actual->lotes;
+                    while (lote_actual != NULL)
                     {
-                        if (!lote_actual->lote.validacion)
-                        {
-                            lote_actual->lote.validacion = !lote_actual->lote.validacion;
-                            lote_actual->lote.motivo = 2;
+
+                        bool fecha = comprobarEstadoFecha(dia, mes, año, lote_actual); // true = fecha valida, false = fecha menor a la actual
+                        if (!fecha)                                                    // Anula por caducidad
+                        {                                                              // La fecha de expiracion del lote esta antes que la actual
+                            if (!lote_actual->lote.validacion)                         // Si el lote es valido...
+                            {
+                                lote_actual->lote.validacion = !lote_actual->lote.validacion;
+                                aux->producto.existencia_cantidad -= lote_actual->lote.cantidad_de_producto;
+                                lote_actual->lote.motivo = 1;
+                                crearMovimiento(movimientos, aux, lote_actual, false, lote_actual->lote.cantidad_de_producto);
+                            }
                         }
+                        else if (lote_actual->lote.cantidad_de_producto == 0) // Anula por cantidad
+                        {
+                            if (!lote_actual->lote.validacion)
+                            {
+                                lote_actual->lote.validacion = !lote_actual->lote.validacion;
+                                lote_actual->lote.motivo = 2;
+                            }
+                        }
+                        else if ((fecha && lote_actual->lote.cantidad_de_producto > 0) && (lote_actual->lote.validacion))
+                        { // Reactiva lote si la fecha es valida y la cantidad es mayor a 0, si el lote ya estaba anulado
+                            lote_actual->lote.validacion = !lote_actual->lote.validacion;
+                            aux->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
+                            lote_actual->lote.motivo = 0;
+                            crearMovimiento(movimientos, aux, lote_actual, true, lote_actual->lote.cantidad_de_producto);
+                            // Se reactiva
+                        }
+                        lote_actual = lote_actual->siguiente;
                     }
-                    else if ((fecha && lote_actual->lote.cantidad_de_producto > 0) && (lote_actual->lote.validacion))
-                    { // Reactiva lote si la fecha es valida y la cantidad es mayor a 0, si el lote ya estaba anulado
-                        lote_actual->lote.validacion = !lote_actual->lote.validacion;
-                        aux->producto.existencia_cantidad += lote_actual->lote.cantidad_de_producto;
-                        lote_actual->lote.motivo = 0;
-                        crearMovimiento(movimientos, aux, lote_actual, true, lote_actual->lote.cantidad_de_producto);
-                        // Se reactiva
-                    }
-                    lote_actual = lote_actual->siguiente;
                 }
+                año_actual = año_actual->siguiente;
             }
-            año_actual = año_actual->siguiente;
         }
+
         aux = aux->siguiente;
     }
 }

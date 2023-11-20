@@ -163,6 +163,11 @@ struct lista_Reporte_Rango
     reporte_Rango lote;
     lista_Reporte_Rango *siguiente;
 };
+
+struct reporte_Expirar
+{
+
+};
 lista_Usuario *lista_usuario = NULL;
 lista_Producto *lista_producto = NULL;
 lista_Usuario *usuario_activo = NULL;
@@ -185,6 +190,7 @@ bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, in
 void asociarMesConNumero(int mes);
 void inicioSesion(int &opcion);
 void ingresarDatos(lista_Usuario *lista_usuario);
+
 // Menu
 
 void menuPrincipal(int &opcion);
@@ -253,7 +259,7 @@ void guardarMovimientoEnLista(lista_Movimiento *&movimientos, lista_Movimiento *
 
 void generarAlertaCaducidad();
 void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual);
-void sumarFecha(int &año, int &mes, int &dia);
+void sumarFecha(int &año, int &mes, int &dia, int cantidad);
 void guardarLoteEnLista(lista_Lote_Alerta_Caducidad *&lista_lote);
 void eliminarListaDeAlerta(lista_Lote_Alerta_Caducidad *&lista);
 

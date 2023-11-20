@@ -8,7 +8,7 @@ void generarAlertaCaducidad()
     int año = obtenerAño();
     int mes = obtenerMes();
     int dia = obtenerDia();
-    sumarFecha(año, mes, dia); // Suma 7 dias
+    sumarFecha(año, mes, dia, 7); // Suma 7 dias
     lista_Producto *aux = lista_producto;
     while (aux != NULL)
     {
@@ -22,10 +22,9 @@ void generarAlertaCaducidad()
                 cola_Lote *lote_actual = mes_actual->lotes;
                 while (lote_actual != NULL)
                 { // 16/11/23 --------    23/11/23
-                    std::cout << "1\n";
+                    
                     if (!lote_actual->lote.validacion && !comprobarEstadoFecha(dia, mes, año, lote_actual))
                     {
-                        std::cout << "2\n";
                         lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
                         nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;            // Almacenar
                         nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
@@ -67,7 +66,7 @@ void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual)
     std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\n";
 }
 
-void sumarFecha(int &año, int &mes, int &dia)
+void sumarFecha(int &año, int &mes, int &dia, int cantidad)
 {
     int diasEnMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (mes == 2 && esBisiesto(año))
@@ -75,19 +74,22 @@ void sumarFecha(int &año, int &mes, int &dia)
         diasEnMes[1] = 29;
     }
     int aux;
-    dia += 7;
-    if (dia > diasEnMes[mes - 1] && mes != 12)
-    {                                     // 29/11/23 ------- 6/12/23
-        aux = (dia - diasEnMes[mes - 1]); // Cantidad del siguiente dia del siguiente mes, que es 6
-        mes += 1;                         // Avanzamos al siguiente mes
-        dia = aux;                        // Asignamos la cantidad en dia
-    }
-    else if (dia > diasEnMes[mes - 1] && mes == 12)
-    {                                     // 29/12/23----------------- 5/1/23
-        aux = (dia - diasEnMes[mes - 1]); // Cantidad del siguiente dia del siguiente mes, que es 5
-        mes = 1;
-        año += 1;
-        dia = aux;
+    dia += cantidad;
+    while (dia < diasEnMes[mes])
+    {
+        if (dia > diasEnMes[mes - 1] && mes != 12)
+        {                                     // 29/11/23 ------- 6/12/23
+            aux = (dia - diasEnMes[mes - 1]); // Cantidad del siguiente dia del siguiente mes, que es 6
+            mes += 1;                         // Avanzamos al siguiente mes
+            dia -= aux;                        // Asignamos la cantidad en dia
+        }
+        else if (dia > diasEnMes[mes - 1] && mes == 12)
+        {                                     // 29/12/23----------------- 5/1/23
+            aux = (dia - diasEnMes[mes - 1]); // Cantidad del siguiente dia del siguiente mes, que es 5
+            mes = 1;
+            año += 1;
+            dia -= aux;
+        }
     }
 }
 void guardarLoteEnLista(lista_Lote_Alerta_Caducidad *&nuevo_lote)
@@ -137,7 +139,7 @@ void generarAlertarCantidadMinima()
     int año = obtenerAño();
     int mes = obtenerMes();
     int dia = obtenerDia();
-    sumarFecha(año, mes, dia); // Suma 7 dias
+    sumarFecha(año, mes, dia, 7); // Suma 7 dias
     lista_Producto *aux = lista_producto;
     while (aux != NULL)
     {

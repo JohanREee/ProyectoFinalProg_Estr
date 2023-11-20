@@ -8,10 +8,11 @@ void eliminarListaDeReporteDeExistencia(lista_Producto_Existencia *&producto_exi
 void generarReporteDeLotesPorRango();
 void guardarLoteEnListaDeReporteDeRango(lista_Reporte_Rango *&reporte_actual);
 void mostrarLoteDeReporteDeRango(lista_Reporte_Rango *lote_actual);
-void eliminarListaDeReporteDeRango(lista_Producto_Existencia *&reporte_rango);
+void eliminarListaDeReporteDeRango(lista_Reporte_Rango *&reporte_rango);
 bool buscarLotesPorFecha(lista_Producto *producto_actual, Fecha fecha_inicio = {0, 0, 0}, Fecha fecha_final = {0, 0, 0});
 bool validarFecha(Fecha fecha_inicio, Fecha fecha_final, cola_Lote *lote_actual);
 void generarReporteDeLotesPorExpirar();
+bool buscarLoteParaReporteDeLotesPorExpirar(lista_Lote_Alerta_Caducidad *&lote_actual, Fecha fecha);
 void generarReporteStockCritico();
 
 void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_Producto_Existencia *&producto_existencia)
@@ -26,7 +27,7 @@ void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_P
             nuevo_nodo->producto.nombre_producto = producto_actual->producto.nombre_producto;
             nuevo_nodo->producto.actual_cantidad = producto_actual->producto.existencia_cantidad;
             guardarProductoEnListaDeReporteDeExistencia(nuevo_nodo);
-        } // buscarLotesPorFecha(&producto, fecha_final: {31, 12, 2023});
+        }
         producto_actual = producto_actual->siguiente;
     }
     if (producto_existencia != NULL)
@@ -94,7 +95,7 @@ void generarReporteDeLotesPorRango()
     std::cout << "Elija una opción. \n";
     std::cout << "1. Reporte por rango entre dos fechas\n";
     std::cout << "2. Reporte por rango a partir de una fecha\n";
-    std::cout << "3.Reporte por rango hasta una fecha.\n";
+    std::cout << "3. Reporte por rango hasta una fecha.\n";
     op = soloEnteros();
     if (op == 1)
     {
@@ -142,7 +143,7 @@ void generarReporteDeLotesPorRango()
             std::cout << "Volviendo al menú anterior.\n";
             return;
         }
-        if (buscarLotesPorFecha(producto_actual, fecha_inicio, fecha_final))
+        if (buscarLotesPorFecha(producto_actual, fecha_inicial))
         {
             std::cout << "Mostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" para las fechas ingresadas.\n ";
             lista_Reporte_Rango *aux = reporte_rango;
@@ -152,7 +153,7 @@ void generarReporteDeLotesPorRango()
                 aux = aux->siguiente;
             }
         }
-        else // CONTINUE
+        else
         {
             std::cout << "No hay lotes que coincidan con estas fechas.\n";
         }
@@ -160,6 +161,23 @@ void generarReporteDeLotesPorRango()
     else if (op == 3)
     {
         Fecha fecha_finalizar;
+        scanf("%2d/%2d/%4d", &fecha_finalizar.dia, &fecha_finalizar.mes, &fecha_finalizar.año);
+        if (!validarDiaPorMes(fecha_finalizar.dia, fecha_finalizar.mes, fecha_finalizar.año))
+        {
+            std::cout << "Fecha no válida. \n";
+            std::cout << "Volviendo al menú anterior.\n";
+            return;
+        }
+        if (buscarLotesPorFecha(producto_actual, {0, 0, 0}, fecha_finalizar))
+        {
+            std::cout << "Mostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" para las fechas ingresadas.\n ";
+            lista_Reporte_Rango *aux = reporte_rango;
+            while (aux != NULL)
+            {
+                mostrarLoteDeReporteDeRango(aux);
+                aux = aux->siguiente;
+            }
+        }
     }
     else
     {
@@ -277,5 +295,81 @@ void eliminarListaDeReporteDeRango(lista_Reporte_Rango *&reporte_rango)
         lista_Reporte_Rango *aux = reporte_rango;
         reporte_rango = reporte_rango->siguiente;
         delete aux;
+    }
+}
+
+void generarReporteDeLotesPorExpirar()
+{
+    int op;
+    int año = obtenerAño();
+    int mes = obtenerMes();
+    int dia = obtenerDia();
+    int sumar = 0;
+    std::cout << "Para ingresar los lotes que están por expirar, ¿Desea ingresar como estándar 7 días a partir de hoy?\n";
+    verificarModificacionEnProducto(op);
+    if (op == 1 || op == 2)
+    {
+        if (op == 1)
+        {
+            sumar += 7;
+            sumarFecha(año, mes, dia, sumar);
+        }
+        else if (op == 2)
+        {
+            std::cout << "Ingrese la cantidad en dias para obtener los reportes que están por expirar: ";
+            sumar = soloEnteros();
+            sumarFecha(año, mes, dia, sumar);
+        }
+        Fecha fecha = {dia, mes, año};
+    }
+
+    else
+    {
+        std::cout << "Valor inválido.\n";
+        std::cout << "Volviendo al menú anterior.\n";
+    }
+}
+
+bool buscarLoteParaReporteDeLotesPorExpirar(Fecha fecha)
+{
+    lista_Producto *aux = lista_producto;
+    while (aux != NULL)
+    {
+        if (!aux->producto.anulado)
+        {
+            Lista_Año *año_actual = aux->producto.años_producto;
+            while (año_actual != NULL)
+            {
+
+                for (int i = 0; i < 12; i++)
+                {
+                    Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+                    cola_Lote *lote_actual = mes_actual->lotes;
+                    while (lote_actual != NULL)
+                    {
+                        if (!lote_actual->lote.validacion && !comprobarEstadoFecha(fecha.dia, fecha.mes, fecha.año, lote_actual))
+                        {
+                            lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
+                            nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;            // Almacenar
+                            nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
+                            nuevo_lote->lote.fecha_expiracion = lote_actual->lote.expiracion_fecha;
+                            guardarLoteEnLista(nuevo_lote); // Guardar
+                        }
+                        lote_actual = lote_actual->siguiente;
+                    }
+                }
+                año_actual = año_actual->siguiente;
+            }
+        }
+        aux = aux->siguiente;
+    }
+    if (lote_caducidad == NULL)
+    {
+        lista_Lote_Alerta_Caducidad *aux2 = lote_caducidad;
+        std::cout << "Mostrando todos los lotes que están por vencer " ;
+        while (aux2 != NULL)//continue
+        {
+
+        }
     }
 }
