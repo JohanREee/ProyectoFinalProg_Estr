@@ -25,17 +25,10 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
     agregarElementoPuntero(nuevo_producto->producto.nombre_producto, input);
     std::cout << "Ingresar descripción del producto: ";
     agregarElementoPuntero(nuevo_producto->producto.descripcion_producto, input);
-    std::cout << "Consideraciones a tomar en cuenta para ingresar la cantidad del producto.\n";
-    std::cout << "-Si la cantidad es menor o igual a 0, su valor sera modificado para ser 0 en todos los casos.\n";
-    std::cout << "-De otra forma, se creara un nuevo lote con la cantidad ingresada.\n";
-    std::cout << "Ingresar cantidad en existencia: ";
+    std::cout << "Ingresar cantidad en existencia del producto (si es mayor a 0, se creará un lote): ";
     nuevo_producto->producto.existencia_cantidad = soloEnteros();
-    if (nuevo_producto->producto.existencia_cantidad <= 0)
+    if (nuevo_producto->producto.existencia_cantidad != 0)
     {
-        nuevo_producto->producto.existencia_cantidad = 0;
-    }
-    else
-    { // Codigo para ingresar el lote del producto nuevo
         agregarPrimerLote(nuevo_producto);
     }
     int op;
@@ -170,7 +163,19 @@ void mostrarTodosProducto(lista_Producto *lista_producto)
     int op;
     std::cout << "ADVERTENCIA. ¿Desea mostrar los productos anulados?\n";
     verificarModificacionEnProducto(op);
-    (op == 1) ? mostrarProductos(lista_producto, true) : mostrarProductos(lista_producto, false);
+    if (op == 1)
+    {
+        mostrarProductos(lista_producto, true);
+    }
+    else if (op == 2)
+    {
+        mostrarProductos(lista_producto, false);
+    }
+    else
+    {
+        std::cout << "Valor inválido ingresado.\n";
+        std::cout << "Volviendo al menú anterior.\n";
+    }
 }
 
 void mostrarProductos(lista_Producto *producto, bool show)
@@ -197,7 +202,7 @@ void mostrarProductos(lista_Producto *producto, bool show)
         aux = aux->siguiente;
     }
 }
-// Nombre, descripcion, unidad medida, cantidad
+
 void modificarProducto(lista_Producto *&lista_producto)
 {
     lista_Producto *producto_actual = NULL;
@@ -205,13 +210,12 @@ void modificarProducto(lista_Producto *&lista_producto)
     {
         return;
     }
-    int op;
     std::cout << "Seleccione el campo de \"" << producto_actual->producto.nombre_producto << "\" que desea modificar\n";
     std::cout << "1. Nombre\n";
     std::cout << "2. Descripción\n";
     std::cout << "3. Cantidad minima en existencia.\n";
     std::cout << "Ingresar número: ";
-    op = soloEnteros();
+    int op = soloEnteros();
     switch (op)
     {
     case 1:
@@ -277,10 +281,13 @@ void anularProducto(lista_Producto *&lista)
     if (op == 1)
     {
         producto_actual->producto.anulado = !producto_actual->producto.anulado;
-        std::cout << "Producto anulado exitosmanete. \n";
+        std::cout << "Producto anulado exitosamente. \n";
         return;
     }
-    std::cout << "Error al ingresar un numero valido.\n";
+    if (op != 2)
+    {
+        std::cout << "Error al ingresar un numero valido.\n";
+    }
     std::cout << "Volviendo al menú anterior.\n";
     return;
 }
@@ -306,7 +313,9 @@ void activarProducto(lista_Producto *&lista_producto)
         return;
     }
     if (op != 2)
+    {
         std::cout << "Error al ingresar un numero valido.\n";
+    }
     std::cout << "Volviendo al menú anterior.\n";
     return;
 }

@@ -6,6 +6,7 @@
 #include "usuario.cpp"
 #include "movimientos.cpp"
 #include "alertas.cpp"
+#include "registros.cpp"
 /*
 void agregarUsuarioEnLista(lista_Usuario *&usuario, char *input, int &administrador);
 void mostrarTodosUsuario(lista_Usuario *lista);
@@ -25,11 +26,11 @@ void inicioSesion(int &opcion)
         std::cout << "2. Salir\n";
         std::cout << "Seleccionar opcion: ";
         opcion = soloEnteros();
-        fflush(stdin);
         switch (opcion)
         {
         case 1:
             ingresarDatos(lista_usuario);
+            pausarYLimpiar();
             break;
         case 2:
             std::cout << "Saliendo del sistema...\n";

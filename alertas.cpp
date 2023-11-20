@@ -1,7 +1,6 @@
 #include "structs.h"
 #include "complemento.cpp"
 
-
 void generarAlertaCaducidad()
 {
     if (lote_caducidad != NULL)
@@ -71,6 +70,10 @@ void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual)
 void sumarFecha(int &año, int &mes, int &dia)
 {
     int diasEnMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (mes == 2 && esBisiesto(año))
+    {
+        diasEnMes[1] = 29;
+    }
     int aux;
     dia += 7;
     if (dia > diasEnMes[mes - 1] && mes != 12)
@@ -183,7 +186,7 @@ void guardarProductoEnLista(lista_Producto_Alerta_Cantidad *&producto_actual)
     {
         lista_Producto_Alerta_Cantidad *aux = producto_cantidad;
         lista_Producto_Alerta_Cantidad *aux2 = NULL;
-        
+
         while (aux != NULL)
         {
             aux2 = aux;

@@ -66,21 +66,32 @@ void agregarUsuarioEnLista(lista_Usuario *&lista_usuario)
     std::cout << "Ingrese su contraseña: ";
     nuevo_usuario->usuario.contraseña = digitarContraseña();
     char *user = nombreFormal(nuevo_usuario->usuario);
-    std::cout << "¿Desea otorgar permisos de administrador a \"" << user << "\"?\n";
-    delete[] user;
-    std::cout << "Esta opción se puede modificar con la opción de modificar usuarios posteriormente.\n";
-    verificarModificacionEnUsuario(administrador);
-    if (administrador == 1)
+    while (true)
     {
-        nuevo_usuario->usuario.administrador = true;
-    }
-    else
-    {
-        nuevo_usuario->usuario.administrador = false;
+        std::cout << "¿Desea otorgar permisos de administrador a \"" << user << "\"?\n";
+        std::cout << "Esta opción se puede modificar con la opción de modificar usuarios posteriormente.\n";
+        verificarModificacionEnUsuario(administrador);
+        if (administrador == 1)
+        {
+            nuevo_usuario->usuario.administrador = true;
+            break;
+        }
+        else if (administrador == 2)
+        {
+            nuevo_usuario->usuario.administrador = false;
+            break;
+        }
+        else
+        {
+            std::cout << "Valor invalido. Vuelve a intentarlo.\n";
+            pausar();
+        }
     }
     std::cout << "Usuario ingresado al sistema correctamente.\n";
     std::cout << "Permiso: ";
     (nuevo_usuario->usuario.administrador) ? std::cout << "Administrador\n" : std::cout << "Personal\n";
+
+    delete[] user;
     lista_Usuario *aux = lista_usuario; // Reservamos el valor original de la lista
     lista_Usuario *aux2;
     while (aux != NULL)
@@ -128,8 +139,12 @@ lista_Usuario *buscarUsuario(lista_Usuario *lista, char *correo)
                 int op;
                 std::cout << "Este usuario ha sido anulado anteriormente. ¿Deseas continuar de igual forma?\n";
                 verificarModificacionEnUsuario(op);
-                if (op != 1)
+                if (op != 1) // op es 2 por ejemplo
                 {
+                    if (op != 2)
+                    {
+                        std::cout << "Error al ingresar el número.\n";
+                    }
                     return NULL;
                 }
             }

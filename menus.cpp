@@ -117,8 +117,8 @@ void menuGestionProductos(int &opcion, char *&user)
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
+        pausarYLimpiar();
     } while (opcion != 7);
-    pausarYLimpiar();
     opcion = 0;
     std::cout << "\n";
 }
@@ -191,12 +191,11 @@ void menuGestionLotes(int &opcion, char *&user)
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
-        }
         pausarYLimpiar();
+        }
+        
         vencerLotes(lista_producto);
     } while (opcion != 8);
-    std::cout << std::endl;
-    system("pause");
     opcion = 0;
 }
 void menuReporteHistorico(int &opcion, char *&user)
@@ -241,15 +240,12 @@ void menuReporteHistorico(int &opcion, char *&user)
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
         }
-        std::cout << std::endl;
-        system("pause");
         opcion = 0;
     }
 }
 
 void menuGestionUsuarios(int &opcion, char *&user)
 {
-    pausarYLimpiar();
     opcion = 0;
     do
     {
@@ -277,9 +273,11 @@ void menuGestionUsuarios(int &opcion, char *&user)
             {
                 std::cout << "No tienes permisos para eliminar usuarios.\n";
             }
+            pausarYLimpiar();
             break;
         case 2:
             mostrarUsuarioEnPantalla(lista_usuario);
+            pausarYLimpiar();
             break;
         case 3:
             if (usuario_activo->usuario.administrador)
@@ -290,7 +288,7 @@ void menuGestionUsuarios(int &opcion, char *&user)
             {
                 std::cout << "No tienes permisos para eliminar usuarios.\n";
             }
-
+            pausarYLimpiar();
             break;
         case 4:
             if (usuario_activo->usuario.administrador)
@@ -301,6 +299,7 @@ void menuGestionUsuarios(int &opcion, char *&user)
             {
                 std::cout << "No tienes permisos para eliminar usuarios.\n";
             }
+            pausarYLimpiar();
             break;
         case 5:
             if (usuario_activo->usuario.administrador)
@@ -311,7 +310,7 @@ void menuGestionUsuarios(int &opcion, char *&user)
             {
                 std::cout << "No tienes permisos para eliminar usuarios.\n";
             }
-
+            pausarYLimpiar();
             break;
         case 6:
             if (usuario_activo->usuario.administrador)
@@ -322,7 +321,7 @@ void menuGestionUsuarios(int &opcion, char *&user)
             {
                 std::cout << "No tienes permisos para eliminar usuarios.\n";
             }
-
+            pausarYLimpiar();
             break;
         case 7:
             std::cout << "Volviendo al menú principal.";
@@ -334,7 +333,7 @@ void menuGestionUsuarios(int &opcion, char *&user)
             break;
         default:
             std::cout << "Opcion inválida. Por favor, seleccione una opcion válida." << std::endl;
+            pausarYLimpiar();
         }
-        pausarYLimpiar();
     } while (opcion != 7);
 }

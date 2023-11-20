@@ -153,6 +153,18 @@ struct lista_Producto_Alerta_Cantidad
     lista_Producto_Alerta_Cantidad *siguiente;
 };
 
+struct producto_Existencia
+{
+    char *nombre_producto = NULL;
+    int id_producto = 0;
+    int actual_cantidad = 0;
+};
+
+struct lista_Producto_Existencia
+{
+    producto_Existencia producto;
+    lista_Producto_Existencia *siguiente;
+};
 lista_Usuario *lista_usuario = NULL;
 lista_Reporte_Historico *lista_reporte_historico = NULL;
 lista_Producto *lista_producto = NULL;
@@ -160,6 +172,7 @@ lista_Usuario *usuario_activo = NULL;
 lista_Movimiento *movimientos = NULL;
 lista_Lote_Alerta_Caducidad *lote_caducidad = NULL;
 lista_Producto_Alerta_Cantidad *producto_cantidad = NULL;
+lista_Producto_Existencia *producto_existencia = NULL;
 
 int conteo_id_producto = 0, conteo_id_movimiento = 0;
 

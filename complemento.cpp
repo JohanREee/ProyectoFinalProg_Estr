@@ -33,6 +33,7 @@ char *digitarContraseña()
         {
             if (i != 0) // Verifica si el primero que puso no es un enter
             {
+                std::cout << "\n";
                 break;
             }
         }
@@ -44,7 +45,7 @@ char *digitarContraseña()
                 std::cout << "\b \b";
             }
         }
-        else
+        else if (i < 249)
         {
             input[i] = ch;
             i++;
@@ -59,20 +60,36 @@ char *digitarContraseña()
 }
 void agregarElementoPuntero(char *&dato, char *input)
 {
+    char ch;
+    int i = 0;
     do
     {
-        std::cin.getline(input, 250);
-        if (input[0] == '\0')
+        ch = _getch();
+        if (ch == 13) // Presiono enter
         {
-            input[0] = '\0';
-            continue;
+            if (i != 0) // Verifica si el primero que puso no es un enter
+            {
+                std::cout << "\n";
+                break;
+            }
         }
-        else
+        else if (ch == 8)
         {
-            break;
+            if (i > 0)
+            {
+                i--;
+                std::cout << "\b \b";
+            }
+        }
+        else if (i < 249)
+        {
+            input[i] = ch;
+            i++;
+            std::cout << ch;
         }
     } while (true);
-
+    
+    input[i] = '\0';
     int length = strlen(input);
     dato = new char[length + 1];
     strcpy(dato, input);
@@ -81,108 +98,95 @@ void agregarElementoPuntero(char *&dato, char *input)
 
 int soloEnteros()
 {
-    int numero;
-    bool esNumeroValido;
-    do
+    int i = 0;
+    char ch;
+    while (true)
     {
-        esNumeroValido = true;
-        std::cin.getline(input, 250);
-        if (input[0] != '\0')
+
+        ch = _getch();
+
+        if (ch == 13) // Presiono enter
         {
-            if (input[0] == '-' || std::isdigit(input[0]))
+            if (i != 0)
             {
-                for (int i = 1; input[i] != '\0'; ++i)
-                {
-                    if (!std::isdigit(input[i]))
-                    {
-                        esNumeroValido = false;
-                        if (std::cin.fail())
-                        {
-                            limpiarBuffer();
-                        }
-                        std::cout << "Entrada inválida. Por favor, ingrese solo números enteros.\n";
-                        std::cout << "Ingresar número: ";
-                        input[0] = '\0';
-                        break;
-                    }
-                }
+                input[i] = '\0';
+                break;
             }
-            else
+        }                 // -0.
+        else if (ch == 8) // Backspace
+        {
+            if (i > 0)
             {
-                esNumeroValido = false;
-                if (std::cin.fail())
-                {
-                    limpiarBuffer();
-                }
-                std::cout << "entrada inválida. Por favor, ingrese solo números enteros.\n";
-                std::cout << "Ingresar número: ";
-                input[0] = '\0';
+                i--;
+                std::cout << "\b \b";
             }
         }
-        else
+        else if (std::isdigit(ch) && i < 10) // Digito
         {
-            input[0] = '\0';
-            esNumeroValido = false;
+            input[i] = ch;
+            i++;
+            std::cout << ch;
         }
-        if (esNumeroValido)
-        {
-            numero = std::atoi(input);
-        }
-    } while (!esNumeroValido);
+    }
+    input[i] = '\0';
+    std::cout << "\n";
+    int numero = std::atoi(input);
     input[0] = '\0';
     return numero;
 }
 
 double soloFlotantes()
 {
-    double numero;
-    bool esNumeroValido;
-    bool decimal = false;
-    do
+    int i = 0;
+    char ch;
+    bool punto = false;
+    while (true)
     {
-        esNumeroValido = true;
-        std::cin.getline(input, 250);
-        if (input[0] != '\0')
+        ch = _getch();
+
+        if (ch == 13) // Presiono enter
         {
-            if (input[0] == '-' || std::isdigit(input[0]))
+            if (i != 0 && input[i - 1] != '.')
             {
-                for (int i = 0; input[i] != '\0'; ++i)
+                break;
+            }
+        }                 // -0.
+        else if (ch == 8) // Backspace
+        {
+            if (i > 0)
+            {
+                if (input[i - 1] == '.')
                 {
-                    if (input[i] == '.')
-                    {
-                        if (decimal)
-                        {
-                            esNumeroValido = false;
-                            break;
-                        }
-                    }
-                    else if ((!std::isdigit(input[i])))
-                    {
-                        esNumeroValido = false;
-                        if (std::cin.fail())
-                        {
-                            limpiarBuffer();
-                        }
-                        std::cout << "Entrada inválida. Por favor, ingrese números válidos.\n";
-                        std::cout << "Ingresar número: ";
-                        input[0] = '\0';
-                        break;
-                    }
+                    punto = false;
+                }
+                i--;
+                std::cout << "\b \b";
+            }
+        }
+        else if (i < 11) // 249 es el limite de input, input [250]
+        {
+            if (std::isdigit(ch)) // Digito
+            {
+                input[i] = ch;
+                i++;
+                std::cout << ch;
+            }
+            if (ch == '.') // PUnto decimal
+            {
+                if (!punto && i > 0 && std::isdigit(input[i - 1]))
+                {
+                    input[i] = ch;
+                    i++;
+                    std::cout << ch;
+                    punto = true;
                 }
             }
         }
-        else
-        {
-            input[0] = '\0';
-            esNumeroValido = false;
-        }
-        if (esNumeroValido)
-        {
-            numero = std::atof(input);
-        }
-    } while (!esNumeroValido);
+    }
+    input[i] = '\0';
+    std::cout << "\n";
+    double numero = std::atof(input);
     input[0] = '\0';
-
     return numero;
 }
 
