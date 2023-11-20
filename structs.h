@@ -109,23 +109,6 @@ struct lista_Usuario
     lista_Usuario *siguiente;
 };
 
-struct reporte_Historico
-{
-    char *autor;
-    char *id_reporte;
-    char *id_producto;
-    char *administrador_asignado;
-    Fecha fecha_elaboracion;
-    Fecha fecha_inicio;
-    Fecha fecha_final;
-};
-
-struct lista_Reporte_Historico
-{
-    reporte_Historico reporte;
-    lista_Reporte_Historico *siguiente;
-};
-
 struct lote_Alerta_Caducidad
 {
     char *nombre_producto = NULL;
@@ -165,14 +148,29 @@ struct lista_Producto_Existencia
     producto_Existencia producto;
     lista_Producto_Existencia *siguiente;
 };
+
+struct reporte_Rango
+{
+    char *id_lote = NULL;
+    Fecha ingreso_fecha;
+    Fecha expiracion_fecha;
+    double precio_producto = 0;
+    int cantidad_de_producto = 0;
+};
+
+struct lista_Reporte_Rango
+{
+    reporte_Rango lote;
+    lista_Reporte_Rango *siguiente;
+};
 lista_Usuario *lista_usuario = NULL;
-lista_Reporte_Historico *lista_reporte_historico = NULL;
 lista_Producto *lista_producto = NULL;
 lista_Usuario *usuario_activo = NULL;
 lista_Movimiento *movimientos = NULL;
 lista_Lote_Alerta_Caducidad *lote_caducidad = NULL;
 lista_Producto_Alerta_Cantidad *producto_cantidad = NULL;
 lista_Producto_Existencia *producto_existencia = NULL;
+lista_Reporte_Rango *reporte_rango = NULL;
 
 int conteo_id_producto = 0, conteo_id_movimiento = 0;
 
@@ -268,10 +266,7 @@ void eliminarListaProductoCantidadMinima();
 
 // Reporte
 
-void generarReporteHistorico(lista_Reporte_Historico *&lista, lista_Producto *listaproducto);
-void buscarReporteHistorico(lista_Reporte_Historico *lista, char *id_producto, char *id_reporte);
-void eliminarReporteHistorico(lista_Reporte_Historico *&lista);
-void asignarReporteHistorico(lista_Reporte_Historico *lista, lista_Usuario *usuario);
+
 
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto) //! IMPORTANT
 {

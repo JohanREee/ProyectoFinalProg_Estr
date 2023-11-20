@@ -311,7 +311,6 @@ bool validarDiaPorMes(int dia, int mes, int año)
     {
         return false; // Día inválido para el mes dado
     }
-
     return true; // Fecha válida
 }
 
