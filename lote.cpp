@@ -161,6 +161,7 @@ void agregarLotesAProducto(lista_Producto *&producto)
         {
             std::cout << "Valor invalido. Volviendo al menú anterior.\n";
         }
+        break;
     }
     return;
 }

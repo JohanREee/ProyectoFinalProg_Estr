@@ -15,7 +15,7 @@ void menuPrincipal(int &opcion)
         std::cout << "1. Gestion de productos" << std::endl;
         std::cout << "2. Gestion de lotes" << std::endl;
         std::cout << "3. Gestión de usuarios\n";
-        std::cout << "4. Generar Reportes Historicos" << std::endl;
+        std::cout << "4. Generar reportes" << std::endl;
         std::cout << "5. Cerrar sesion" << std::endl;
         std::cout << "6. Salir" << std::endl;
         std::cout << "Ingresar opcion: ";
@@ -191,9 +191,9 @@ void menuGestionLotes(int &opcion, char *&user)
             break;
         default:
             std::cout << "Opcion invalida. Por favor, seleccione una opcion valida." << std::endl;
-        pausarYLimpiar();
+            pausarYLimpiar();
         }
-        
+
         vencerLotes(lista_producto);
     } while (opcion != 8);
     opcion = 0;
@@ -208,8 +208,9 @@ void menuReporteHistorico(int &opcion, char *&user)
         std::cout << "2. Reporte por rango de tiempo." << std::endl;
         std::cout << "3. Reporte de lotes por expirar." << std::endl;
         std::cout << "4. Reporte de productos bajos en stock." << std::endl;
-        std::cout << "5. Volver al menu anterior." << std::endl;
-        std::cout << "6. Salir" << std::endl;
+        std::cout << "5. Costo total del inventario.\n";
+        std::cout << "6. Volver al menu anterior." << std::endl;
+        std::cout << "7. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         opcion = soloEnteros();
         fflush(stdin);
@@ -217,22 +218,24 @@ void menuReporteHistorico(int &opcion, char *&user)
         switch (opcion)
         {
         case 1:
-
+            generarReporteDeExistenciasActuales(lista_producto, producto_existencia);
             break;
         case 2:
-
+            generarReporteDeLotesPorRango();
             break;
         case 3:
-
+            generarReporteDeLotesPorExpirar();
             break;
         case 4:
-
+            generarReporteStockCritico();
             break;
         case 5:
-            std::cout << "Volviendo al menú principal.";
-            return;
+            generarReporteCostoInventario();
             break;
         case 6:
+            std::cout << "Volviendo al menú principal.";
+            return;
+        case 7:
             std::cout << "Saliendo del programa.\n";
             delete[] user;
             eliminarTodo(lista_usuario, lista_producto);

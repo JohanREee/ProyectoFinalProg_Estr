@@ -12,29 +12,32 @@ void generarAlertaCaducidad()
     lista_Producto *aux = lista_producto;
     while (aux != NULL)
     {
-        Lista_Año *año_actual = aux->producto.años_producto;
-        while (año_actual != NULL)
+        if (!aux->producto.anulado)
         {
-            for (int i = 0; i < 12; i++)
+            Lista_Año *año_actual = aux->producto.años_producto;
+            while (año_actual != NULL)
             {
+                for (int i = 0; i < 12; i++)
+                {
 
-                Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
-                cola_Lote *lote_actual = mes_actual->lotes;
-                while (lote_actual != NULL)
-                { // 16/11/23 --------    23/11/23
-                    
-                    if (!lote_actual->lote.validacion && !comprobarEstadoFecha(dia, mes, año, lote_actual))
-                    {
-                        lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
-                        nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;            // Almacenar
-                        nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
-                        nuevo_lote->lote.fecha_expiracion = lote_actual->lote.expiracion_fecha;
-                        guardarLoteEnLista(nuevo_lote); // Guardar
+                    Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+                    cola_Lote *lote_actual = mes_actual->lotes;
+                    while (lote_actual != NULL)
+                    { // 16/11/23 --------    23/11/23
+
+                        if (!lote_actual->lote.validacion && !comprobarEstadoFecha(dia, mes, año, lote_actual))
+                        {
+                            lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
+                            nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;            // Almacenar
+                            nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
+                            nuevo_lote->lote.fecha_expiracion = lote_actual->lote.expiracion_fecha;
+                            guardarLoteEnLista(nuevo_lote); // Guardar
+                        }
+                        lote_actual = lote_actual->siguiente;
                     }
-                    lote_actual = lote_actual->siguiente;
                 }
+                año_actual = año_actual->siguiente;
             }
-            año_actual = año_actual->siguiente;
         }
         aux = aux->siguiente;
     }
@@ -73,22 +76,17 @@ void sumarFecha(int &año, int &mes, int &dia, int cantidad)
     {
         diasEnMes[1] = 29;
     }
-    int aux;
+
     dia += cantidad;
-    while (dia < diasEnMes[mes])
+
+    while (dia > diasEnMes[mes - 1])
     {
-        if (dia > diasEnMes[mes - 1] && mes != 12)
-        {                                     // 29/11/23 ------- 6/12/23
-            aux = (dia - diasEnMes[mes - 1]); // Cantidad del siguiente dia del siguiente mes, que es 6
-            mes += 1;                         // Avanzamos al siguiente mes
-            dia -= aux;                        // Asignamos la cantidad en dia
-        }
-        else if (dia > diasEnMes[mes - 1] && mes == 12)
-        {                                     // 29/12/23----------------- 5/1/23
-            aux = (dia - diasEnMes[mes - 1]); // Cantidad del siguiente dia del siguiente mes, que es 5
+        dia -= diasEnMes[mes - 1];
+        mes += 1;
+        if (mes > 12)
+        {
             mes = 1;
             año += 1;
-            dia -= aux;
         }
     }
 }
@@ -134,12 +132,6 @@ void eliminarListaDeAlerta(lista_Lote_Alerta_Caducidad *&lista)
 
 void generarAlertarCantidadMinima()
 {
-    if (lote_caducidad != NULL)
-        eliminarListaDeAlerta(lote_caducidad);
-    int año = obtenerAño();
-    int mes = obtenerMes();
-    int dia = obtenerDia();
-    sumarFecha(año, mes, dia, 7); // Suma 7 dias
     lista_Producto *aux = lista_producto;
     while (aux != NULL)
     {

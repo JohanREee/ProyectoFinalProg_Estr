@@ -166,7 +166,6 @@ struct lista_Reporte_Rango
 
 struct reporte_Expirar
 {
-
 };
 lista_Usuario *lista_usuario = NULL;
 lista_Producto *lista_producto = NULL;
@@ -270,9 +269,23 @@ void mostrarAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual
 void guardarProductoEnLista(lista_Producto_Alerta_Cantidad *&producto_actual);
 void eliminarListaProductoCantidadMinima();
 
-// Reporte
-
-
+// Reportes
+void guardarProductoEnListaDeReporteDeExistencia(lista_Producto_Existencia *&producto_existencia);
+void mostrarProductoDeReporteDeExistencia(lista_Producto_Existencia *producto_actual);
+void eliminarListaDeReporteDeExistencia(lista_Producto_Existencia *&producto_existencia);
+void generarReporteDeLotesPorRango();
+void guardarLoteEnListaDeReporteDeRango(lista_Reporte_Rango *&reporte_actual);
+void mostrarLoteDeReporteDeRango(lista_Reporte_Rango *lote_actual);
+void eliminarListaDeReporteDeRango(lista_Reporte_Rango *&reporte_rango);
+bool buscarLotesPorFecha(lista_Producto *producto_actual, Fecha fecha_inicio = {0, 0, 0}, Fecha fecha_final = {0, 0, 0});
+bool validarFecha(Fecha fecha_inicio, Fecha fecha_final, cola_Lote *lote_actual);
+void generarReporteDeLotesPorExpirar();
+bool buscarLoteParaReporteDeLotesPorExpirar(Fecha fecha);
+void generarReporteStockCritico();
+void generarReporteCostoInventario();
+void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_Producto_Existencia *&producto_existencia);
+bool buscarProductosDeReporteStockMinimo();
+bool buscarProductosDeReporteStockMinimo();
 
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto) //! IMPORTANT
 {
