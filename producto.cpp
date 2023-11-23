@@ -21,11 +21,11 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
 {
     lista_Producto *nuevo_producto = new lista_Producto();
     nuevo_producto->producto.id_producto = ++conteo_id_producto;
-    std::cout << "Ingresar el nombre del producto: ";
+    gotoxy(2,6); std::cout << "\tIngresar el nombre del producto: ";
     agregarElementoPuntero(nuevo_producto->producto.nombre_producto, input);
-    std::cout << "Ingresar descripción del producto: ";
+    std::cout << "\tIngresar descripción del producto: ";
     agregarElementoPuntero(nuevo_producto->producto.descripcion_producto, input);
-    std::cout << "Ingresar cantidad en existencia del producto (si es mayor a 0, se creará un lote): ";
+    std::cout << "\tIngresar cantidad en existencia del producto: ";
     nuevo_producto->producto.existencia_cantidad = soloEnteros();
     if (nuevo_producto->producto.existencia_cantidad != 0)
     {
@@ -34,10 +34,10 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
     int op;
     while (true)
     {
-        std::cout << "¿Desea estandarizar la cantidad mínima de este producto en 10?\n";
-        std::cout << "1. Sí\n";
-        std::cout << "2. No\n";
-        std::cout << "Ingresar número: ";
+        std::cout << "\t¿Desea estandarizar la cantidad mínima de este producto en 10?\n";
+        std::cout << "\t1. Sí\n";
+        std::cout << "\t2. No\n";
+        std::cout << "\tIngresar número: ";
         op = soloEnteros();
 
         if (op == 1)
@@ -49,26 +49,26 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
         {
             while (true)
             {
-                std::cout << "Digite la cantidad mínima para este producto: ";
+                std::cout << "\tDigite la cantidad mínima para este producto: ";
                 nuevo_producto->producto.minima_cantidad = soloEnteros();
                 if (nuevo_producto->producto.minima_cantidad >= 0)
                 {
                     break;
                 }
-                std::cout << "La cantidad no puede ser menor a 0.\nIntente de nuevo.\n";
+                std::cout << "\tLa cantidad no puede ser menor a 0.\nIntente de nuevo.\n";
             }
             break;
         }
         else
         {
-            std::cout << "Numero incorrecto.\nIntente de nuevo.\n";
+            std::cout << "\tNumero incorrecto.\nIntente de nuevo.\n";
         }
     }
 
     guardarProductoEnLista(lista_producto, nuevo_producto);
 
-    std::cout << "Producto ingresado exitosamente.\n";
-    std::cout << "El ID del producto es: " << nuevo_producto->producto.id_producto << "\n";
+    std::cout << "\tProducto ingresado exitosamente.\n";
+    std::cout << "\tEl ID del producto es: " << nuevo_producto->producto.id_producto << "\n";
     system("pause");
 }
 
@@ -96,12 +96,12 @@ void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nu
 bool ingresarProducto(lista_Producto *&producto_actual)
 {
     int id_producto;
-    std::cout << "Digite el ID del producto que desea buscar: ";
+    gotoxy(2,6); std::cout << "\tDigite el ID del producto que desea buscar: ";
     id_producto = soloEnteros();
     producto_actual = buscarProducto(lista_producto, id_producto);
     if (producto_actual == NULL)
     {
-        std::cout << "El producto no fue encontrado o validado.\n";
+        std::cout << "\tEl producto no fue encontrado o validado.\n";
         return false;
     }
     return true;
@@ -117,7 +117,7 @@ lista_Producto *buscarProducto(lista_Producto *lista, int id_producto) // Leche 
             if (aux->producto.anulado)
             {
                 int op;
-                std::cout << "El producto \"" << aux->producto.nombre_producto << "\" ha sido anulado anteriormente del sistema. ¿Deseas continuar con tu acción?\n";
+                std::cout << "\tEl producto \"" << aux->producto.nombre_producto << "\" ha sido anulado anteriormente del sistema. ¿Deseas continuar con tu acción?\n";
                 verificarModificacionEnProducto(op);
                 if (op == 1)
                 {
@@ -143,17 +143,19 @@ void obtenerProducto(lista_Producto *lista_producto)
 
 void mostrarProducto(lista_Producto *producto)
 {
-    std::cout << "Nombre: " << producto->producto.nombre_producto << "\n";
-    std::cout << "Descripcion: " << producto->producto.descripcion_producto << "\n"; // Controlar el flujo
-    std::cout << "Cantidad en existencia: " << producto->producto.existencia_cantidad << "\n";
-    std::cout << "Cantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
+    pausarYLimpiar();
+    marco();
+    gotoxy(2,6); std::cout << "\tNombre: " << producto->producto.nombre_producto << "\n";
+    std::cout << "\tDescripcion: " << producto->producto.descripcion_producto << "\n"; // Controlar el flujo
+    std::cout << "\tCantidad en existencia: " << producto->producto.existencia_cantidad << "\n";
+    std::cout << "\tCantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
     if (producto->producto.anulado)
     {
-        std::cout << "\nEl producto está anulado\n";
+        std::cout << "\n\tEl producto está anulado\n";
     }
     else
     {
-        std::cout << "\nEl producto no está anulado\n";
+        std::cout << "\n\tEl producto no está anulado\n";
     }
     return;
 }
@@ -161,7 +163,7 @@ void mostrarProducto(lista_Producto *producto)
 void mostrarTodosProducto(lista_Producto *lista_producto)
 {
     int op;
-    std::cout << "ADVERTENCIA. ¿Desea mostrar los productos anulados?\n";
+    std::cout << "\tADVERTENCIA. ¿Desea mostrar los productos anulados?\n";
     verificarModificacionEnProducto(op);
     if (op == 1)
     {
@@ -173,29 +175,33 @@ void mostrarTodosProducto(lista_Producto *lista_producto)
     }
     else
     {
-        std::cout << "Valor inválido ingresado.\n";
-        std::cout << "Volviendo al menú anterior.\n";
+        std::cout << "\tValor inválido ingresado.\n";
+        std::cout << "\tVolviendo al menú anterior.\n";
+        pausarYLimpiar();
+        marco();
     }
 }
 
 void mostrarProductos(lista_Producto *producto, bool show)
 { // mostrarProducto
+    pausarYLimpiar();
+    marco();
     lista_Producto *aux = producto;
     while (aux != NULL)
     {
         if (!producto->producto.anulado || show)
         {
-            std::cout << "Nombre del producto: " << producto->producto.nombre_producto << "\n";
-            std::cout << "Descripción del producto: " << producto->producto.descripcion_producto << "\n";
-            std::cout << "Cantidad en existencia:" << producto->producto.existencia_cantidad << "\n";
-            std::cout << "Cantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
+            gotoxy(2,6); std::cout << "\tNombre del producto: " << producto->producto.nombre_producto << "\n";
+            std::cout << "\tDescripción del producto: " << producto->producto.descripcion_producto << "\n";
+            std::cout << "\tCantidad en existencia:" << producto->producto.existencia_cantidad << "\n";
+            std::cout << "\tCantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
             if (producto->producto.anulado)
             {
-                std::cout << "\nEl producto está anulado\n";
+                std::cout << "\nE\tl producto está anulado\n";
             }
             else
             {
-                std::cout << "\nEl producto no está anulado\n";
+                std::cout << "\n\tEl producto no está anulado\n";
             }
             return;
         }
@@ -205,24 +211,26 @@ void mostrarProductos(lista_Producto *producto, bool show)
 
 void modificarProducto(lista_Producto *&lista_producto)
 {
+    pausarYLimpiar();
+    marco();
     lista_Producto *producto_actual = NULL;
     if (!ingresarProducto(producto_actual))
     {
         return;
     }
-    std::cout << "Seleccione el campo de \"" << producto_actual->producto.nombre_producto << "\" que desea modificar\n";
-    std::cout << "1. Nombre\n";
-    std::cout << "2. Descripción\n";
-    std::cout << "3. Cantidad minima en existencia.\n";
-    std::cout << "Ingresar número: ";
+    gotoxy(2,6); std::cout << "\tSeleccione el campo de \"" << producto_actual->producto.nombre_producto << "\" que desea modificar\n";
+    std::cout << "\t1. Nombre\n";
+    std::cout << "\t2. Descripción\n";
+    std::cout << "\t3. Cantidad minima en existencia.\n";
+    std::cout << "\tIngresar número: ";
     int op = soloEnteros();
     switch (op)
     {
     case 1:
         char *nombre;
-        std::cout << "Digite el nuevo nombre del producto: ";
+        std::cout << "\tDigite el nuevo nombre del producto: ";
         agregarElementoPuntero(nombre, input);
-        std::cout << "Nombre del producto \"" << producto_actual->producto.nombre_producto << "\" ha sido cambiado a \"" << nombre << "\" exitosamente.\n";
+        std::cout << "\tNombre del producto \"" << producto_actual->producto.nombre_producto << "\" ha sido cambiado a \"" << nombre << "\" exitosamente.\n";
         // Lineas para modificar un dato.
         delete[] producto_actual->producto.nombre_producto;                       // Primero se borra la memoria dinamica
         producto_actual->producto.nombre_producto = new char[strlen(nombre) + 1]; // Se reasigna con el tamaño del char ingresado con anterioridad (char *nombre)
@@ -232,10 +240,10 @@ void modificarProducto(lista_Producto *&lista_producto)
         break;
     case 2:
         char *descripcion;
-        std::cout << "Digite la nueva descripcion del producto \"" << producto_actual->producto.nombre_producto << "\": ";
+        std::cout << "\tDigite la nueva descripcion del producto \"" << producto_actual->producto.nombre_producto << "\": ";
         agregarElementoPuntero(descripcion, input);
-        std::cout << "Descripcion anterior: " << producto_actual->producto.descripcion_producto << "\n";
-        std::cout << "Descripcion nueva: " << descripcion << "\n";
+        std::cout << "\tDescripcion anterior: " << producto_actual->producto.descripcion_producto << "\n";
+        std::cout << "\tDescripcion nueva: " << descripcion << "\n";
         delete[] producto_actual->producto.descripcion_producto;
         producto_actual->producto.descripcion_producto = new char[strlen(descripcion) + 1];
         strcpy(producto_actual->producto.descripcion_producto, descripcion);
@@ -243,28 +251,30 @@ void modificarProducto(lista_Producto *&lista_producto)
         break;
     case 3:
         int cantidad;
-        std::cout << "Ingrese la nueva cantidad minima para el producto\"" << producto_actual->producto.nombre_producto << "\": ";
+        std::cout << "\tIngrese la nueva cantidad minima para el producto\"" << producto_actual->producto.nombre_producto << "\": ";
         cantidad = soloEnteros();
         if (cantidad >= 0)
         {
-            std::cout << "La cantidad minima para el producto \"" << producto_actual->producto.nombre_producto << "\"";
-            std::cout << " de " << producto_actual->producto.minima_cantidad << ".";
-            std::cout << "\nHa sido reemplazada por: " << cantidad << "\n";
+            std::cout << "\tLa cantidad minima para el producto \"" << producto_actual->producto.nombre_producto << "\"";
+            std::cout << " \tde " << producto_actual->producto.minima_cantidad << ".";
+            std::cout << "\n\tHa sido reemplazada por: " << cantidad << "\n";
             producto_actual->producto.minima_cantidad = cantidad;
             break;
         }
-        std::cout << "La cantidad minima no puede ser menor a 0.\n";
-        std::cout << "Volviendo al menú anterior.\n";
+        std::cout << "\tLa cantidad minima no puede ser menor a 0.\n";
+        std::cout << "\tVolviendo al menú anterior.\n";
         break;
     default:
-        std::cout << "Has digitado un valor invalido.\n";
-        std::cout << "Serás enviado al menú anterior.\n";
+        std::cout << "\tHas digitado un valor invalido.\n";
+        std::cout << "\tSerás enviado al menú anterior.\n";
         break;
     }
     return;
 }
 void anularProducto(lista_Producto *&lista)
 {
+    pausarYLimpiar();
+    marco();
     lista_Producto *producto_actual = NULL;
     if (!ingresarProducto(producto_actual))
     {
@@ -272,27 +282,29 @@ void anularProducto(lista_Producto *&lista)
     }
     if (producto_actual->producto.anulado)
     {
-        std::cout << "Este producto ya fue anulado.\n";
+        gotoxy(2,6); std::cout << "\tEste producto ya fue anulado.\n";
         return;
     }
     int op;
-    std::cout << "¿Estás seguro de querer anular el producto \"" << producto_actual->producto.nombre_producto << "\"?\n";
+    std::cout << "\t¿Estás seguro de querer anular el producto \"" << producto_actual->producto.nombre_producto << "\"?\n";
     verificarModificacionEnProducto(op);
     if (op == 1)
     {
         producto_actual->producto.anulado = !producto_actual->producto.anulado;
-        std::cout << "Producto anulado exitosamente. \n";
+        std::cout << "\tProducto anulado exitosamente. \n";
         return;
     }
     if (op != 2)
     {
-        std::cout << "Error al ingresar un numero valido.\n";
+        std::cout << "\tError al ingresar un numero valido.\n";
     }
-    std::cout << "Volviendo al menú anterior.\n";
+    std::cout << "\tVolviendo al menú anterior.\n";
     return;
 }
 void activarProducto(lista_Producto *&lista_producto)
 {
+    pausarYLimpiar();
+    marco();
     lista_Producto *producto_actual = NULL;
     if (!ingresarProducto(producto_actual))
     {
@@ -300,23 +312,23 @@ void activarProducto(lista_Producto *&lista_producto)
     }
     if (!producto_actual->producto.anulado)
     {
-        std::cout << "Este producto ya está activado.\n";
+        gotoxy(2,6); std::cout << "\tEste producto ya está activado.\n";
         return;
     }
     int op;
-    std::cout << "¿Estás seguro de querer volver a activar el producto \"" << producto_actual->producto.nombre_producto << "\"?\n";
+    std::cout << "\t¿Estás seguro de querer volver a activar el producto \"" << producto_actual->producto.nombre_producto << "\"?\n";
     verificarModificacionEnProducto(op);
     if (op == 1)
     {
         producto_actual->producto.anulado = !producto_actual->producto.anulado;
-        std::cout << "Producto activado exitosmanete. \n";
+        std::cout << "\tProducto activado exitosmanete. \n";
         return;
     }
     if (op != 2)
     {
-        std::cout << "Error al ingresar un numero valido.\n";
+        std::cout << "\tError al ingresar un numero valido.\n";
     }
-    std::cout << "Volviendo al menú anterior.\n";
+    std::cout << "\tVolviendo al menú anterior.\n";
     return;
 }
 #endif

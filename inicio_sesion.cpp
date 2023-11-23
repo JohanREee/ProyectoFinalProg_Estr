@@ -21,10 +21,11 @@ void inicioSesion(int &opcion)
 {
     do
     {
-        std::cout << "Bienvenido al sistema de Gestion de Inventario \"SaboresSostenibles\"\n\n\n\n";
-        std::cout << "1. Iniciar sesión\n";
-        std::cout << "2. Salir\n";
-        std::cout << "Seleccionar opcion: ";
+        pausarYLimpiar();
+        marco();
+        gotoxy(2,6); std::cout << "1. Iniciar sesión\n";
+        gotoxy(2,7); std::cout << "2. Salir\n";
+        gotoxy(2,8); std::cout << "Seleccionar opcion: ";
         opcion = soloEnteros();
         switch (opcion)
         {
@@ -33,11 +34,13 @@ void inicioSesion(int &opcion)
             pausarYLimpiar();
             break;
         case 2:
-            std::cout << "Saliendo del sistema...\n";
+            pausarYLimpiar();
+            gotoxy(2,6); std::cout << "Saliendo del sistema...\n";
             eliminarTodo(lista_usuario, lista_producto);
             break;
         default:
-            std::cout << "Opcion invalida. Volver a intentar.\n";
+            pausarYLimpiar();
+            gotoxy(2,6); std::cout << "Opcion invalida. Volver a intentar.\n";
             break;
         }
     }while(true);
@@ -48,9 +51,9 @@ void ingresarDatos(lista_Usuario *lista_usuario)
     int opcion = 0;
     char *correo;
     char *contraseña;
-    std::cout << "Digite el correo electrónico del usuario: ";
+    gotoxy(2,9); std::cout << "Digite el correo electrónico del usuario: ";
     agregarElementoPuntero(correo, input);
-    std::cout << "Digite la contraseña del usuario: ";
+    gotoxy(2,10); std::cout << "Digite la contraseña del usuario: ";
     contraseña = digitarContraseña();
     lista_Usuario *usuario_actual = buscarUsuarioParaSesion(lista_usuario, correo, contraseña);
     delete[] correo;
@@ -61,6 +64,6 @@ void ingresarDatos(lista_Usuario *lista_usuario)
         menuPrincipal(opcion);
         return;
     }
-    std::cout << "Usuario no encontrado.\n";
+    gotoxy(2,11); std::cout << "Usuario no encontrado.\n";
     return;
 }

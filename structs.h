@@ -11,6 +11,11 @@
 #include <ctime>
 #include <conio.h>
 #include <stdio.h>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+#include <locale.h> /* NO ESTOY SEGURO*/
+#include <iomanip>
 
 char input[MAXCHAR];
 

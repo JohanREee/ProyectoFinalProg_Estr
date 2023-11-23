@@ -1,0 +1,2 @@
+nombres;apellidos;telefono;correo;contraseña;adminstrador;validacion
+Francisco;Guevara;84234993;franguevaraarauz@gmail.com;FA1234;Si;Si

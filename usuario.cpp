@@ -1,6 +1,34 @@
 #include "structs.h"
 #include "complemento.cpp"
 
+// Función para escribir un usuario en un archivo de texto
+void escribirUsuario(const Usuario &usuario, const std::string &nombreArchivo)
+{
+    // Abrir el archivo en modo append (std::ios::app)
+    std::ofstream archivo(nombreArchivo, std::ios::app);
+
+    if (!archivo)
+    {
+        std::cerr << "Error al abrir el archivo" << std::endl;
+        return;
+    }
+
+    // Escribir el nuevo usuario al final del archivo
+    archivo << std::endl;
+    archivo << usuario.nombres << ";";
+    archivo << usuario.apellidos << ";";
+    archivo << usuario.telefono << ";";
+    archivo << usuario.correo << ";";
+    archivo << usuario.contraseña << ";";
+    archivo << (usuario.administrador ? "Si" : "No") << ";";
+    archivo << (usuario.validacion ? "Si" : "No");
+    archivo << std::endl;
+
+    // Cerrar el archivo
+    archivo.close();
+}
+
+//Listo
 void agregarUsuarioMaestro(lista_Usuario *&lista_usuario) // Primer Usuario
 {
     lista_Usuario *nuevo_usuario = new lista_Usuario();
@@ -31,6 +59,8 @@ void agregarUsuarioMaestro(lista_Usuario *&lista_usuario) // Primer Usuario
     }
     nuevo_usuario->siguiente = aux; // nuevo_usuario apunta a NULL
 }
+
+//Listo
 void agregarUsuarioEnLista(lista_Usuario *&lista_usuario)
 {
     lista_Usuario *nuevo_usuario = new lista_Usuario();
@@ -39,7 +69,7 @@ void agregarUsuarioEnLista(lista_Usuario *&lista_usuario)
     agregarElementoPuntero(nuevo_usuario->usuario.nombres, input);
     std::cout << "Ingrese sus apellidos: ";
     agregarElementoPuntero(nuevo_usuario->usuario.apellidos, input);
-    while (true)
+    while (true)    
     {
         std::cout << "Ingrese su telefono: ";
         nuevo_usuario->usuario.telefono = soloEnteros();
@@ -87,6 +117,10 @@ void agregarUsuarioEnLista(lista_Usuario *&lista_usuario)
             pausar();
         }
     }
+
+    // Escribir el usuario en el archivo
+    escribirUsuario(nuevo_usuario->usuario, "usuarios.txt");
+
     std::cout << "Usuario ingresado al sistema correctamente.\n";
     std::cout << "Permiso: ";
     (nuevo_usuario->usuario.administrador) ? std::cout << "Administrador\n" : std::cout << "Personal\n";
@@ -127,6 +161,7 @@ lista_Usuario *buscarUsuarioParaSesion(lista_Usuario *lista, char *correo, char 
     }
     return NULL;
 }
+
 lista_Usuario *buscarUsuario(lista_Usuario *lista, char *correo)
 {
     lista_Usuario *aux = lista;
@@ -154,6 +189,7 @@ lista_Usuario *buscarUsuario(lista_Usuario *lista, char *correo)
     }
     return NULL;
 }
+
 void mostrarUsuario(Usuario usuario)
 {
     std::cout << "Nombre completo: " << usuario.nombres << " " << usuario.apellidos << ".\n";
@@ -303,6 +339,7 @@ void modificarNombreYApellido(lista_Usuario *&usuario_actual, char *user)
     delete[] nombre;
     delete[] apellido;
 }
+
 void modificarTelefono(lista_Usuario *&usuario_actual, char *user)
 {
     int telefono;
@@ -340,6 +377,7 @@ void modificarCorreo(lista_Usuario *&usuario_actual, char *user)
     strcpy(usuario_actual->usuario.correo, correo);
     delete[] correo;
 }
+
 void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
 {
 
@@ -373,6 +411,7 @@ void modificarContraseña(lista_Usuario *&usuario_actual, char *user)
         std::cout << "Volviendo al menú anterior.\n";
     }
 }
+
 void modificarPermiso(lista_Usuario *&usuario_actual, char *user)
 {
     int opt;
@@ -559,6 +598,7 @@ void mostrarUsuarioEnPantalla(lista_Usuario *lista_usuario)
         return;
     }
 }
+
 void mostrarUsuarios(lista_Usuario *lista_usuario)
 {
     lista_Usuario *aux = lista_usuario;
