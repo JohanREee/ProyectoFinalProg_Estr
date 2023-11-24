@@ -47,10 +47,11 @@ void generarAlertaCaducidad()
         int cont = 0;
         lista_Lote_Alerta_Caducidad *aux2 = lote_caducidad;
         gotoxy(92,6); std::cout << "Lotes mas prontos a vencer.\n";
+        int y = 7;
         while (cont != 6)
         {
             cont++;
-            mostrarAlertaCaducidad(aux2);
+            mostrarAlertaAlertaCaducidad(aux2, y);
             if (aux2->siguiente == NULL)
             {
                 break;
@@ -61,12 +62,21 @@ void generarAlertaCaducidad()
     }
 }
 
+void mostrarAlertaAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual, int &y)
+{
+    Fecha fecha = {lote_actual->lote.fecha_expiracion.dia, lote_actual->lote.fecha_expiracion.mes, lote_actual->lote.fecha_expiracion.año};
+    gotoxy(92,y); std::cout << "Nombre: " << lote_actual->lote.nombre_producto << "\n";
+    gotoxy(92,++y); std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
+    gotoxy(92,++y); std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\n";
+    y+=2;
+}
 void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual)
 {
     Fecha fecha = {lote_actual->lote.fecha_expiracion.dia, lote_actual->lote.fecha_expiracion.mes, lote_actual->lote.fecha_expiracion.año};
-    gotoxy(92,7); std::cout << "ombre: " << lote_actual->lote.nombre_producto << "\n";
-    gotoxy(92,8); std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
-    gotoxy(92,9); std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\n";
+    std::cout << "Nombre: " << lote_actual->lote.nombre_producto << "\n";
+    std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
+    std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\n";
+
 }
 
 void sumarFecha(int &año, int &mes, int &dia, int cantidad)
@@ -150,11 +160,12 @@ void generarAlertarCantidadMinima()
     {
         int cont = 0;
         lista_Producto_Alerta_Cantidad *aux2 = producto_cantidad;
-        gotoxy(92,11); std::cout << "Productos con cantidad minima en stock crítica.\n";
+        gotoxy(92,6); std::cout << "Productos con cantidad minima en stock crítica.\n";
+        int y = 7;
         while (cont != 6)
         {
             cont++;
-            mostrarAlertaCantidadMinima(aux2);
+            mostrarAlertaAlertaCantidadMinima(aux2, y);
             if (aux2->siguiente == NULL)
                 break;
             aux2 = aux2->siguiente;
@@ -163,12 +174,20 @@ void generarAlertarCantidadMinima()
     }
 }
 
+void mostrarAlertaAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual, int &y)
+{
+    gotoxy(92,++y); std::cout << "Nombre del producto: " << producto_actual->producto.nombre_producto << "\n";
+    gotoxy(92,++y); std::cout << "ID del producto: " << producto_actual->producto.id_producto << "\n";
+    gotoxy(92,++y); std::cout << "Cantidad total: " << producto_actual->producto.actual_cantidad << "\n";
+    gotoxy(92,++y); std::cout << "Cantidad mínima: " << producto_actual->producto.minima_cantidad << "\n";
+    y+=2;
+}
 void mostrarAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual)
 {
-    gotoxy(92,12); std::cout << "Nombre del producto: " << producto_actual->producto.nombre_producto << "\n";
-    gotoxy(92,13); std::cout << "ID del producto: " << producto_actual->producto.id_producto << "\n";
-    gotoxy(92,14); std::cout << "Cantidad total: " << producto_actual->producto.actual_cantidad << "\n";
-    gotoxy(92,15); std::cout << "Cantidad mínima: " << producto_actual->producto.minima_cantidad << "\n";
+    std::cout << "Nombre del producto: " << producto_actual->producto.nombre_producto << "\n";
+    std::cout << "ID del producto: " << producto_actual->producto.id_producto << "\n";
+    std::cout << "Cantidad total: " << producto_actual->producto.actual_cantidad << "\n";
+    std::cout << "Cantidad mínima: " << producto_actual->producto.minima_cantidad << "\n";
 }
 void guardarProductoEnLista(lista_Producto_Alerta_Cantidad *&producto_actual)
 {

@@ -1,21 +1,6 @@
 #include "structs.h"
 #include "complemento.cpp"
 
-void gotoxy(int x, int y) 
-{
-	// Obtiene el identificador de la consola de salida estándar
-	HANDLE hcon;
-	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	// Crea una estructura de coordenadas con las posiciones especificadas
-	COORD dwPos;
-	dwPos.X = x;
-	dwPos.Y = y;
-
-	// Establece la posición del cursor en la consola a las coordenadas especificadas
-	SetConsoleCursorPosition(hcon, dwPos);
-}
-
 void marco()
 {
     HANDLE  hConsole;
@@ -110,8 +95,6 @@ void menuPrincipal(int &opcion)
     {
         pausarYLimpiar();
         marco();
-        generarAlertaCaducidad();
-        generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\tBienvenido, " << user << "\n";
         std::cout << "\t Sistema de Gestión de Inventario DISKInventory \n";
         std::cout << "\t1. Gestion de productos" << std::endl;
@@ -168,7 +151,6 @@ void menuGestionProductos(int &opcion, char *&user)
     {
         pausarYLimpiar();
         marco();
-        generarAlertaCaducidad();
         generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\t=== Bienvenido al módulo de gestión de productos ===" << std::endl;
         std::cout << "\t1. Agregar producto" << std::endl;
@@ -252,7 +234,6 @@ void menuGestionLotes(int &opcion, char *&user)
         pausarYLimpiar();
         marco();
         generarAlertaCaducidad();
-        generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\t=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
         std::cout << "\t1. Compra de producto" << std::endl;
         std::cout << "\t2. Buscar lote" << std::endl;
@@ -410,8 +391,6 @@ void menuGestionUsuarios(int &opcion, char *&user)
     {
         pausarYLimpiar();
         marco();
-        generarAlertaCaducidad();
-        generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\t=== Bienvenido al módulo de gestión de usuarios ===" << std::endl;
         std::cout << "\t1. Añadir usuario." << std::endl;
         std::cout << "\t2. Buscar usuario" << std::endl;

@@ -8,4 +8,4 @@ int main()
     agregarUsuarioMaestro(lista_usuario);
     inicioSesion(opcion);
     return 0;
-} 
+}

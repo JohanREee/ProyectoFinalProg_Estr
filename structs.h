@@ -262,6 +262,7 @@ void guardarMovimientoEnLista(lista_Movimiento *&movimientos, lista_Movimiento *
 // Alerta de caducidad
 
 void generarAlertaCaducidad();
+void mostrarAlertaAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual, int &y);
 void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual);
 void sumarFecha(int &año, int &mes, int &dia, int cantidad);
 void guardarLoteEnLista(lista_Lote_Alerta_Caducidad *&lista_lote);
@@ -270,6 +271,7 @@ void eliminarListaDeAlerta(lista_Lote_Alerta_Caducidad *&lista);
 // Alerta de cantidad minima en stock
 
 void generarAlertarCantidadMinima();
+void mostrarAlertaAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual, int &y);
 void mostrarAlertaCantidadMinima(lista_Producto_Alerta_Cantidad *producto_actual);
 void guardarProductoEnLista(lista_Producto_Alerta_Cantidad *&producto_actual);
 void eliminarListaProductoCantidadMinima();

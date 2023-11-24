@@ -19,7 +19,7 @@ void pausar();
 void limpiar();
 void pausarYLimpiar();
 char *digitarContraseña();
-
+void gotoxy(int x, int y);
 char *digitarContraseña()
 {
     int i = 0;
@@ -435,4 +435,21 @@ void pausarYLimpiar()
     pausar();
     limpiar();
 }
+
+void gotoxy(int x, int y) 
+{
+	// Obtiene el identificador de la consola de salida estándar
+	HANDLE hcon;
+	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// Crea una estructura de coordenadas con las posiciones especificadas
+	COORD dwPos;
+	dwPos.X = x;
+	dwPos.Y = y;
+
+	// Establece la posición del cursor en la consola a las coordenadas especificadas
+	SetConsoleCursorPosition(hcon, dwPos);
+}
+
 #endif
+
