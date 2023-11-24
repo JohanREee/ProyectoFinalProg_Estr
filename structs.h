@@ -11,6 +11,12 @@
 #include <ctime>
 #include <conio.h>
 #include <stdio.h>
+#include <hpdf.h>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 char input[MAXCHAR];
 
@@ -164,9 +170,6 @@ struct lista_Reporte_Rango
     lista_Reporte_Rango *siguiente;
 };
 
-struct reporte_Expirar
-{
-};
 lista_Usuario *lista_usuario = NULL;
 lista_Producto *lista_producto = NULL;
 lista_Usuario *usuario_activo = NULL;
@@ -229,6 +232,7 @@ bool ingresarProducto(lista_Producto *&producto_actual);
 void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nuevo_producto);
 void mostrarProducto(lista_Producto *producto);
 void mostrarProductos(lista_Producto *producto, bool show);
+void asignarMesAEstructura(Año_Producto &año_producto);
 // Lote
 void agregarPrimerLote(lista_Producto *&producto);
 char *generarIdLote(int dia, int mes, int año, Informacion_Mes *mes_actual, Producto producto_actual);
@@ -284,7 +288,6 @@ bool buscarLoteParaReporteDeLotesPorExpirar(Fecha fecha);
 void generarReporteStockCritico();
 void generarReporteCostoInventario();
 void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_Producto_Existencia *&producto_existencia);
-bool buscarProductosDeReporteStockMinimo();
 bool buscarProductosDeReporteStockMinimo();
 
 void eliminarTodo(lista_Usuario *&lista_usuario, lista_Producto *&lista_producto) //! IMPORTANT

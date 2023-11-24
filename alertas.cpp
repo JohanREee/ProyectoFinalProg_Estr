@@ -199,10 +199,3 @@ void eliminarListaProductoCantidadMinima()
         delete aux;
     }
 }
-/*
-nuevo_lote->siguiente = aux;
-aux2->siguiente = nuevo_lote;*/
-/* char *nombre_producto = NULL;
-    int id_producto = 0;
-    int actual_cantidad = 0;
-    int minima_cantidad = 0;*/

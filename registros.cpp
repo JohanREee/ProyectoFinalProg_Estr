@@ -50,7 +50,7 @@ void guardarProductoEnListaDeReporteDeExistencia(lista_Producto_Existencia *&pro
             aux2 = aux;
             aux = aux->siguiente;
         }
-        producto_existencia->siguiente = aux;
+        producto_actual->siguiente = aux;
         aux2->siguiente = producto_actual;
     }
 }

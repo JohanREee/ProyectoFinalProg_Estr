@@ -1,0 +1,9 @@
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/Experimental.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/Nightly.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/Continuous.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/Proyecto_Final.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/PACKAGE.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/ZERO_CHECK.dir

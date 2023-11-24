@@ -12,6 +12,14 @@ void eliminarLotesYMovimientosTodoDeProducto(cola_Lote *&cola_lote, lista_Movimi
 #ifndef lot
 #define lot
 
+
+void asignarMesAEstructura(Año_Producto &año_producto)
+{
+    for (int i = 1; i < 13; i++)
+    {
+        año_producto.producto->mes = i;
+    }
+}
 void registroDeInformacionLote(Lote &lote_actual)
 {
     while (true) // Ingresar precio actual de producto
@@ -46,6 +54,7 @@ void agregarPrimerLote(lista_Producto *&producto)
     int año = obtenerAño();
     año_actual->año_producto.año = año;
     int mes = obtenerMes();
+    asignarMesAEstructura(año_actual->año_producto);
     Informacion_Mes *mes_actual = &año_actual->año_producto.producto[mes - 1];
     int dia = obtenerDia();
     // Estructura cola_Lote dentro de Información_mes[mes] dentro de Año_Producto dentro de Lista_Año
