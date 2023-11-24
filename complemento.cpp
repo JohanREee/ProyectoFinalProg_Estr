@@ -415,7 +415,13 @@ bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario)
 
 void pausar()
 {
-    std::cout << "\nPresione ENTER para continuar...\n";
+	HANDLE hcon;
+	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD dwPos;
+	dwPos.X = 20;
+	dwPos.Y = 17;
+	SetConsoleCursorPosition(hcon, dwPos);
+    std::cout << "\n\t\t\t\t\t\t\tPresione ENTER para continuar...\n";
     std::cin.get();
 }
 

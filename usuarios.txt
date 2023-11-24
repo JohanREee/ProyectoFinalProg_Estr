@@ -1,2 +1,3 @@
 nombres;apellidos;telefono;correo;contraseña;adminstrador;validacion
 Francisco;Guevara;84234993;franguevaraarauz@gmail.com;FA1234;Si;Si
+Oscar;Loprz;8423499;oscarantoniolopez2@gmail.com;juan;Si;No

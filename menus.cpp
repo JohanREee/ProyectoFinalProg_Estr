@@ -20,61 +20,66 @@ void marco()
 {
     HANDLE  hConsole;
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	// ESQUINAS //
+	
+    int lim_der = 140;
+    int cent = 90;
+    int lim_abajo = 35; 
+    
+    // ESQUINAS //
     gotoxy(0,0); //ariba izquierda
     std::cout << "*";
-    gotoxy(0,42); //abajo izquierda
+    gotoxy(0,lim_abajo); //abajo izquierda
     std::cout << "*";
-    gotoxy(79,0); //arriba derecha
+    gotoxy(lim_der,0); //arriba derecha
     std::cout << "*";
-    gotoxy(79,42); //abajo derecha
+    gotoxy(lim_der,lim_abajo); //abajo derecha
     std::cout << "*";
 
 	//ARRIBA (PRIMERA LÍNEA)
-    for(int up=1 ; up<79+32; up++)
+    for(int up=1 ; up<lim_der; up++)
 	{
         gotoxy(up,0);
         std::cout << "*";
     }
 
     //ARRIBA (SEGUNDA LÍNEA)
-    for(int up=1; up<79+31; up++)
+    for(int up=1; up<lim_der; up++)
 	{
         gotoxy(up,3);
         std::cout << "*";
     }
 
     // ABAJO (PRIMERA LÍNEA)
-    for(int down=1; down<79+31; down++)
+    for(int down=1; down<lim_der; down++)
 	{
-        gotoxy(down,40);
+        gotoxy(down,lim_abajo-2);
         std::cout <<  "*";
 	}
 
 	//ABAJO (SEGUNDA LÍNEA)
-	for(int down=1; down<79+32; down++)
+	for(int down=1; down<lim_der; down++)
 	{
-        gotoxy(down,42);
+        gotoxy(down,lim_abajo);
         std::cout << "*";
     }
 
 	// LADO DERECHO 1RA CAJA
-    for(int side=1; side<42; side++)
+    for(int side=1; side<lim_abajo; side++)
 	{
-        gotoxy(79,side);
+        gotoxy(cent,side);
 		std::cout <<  "*";
     }
 
 	// LADO DERECHO 2DA CAJA
-    for(int side=1; side<42; side++)
+    for(int side=1; side<lim_abajo; side++)
 	{
-        gotoxy(79+31,side);
+        gotoxy(lim_der,side);
 		std::cout <<  "*";
     }
 
 	// LADO IZQUIERDO
 
-	for(int side=1; side<42; side++)
+	for(int side=1; side<lim_abajo; side++)
 	{
         gotoxy(0,side);
         std::cout <<  "*";
@@ -87,9 +92,9 @@ void marco()
     std::cout << "DISKInventory";
 
 	// NOMBRE SUBSISTEMA
-    gotoxy(85,1);
+    gotoxy(cent+2,1);
     std::cout << "NOTIFICACIONES";
-    gotoxy(85,2);
+    gotoxy(cent+2,2);
     std::cout << "Y ALERTAS";
 }
 
@@ -103,6 +108,10 @@ void menuPrincipal(int &opcion)
     opcion = 0;
     do
     {
+        pausarYLimpiar();
+        marco();
+        generarAlertaCaducidad();
+        generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\tBienvenido, " << user << "\n";
         std::cout << "\t Sistema de Gestión de Inventario DISKInventory \n";
         std::cout << "\t1. Gestion de productos" << std::endl;
@@ -157,6 +166,9 @@ void menuGestionProductos(int &opcion, char *&user)
     opcion = 0;
     do
     {
+        pausarYLimpiar();
+        marco();
+        generarAlertaCaducidad();
         generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\t=== Bienvenido al módulo de gestión de productos ===" << std::endl;
         std::cout << "\t1. Agregar producto" << std::endl;
@@ -237,7 +249,10 @@ void menuGestionLotes(int &opcion, char *&user)
     vencerLotes(lista_producto);
     do
     {
+        pausarYLimpiar();
+        marco();
         generarAlertaCaducidad();
+        generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\t=== Bienvenido al módulo de gestión de lotes ===" << std::endl;
         std::cout << "\t1. Compra de producto" << std::endl;
         std::cout << "\t2. Buscar lote" << std::endl;
@@ -393,6 +408,10 @@ void menuGestionUsuarios(int &opcion, char *&user)
     opcion = 0;
     do
     {
+        pausarYLimpiar();
+        marco();
+        generarAlertaCaducidad();
+        generarAlertarCantidadMinima();
         gotoxy(2,6); std::cout << "\t=== Bienvenido al módulo de gestión de usuarios ===" << std::endl;
         std::cout << "\t1. Añadir usuario." << std::endl;
         std::cout << "\t2. Buscar usuario" << std::endl;
