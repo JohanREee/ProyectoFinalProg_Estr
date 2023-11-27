@@ -19,9 +19,6 @@ usuario.cpp
 )
 add_executable(Proyecto_Final ${SOURCE_FILES})
 
-find_package(unofficial-libharu CONFIG REQUIRED)
-target_link_libraries(Proyecto_Final PRIVATE unofficial::libharu::hpdf)
-
 find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(Proyecto_Final PRIVATE nlohmann_json::nlohmann_json)
 

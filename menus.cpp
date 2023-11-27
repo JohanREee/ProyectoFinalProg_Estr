@@ -83,6 +83,70 @@ void marco()
 }
 // void menuGestionMovimiento();
 
+//HOJA REPORTE
+
+void marcoReporte()
+{
+    HANDLE hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    int lim_der = 120;
+    int lim_abajo = 40;
+
+    // ESQUINAS //
+    gotoxy(0, 0); // ariba izquierda
+    std::cout << "*";
+    gotoxy(0, lim_abajo); // abajo izquierda
+    std::cout << "*";
+    gotoxy(lim_der, 0); // arriba derecha
+    std::cout << "*";
+    gotoxy(lim_der, lim_abajo); // abajo derecha
+    std::cout << "*";
+
+    // ARRIBA (PRIMERA LÍNEA)
+    for (int up = 1; up < lim_der; up++)
+    {
+        gotoxy(up, 0);
+        std::cout << "*";
+    }
+
+    // ARRIBA (SEGUNDA LÍNEA)
+    for (int up = 1; up < lim_der; up++)
+    {
+        gotoxy(up, 3);
+        std::cout << "*";
+    }
+
+    // ABAJO (PRIMERA LÍNEA)
+    for (int down = 1; down < lim_der; down++)
+    {
+        gotoxy(down, lim_abajo - 2);
+        std::cout << "*";
+    }
+
+
+    // LADO DERECHO
+    for (int side = 1; side < lim_abajo; side++)
+    {
+        gotoxy(lim_der, side);
+        std::cout << "*";
+    }
+
+    // LADO IZQUIERDO
+
+    for (int side = 1; side < lim_abajo; side++)
+    {
+        gotoxy(0, side);
+        std::cout << "*";
+    }
+
+    // NOMBRE SISTEMA
+    gotoxy(2, 1);
+    std::cout << "SISTEMA DE GESTION";
+    gotoxy(2, 2);
+    std::cout << "DISKInventory";
+}
+
 void menuPrincipal(int &opcion)
 {
     pausarYLimpiar();
@@ -322,10 +386,12 @@ void menuReporteHistorico(int &opcion, char *&user)
 {
     opcion = 0;
     pausarYLimpiar();
-    marco();
+    marcoReporte();
     while (opcion != 5)
     {
-        gotoxy(2, 6);
+        pausarYLimpiar();
+        marcoReporte();
+        gotoxy(2,6);
         std::cout << "\t=== Bienvenido al módulo de reportes historicos ===" << std::endl;
         std::cout << "\t1. Reporte de existencias por producto." << std::endl;
         std::cout << "\t2. Reporte por rango de tiempo." << std::endl;
@@ -342,27 +408,27 @@ void menuReporteHistorico(int &opcion, char *&user)
         {
         case 1:
             pausarYLimpiar();
-            marco();
+            marcoReporte();
             generarReporteDeExistenciasActuales(lista_producto, producto_existencia);
             break;
         case 2:
             pausarYLimpiar();
-            marco();
+            marcoReporte();
             generarReporteDeLotesPorRango();
             break;
         case 3:
             pausarYLimpiar();
-            marco();
+            marcoReporte();
             generarReporteDeLotesPorExpirar();
             break;
         case 4:
             pausarYLimpiar();
-            marco();
+            marcoReporte();
             generarReporteStockCritico();
             break;
         case 5:
             pausarYLimpiar();
-            marco();
+            marcoReporte();
             generarReporteCostoInventario();
             break;
         case 6:

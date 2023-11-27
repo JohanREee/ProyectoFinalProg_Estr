@@ -1,6 +1,6 @@
-^C:\USERS\NOCQU\ONEDRIVE\ESCRITORIO\PROYECTO_FINAL\PROYECTOFINALPROG_ESTR\BUILD\CMAKEFILES\506E99E281ECEA58C1C8E2B17611DE9D\GENERATE.STAMP.RULE
+^C:\USERS\FRANG\ONEDRIVE\DOCUMENTOS\CLASES\VI_SEMESTRE\PROGRAMACIONESTRUCTURADA\PROYECTO\PROYECTOFINALPROG_ESTR\BUILD\CMAKEFILES\CA5AF265D0A182FC9E5DF8C428BA589F\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr -BC:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/Prueba.sln
+D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -SC:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr -BC:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr/build/Prueba.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

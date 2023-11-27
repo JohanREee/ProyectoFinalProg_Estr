@@ -1,6 +1,6 @@
-^C:\USERS\NOCQU\ONEDRIVE\ESCRITORIO\PROYECTO_FINAL\PROYECTOFINALPROG_ESTR\CMAKELISTS.TXT
+^C:\USERS\FRANG\ONEDRIVE\DOCUMENTOS\CLASES\VI_SEMESTRE\PROGRAMACIONESTRUCTURADA\PROYECTO\PROYECTOFINALPROG_ESTR\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr -BC:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build --check-stamp-file C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/CMakeFiles/generate.stamp
+D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -SC:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr -BC:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr/build --check-stamp-file C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

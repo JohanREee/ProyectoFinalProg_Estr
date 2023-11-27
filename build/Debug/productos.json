@@ -1,0 +1,84 @@
+[
+    {
+        "anulado": "No",
+        "costo_de_venta_total": 1650.0,
+        "descripcion_producto": "Cajita Leche",
+        "existencia_cantidad": 30,
+        "id_producto": 1,
+        "lista_ano": [
+            {
+                "ano": 2023,
+                "informacion_mes": [
+                    {
+                        "lotes": [
+                            {
+                                "cantidad_de_producto": 30,
+                                "costo_venta": 1650.0,
+                                "expiracion_fecha": {
+                                    "ano": 2023,
+                                    "dia": 27,
+                                    "mes": 11
+                                },
+                                "id_lote": "12611231",
+                                "ingreso_fecha": {
+                                    "ano": 2023,
+                                    "dia": 26,
+                                    "mes": 11
+                                },
+                                "motivo": 0,
+                                "precio_producto": 55.0,
+                                "validacion": "No"
+                            }
+                        ],
+                        "lotes_cantidad": 1,
+                        "mes": 11
+                    }
+                ]
+            }
+        ],
+        "minima_cantidad": 40,
+        "nombre_producto": "Caja Leche 1 Litro",
+        "porcentaje_ganancia": 0.0
+    },
+    {
+        "anulado": "No",
+        "costo_de_venta_total": 1800.0,
+        "descripcion_producto": "Rica",
+        "existencia_cantidad": 20,
+        "id_producto": 2,
+        "lista_ano": [
+            {
+                "ano": 2023,
+                "informacion_mes": [
+                    {
+                        "lotes": [
+                            {
+                                "cantidad_de_producto": 20,
+                                "costo_venta": 1800.0,
+                                "expiracion_fecha": {
+                                    "ano": 2023,
+                                    "dia": 30,
+                                    "mes": 11
+                                },
+                                "id_lote": "22611231",
+                                "ingreso_fecha": {
+                                    "ano": 2023,
+                                    "dia": 26,
+                                    "mes": 11
+                                },
+                                "motivo": 0,
+                                "precio_producto": 90.0,
+                                "validacion": "No"
+                            }
+                        ],
+                        "lotes_cantidad": 1,
+                        "mes": 11
+                    }
+                ]
+            }
+        ],
+        "minima_cantidad": 10,
+        "nombre_producto": "Libra de Carne Roja Muslo",
+        "porcentaje_ganancia": 0.0
+    }
+]

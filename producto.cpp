@@ -9,7 +9,7 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
     agregarElementoPuntero(nuevo_producto->producto.nombre_producto, input);
     std::cout << "\tIngresar descripción del producto: ";
     agregarElementoPuntero(nuevo_producto->producto.descripcion_producto, input);
-    std::cout << "\tIngresar cantidad en existencia del producto (si no es 0, se creará un nuevo lote): ";
+    std::cout << "\tIngresar cantidad en existencia del producto: ";
     nuevo_producto->producto.existencia_cantidad = soloEnteros();
     if (nuevo_producto->producto.existencia_cantidad != 0)
     {

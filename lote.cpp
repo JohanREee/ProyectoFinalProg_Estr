@@ -65,7 +65,8 @@ void agregarPrimerLote(lista_Producto *&producto)
         }
         std::cout << "\tError al ingresar la fecha. Vuelve a intentarlo.\n";
         limpiarBuffer();
-        pausar();
+        pausarYLimpiar();
+        marco();
     }
     while (true) // Ingresar precio actual de producto
     {

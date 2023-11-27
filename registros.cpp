@@ -20,7 +20,7 @@ void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_P
         lista_Producto_Existencia *aux = producto_existencia;
         while (aux != NULL)
         {
-            std::cout << "Existencias de cada producto.\n";
+            gotoxy(2,6); std::cout << "\tExistencias de cada producto.\n";
             mostrarProductoDeReporteDeExistencia(aux);
             aux = aux->siguiente;
         }
@@ -55,9 +55,9 @@ void guardarProductoEnListaDeReporteDeExistencia(lista_Producto_Existencia *&pro
 }
 void mostrarProductoDeReporteDeExistencia(lista_Producto_Existencia *producto_actual)
 {
-    std::cout << "Nombre: " << producto_actual->producto.nombre_producto << "\n";
-    std::cout << "ID: " << producto_actual->producto.id_producto << "\n";
-    std::cout << "Existencia: " << producto_actual->producto.actual_cantidad << "\n\n";
+    std::cout << "\tNombre: " << producto_actual->producto.nombre_producto << "\n";
+    std::cout << "\tID: " << producto_actual->producto.id_producto << "\n";
+    std::cout << "\tExistencia: " << producto_actual->producto.actual_cantidad << "\n\n";
 }
 void eliminarListaDeReporteDeExistencia(lista_Producto_Existencia *&producto_existencia)
 {
@@ -77,35 +77,36 @@ void generarReporteDeLotesPorRango()
         return;
     }
     int op;
-    std::cout << "Elija una opción. \n";
-    std::cout << "1. Reporte por rango entre dos fechas\n";
-    std::cout << "2. Reporte por rango a partir de una fecha\n";
-    std::cout << "3. Reporte por rango hasta una fecha.\n";
-    std::cout << "Ingresar número: ";
+    gotoxy(2,6);
+    std::cout << "\tElija una opción. \n";
+    std::cout << "\t1. Reporte por rango entre dos fechas\n";
+    std::cout << "\t2. Reporte por rango a partir de una fecha\n";
+    std::cout << "\t3. Reporte por rango hasta una fecha.\n";
+    std::cout << "\tIngresar número: ";
     op = soloEnteros();
     if (op == 1)
     {
         Fecha fecha_inicio;
         Fecha fecha_final;
-        std::cout << "Ingrese la fecha inicial en formato dd/mm/yyyy: ";
+        std::cout << "\tIngrese la fecha inicial en formato dd/mm/yyyy: ";
         scanf("%2d/%2d/%4d", &fecha_inicio.dia, &fecha_inicio.mes, &fecha_inicio.ano);
         if (!validarDiaPorMes(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.ano))
         {
-            std::cout << "Fecha no válida. \n";
-            std::cout << "Volviendo al menú anterior.\n";
+            std::cout << "\tFecha no válida. \n";
+            std::cout << "\tVolviendo al menú anterior.\n";
             return;
         }
-        std::cout << "Ingrese la fecha final en formato dd/mm/yyyy: ";
+        std::cout << "\tIngrese la fecha final en formato dd/mm/yyyy: ";
         scanf("%2d/%2d/%4d", &fecha_final.dia, &fecha_final.mes, &fecha_final.ano);
         if (!validarDiaPorMes(fecha_final.dia, fecha_final.mes, fecha_final.ano))
         {
-            std::cout << "Fecha no válida. \n";
-            std::cout << "Volviendo al menú anterior.\n";
+            std::cout << "\tFecha no válida. \n";
+            std::cout << "\tVolviendo al menú anterior.\n";
             return;
         }
         if (buscarLotesPorFecha(producto_actual, fecha_inicio, fecha_final))
         {
-            std::cout << "Mostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" para las fechas ingresadas.\n ";
+            std::cout << "\tMostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" en el rango.\n ";
             lista_Reporte_Rango *aux = reporte_rango;
             while (aux != NULL)
             {
@@ -115,23 +116,23 @@ void generarReporteDeLotesPorRango()
         }
         else
         {
-            std::cout << "No hay lotes que coincidan con estas fechas.\n";
+            std::cout << "\tNo hay lotes que coincidan con estas fechas.\n";
         }
     }
     else if (op == 2)
     {
         Fecha fecha_inicial;
-        std::cout << "Ingrese la fecha inicial en formato dd/mm/yyyy: ";
+        std::cout << "\tIngrese la fecha inicial en formato dd/mm/yyyy: ";
         scanf("%2d/%2d/%4d", &fecha_inicial.dia, &fecha_inicial.mes, &fecha_inicial.ano);
         if (!validarDiaPorMes(fecha_inicial.dia, fecha_inicial.mes, fecha_inicial.ano))
         {
-            std::cout << "Fecha no válida. \n";
-            std::cout << "Volviendo al menú anterior.\n";
+            std::cout << "\tFecha no válida. \n";
+            std::cout << "\tVolviendo al menú anterior.\n";
             return;
         }
         if (buscarLotesPorFecha(producto_actual, fecha_inicial))
         {
-            std::cout << "Mostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" para las fechas ingresadas.\n ";
+            std::cout << "\tMostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" en el rango.\n ";
             lista_Reporte_Rango *aux = reporte_rango;
             while (aux != NULL)
             {
@@ -141,23 +142,23 @@ void generarReporteDeLotesPorRango()
         }
         else
         {
-            std::cout << "No hay lotes que coincidan con estas fechas.\n";
+            std::cout << "\tNo hay lotes que coincidan con estas fechas.\n";
         }
     }
     else if (op == 3)
     {
         Fecha fecha_finalizar;
-        std::cout << "Ingrese la fecha final en formato dd/mm/yyyy: ";
+        std::cout << "\tIngrese la fecha final en formato dd/mm/yyyy: ";
         scanf("%2d/%2d/%4d", &fecha_finalizar.dia, &fecha_finalizar.mes, &fecha_finalizar.ano);
         if (!validarDiaPorMes(fecha_finalizar.dia, fecha_finalizar.mes, fecha_finalizar.ano))
         {
-            std::cout << "Fecha no válida. \n";
-            std::cout << "Volviendo al menú anterior.\n";
+            std::cout << "\tFecha no válida. \n";
+            std::cout << "\tVolviendo al menú anterior.\n";
             return;
         }
         if (buscarLotesPorFecha(producto_actual, {0, 0, 0}, fecha_finalizar))
         {
-            std::cout << "Mostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" para las fechas ingresadas.\n ";
+            std::cout << "\tMostrando todos los lotes del producto \"" << producto_actual->producto.nombre_producto << "\" en el rango.\n ";
             lista_Reporte_Rango *aux = reporte_rango;
             while (aux != NULL)
             {
@@ -167,13 +168,13 @@ void generarReporteDeLotesPorRango()
         }
         else
         {
-            std::cout << "No hay lotes que coincidan con estas fechas.\n";
+            std::cout << "\tNo hay lotes que coincidan con estas fechas.\n";
         }
     }
     else
     {
-        std::cout << "Error al ingresar el numero.\n";
-        std::cout << "Volviendo al menú anterior.\n";
+        std::cout << "\tError al ingresar el numero.\n";
+        std::cout << "\tVolviendo al menú anterior.\n";
     }
     eliminarListaDeReporteDeRango(reporte_rango);
 }
@@ -270,11 +271,11 @@ void guardarLoteEnListaDeReporteDeRango(lista_Reporte_Rango *&reporte_actual)
 }
 void mostrarLoteDeReporteDeRango(lista_Reporte_Rango *lote_actual)
 {
-    std::cout << "\nID del lote: " << lote_actual->lote.id_lote << "\n";
-    std::cout << "Fecha de ingreso del lote: " << lote_actual->lote.ingreso_fecha.dia << "/" << lote_actual->lote.ingreso_fecha.mes << "/" << lote_actual->lote.ingreso_fecha.ano << "\n";
-    std::cout << "Fecha de expiración del lote: " << lote_actual->lote.expiracion_fecha.dia << "/" << lote_actual->lote.expiracion_fecha.mes << "/" << lote_actual->lote.expiracion_fecha.ano << "\n";
-    std::cout << "Precio del producto en Córdobas en este lote: C$" << lote_actual->lote.precio_producto << "\n";
-    std::cout << "Cantidad del producto ingresada en este lote: " << lote_actual->lote.cantidad_de_producto << "\n";
+    std::cout << "\n\tID del lote: " << lote_actual->lote.id_lote << "\n";
+    std::cout << "\tFecha de ingreso del lote: " << lote_actual->lote.ingreso_fecha.dia << "/" << lote_actual->lote.ingreso_fecha.mes << "/" << lote_actual->lote.ingreso_fecha.ano << "\n";
+    std::cout << "\tFecha de expiración del lote: " << lote_actual->lote.expiracion_fecha.dia << "/" << lote_actual->lote.expiracion_fecha.mes << "/" << lote_actual->lote.expiracion_fecha.ano << "\n";
+    std::cout << "\tPrecio del producto en Córdobas en este lote: C$" << lote_actual->lote.precio_producto << "\n";
+    std::cout << "\tCantidad del producto ingresada en este lote: " << lote_actual->lote.cantidad_de_producto << "\n";
 }
 void eliminarListaDeReporteDeRango(lista_Reporte_Rango *&reporte_rango)
 {
@@ -293,7 +294,8 @@ void generarReporteDeLotesPorExpirar()
     int mes = obtenerMes();
     int dia = obtenerDia();
     int sumar = 0;
-    std::cout << "Para ingresar los lotes que están por expirar, ¿Desea ingresar como estándar 7 días a partir de hoy?\n";
+    gotoxy(2,6);
+    std::cout << "\tPara ingresar los lotes que están por expirar, ¿Desea ingresar como estándar 7 días a partir de hoy?\n";
     verificarModificacionEnProducto(op);
     if (op == 1 || op == 2)
     {
@@ -304,19 +306,19 @@ void generarReporteDeLotesPorExpirar()
         }
         else
         {
-            std::cout << "Ingrese la cantidad en dias para obtener los reportes que están por expirar: ";
+            std::cout << "\tIngrese la cantidad en dias para obtener los reportes que están por expirar: ";
             sumar = soloEnteros();
             sumarFecha(ano, mes, dia, sumar);
         }
         Fecha fecha = {dia, mes, ano};
         if (!buscarLoteParaReporteDeLotesPorExpirar(fecha))
         {
-            std::cout << "No se han encontrado lotes que expiren actualmente.\n";
+            std::cout << "\tNo se han encontrado lotes que expiren actualmente.\n";
             return;
         }
-        std::cout << "Mostrando todos los lotes que van a expirar " << sumar;
+        std::cout << "\tMostrando todos los lotes que van a expirar " << sumar;
         (sumar == 1) ? std::cout << " dia" : std::cout << " dias";
-        std::cout << " a partir de la fecha ";
+        std::cout << "\t a partir de la fecha ";
         std::cout << fecha.dia << "/" << fecha.mes << "/" << fecha.ano << "\n";
         lista_Lote_Alerta_Caducidad *aux = lote_caducidad;
         while (aux != NULL)
@@ -324,14 +326,14 @@ void generarReporteDeLotesPorExpirar()
             mostrarAlertaCaducidad(aux);
             aux = aux->siguiente;
         }
-        std::cout << "Fin de los lotes.\n";
+        std::cout << "\tFin de los lotes.\n";
         // Ingresar lo extra
         eliminarListaDeAlerta(lote_caducidad);
     }
     else
     {
-        std::cout << "Valor inválido.\n";
-        std::cout << "Volviendo al menú anterior.\n";
+        std::cout << "\tValor inválido.\n";
+        std::cout << "\tVolviendo al menú anterior.\n";
     }
 }
 
@@ -378,17 +380,17 @@ void generarReporteStockCritico()
 {
     if (!buscarProductosDeReporteStockMinimo())
     {
-        std::cout << "No hay productos con stock crítico en el sistema.\n";
+        std::cout << "\tNo hay productos con stock crítico en el sistema.\n";
         return;
     }
-    std::cout << "Mostrando todos los productos con stock Crítico.\n";
+    gotoxy(2,6); std::cout << "\tMostrando todos los productos con stock Crítico.\n";
     lista_Producto_Alerta_Cantidad *aux = producto_cantidad;
     while (aux != NULL)
     {
         mostrarAlertaCantidadMinima(aux);
         aux = aux->siguiente;
     }
-    std::cout << "\nFin del reporte.\n";
+    std::cout << "\n\tFin del reporte.\n";
     eliminarListaProductoCantidadMinima();
 }
 
@@ -447,8 +449,9 @@ void generarReporteCostoInventario()
     }
     if (costo_total == 0)
     {
-        std::cout << "No hay productos en el sistema.\n";
+        std::cout << "\tNo hay productos en el sistema.\n";
         return;
     }
-    std::cout << "El costo total del inventario SaboresSostenibles es: C$" << costo_total << "\n";
+    gotoxy(2,6); std::cout << "\tEl costo total del inventario DISKInventory es: C$" << costo_total << "\n";
+    pausar();
 }
