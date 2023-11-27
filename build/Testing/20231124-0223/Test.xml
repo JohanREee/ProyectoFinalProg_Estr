@@ -21,14 +21,14 @@
 	TotalVirtualMemory="22912"
 	TotalPhysicalMemory="12209"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="2623"
+	ProcessorClockFrequency="2394"
 	>
 	<Testing>
-		<StartDateTime>Nov 23 20:23 Hora est[NON-UTF-8-BYTE-0xE1]ndar, Am[NON-UTF-8-BYTE-0xE9]rica Central</StartDateTime>
-		<StartTestTime>1700792590</StartTestTime>
+		<StartDateTime>Nov 23 22:03 Hora est[NON-UTF-8-BYTE-0xE1]ndar, Am[NON-UTF-8-BYTE-0xE9]rica Central</StartDateTime>
+		<StartTestTime>1700798596</StartTestTime>
 		<TestList/>
-		<EndDateTime>Nov 23 20:23 Hora est[NON-UTF-8-BYTE-0xE1]ndar, Am[NON-UTF-8-BYTE-0xE9]rica Central</EndDateTime>
-		<EndTestTime>1700792590</EndTestTime>
+		<EndDateTime>Nov 23 22:03 Hora est[NON-UTF-8-BYTE-0xE1]ndar, Am[NON-UTF-8-BYTE-0xE9]rica Central</EndDateTime>
+		<EndTestTime>1700798596</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

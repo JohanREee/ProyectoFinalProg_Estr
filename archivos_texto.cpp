@@ -1,48 +1,11 @@
 #include "structs.h"
-#include "complemento.cpp"
 
-// Usuarios
-
-void escribirEnArchivoDeUsuario(lista_Usuario *usuario_actual);
-void leerEnArchivoDeUsuario(lista_Usuario *&lista_usuario);
-void agregarDatosDeUsuario(lista_Usuario *&nuevo_usuario, std::istringstream &linea);
-void guardarUsuario(lista_Usuario *&nuevo_usuario);
-void escribirEnArchivoDeUsuarioTodo(lista_Usuario *lista_usuario);
-
-// Productos
-json estructuraProductoAJSON(Producto &producto);
-json estructuraFechaAJSON(Fecha &fecha);
-json estructuraLoteAJSON(Lote &lote);
-json estructuraMovimientoAJSON(Movimiento &movimiento);
-json estructuraListaAñoAJSON(Lista_Año *lista_año);
-json estructuraInformacionMesAJSON(Informacion_Mes *mes_actual);
-json listaProductoAJSON(lista_Producto *lista_producto);
-json agregarListaAño(Lista_Año *lista_año);
-json agregarListaLote(cola_Lote *cola_lote);
-json agregarInformacionMes(Informacion_Mes *mes);
-void escribirProductosEnArchivo(lista_Producto *lista_producto);
-void leerProductosDeArchivo(lista_Producto *&lista_producto);
-Lista_Año *agregarListaAño(lista_Producto *&producto_actual, const json &item);
-void guardarAñoEnLista(lista_Producto *&producto_actual, Lista_Año *&año_actual);
-char *agregarPuntero(std::string, const json &item);
-Fecha leerFecha(std::string, const json &item);
 json estructuraFechaAJSON(Fecha &fecha)
 {
     json j;
     j["dia"] = fecha.dia;
     j["mes"] = fecha.mes;
-    j["año"] = fecha.año;
-    return j;
-}
-json estructuraMovimientoAJSON(Movimiento &movimiento)
-{
-    json j;
-    j["id_producto"] = movimiento.id_producto;
-    j["id_lote"] = movimiento.id_lote;
-    j["id_movimiento"] = movimiento.id_movimiento;
-    j["tipo_movimiento"] = movimiento.tipo_movimiento;
-    j["fecha_movimiento"] = estructuraFechaAJSON(movimiento.fecha);
-    j["cantidad"] = movimiento.cantidad;
+    j["ano"] = fecha.ano;
     return j;
 }
 
@@ -56,6 +19,7 @@ json estructuraLoteAJSON(Lote &lote)
     j["precio_producto"] = lote.precio_producto;
     j["validacion"] = (lote.validacion) ? "Si" : "No";
     j["motivo"] = lote.motivo;
+    j["costo_venta"] = lote.costo_venta;
     return j;
 }
 json agregarListaLote(cola_Lote *cola_lote)
@@ -64,7 +28,7 @@ json agregarListaLote(cola_Lote *cola_lote)
     cola_Lote *aux = cola_lote;
     while (aux != NULL)
     {
-        j.push_back(estructuraLoteAJSON(cola_lote->lote));
+        j.push_back(estructuraLoteAJSON(aux->lote));
         aux = aux->siguiente;
     }
     return j;
@@ -89,35 +53,38 @@ json agregarInformacionMes(Informacion_Mes *mes)
     }
     return j;
 }
-json estructuraListaAñoAJSON(Año_Producto &año_producto)
+json estructuraListaAnoAJSON(Ano_Producto &ano_producto)
 {
     json j;
-    j["año"] = año_producto.año;
-    j["informacion_mes"] = agregarInformacionMes(año_producto.producto);
+    j["ano"] = ano_producto.ano;
+    j["informacion_mes"] = agregarInformacionMes(ano_producto.producto);
     return j;
 }
-json agregarListaAño(Lista_Año *lista_año)
+json agregarListaAno(Lista_Ano *lista_ano)
 {
     json j = json::array();
-    Lista_Año *aux = lista_año;
+    Lista_Ano *aux = lista_ano;
     while (aux != NULL)
     {
-        j.push_back(estructuraListaAñoAJSON(aux));
+        j.push_back(estructuraListaAnoAJSON(aux->ano_producto));
         aux = aux->siguiente;
     }
     return j;
 }
 json estructuraProductoAJSON(Producto &producto)
 {
-    return json{
-        {"id_producto", producto.id_producto},
-        {"nombre_producto", producto.nombre_producto},
-        {"descripcion_producto", producto.descripcion_producto},
-        {"lista_año", agregarListaAño(producto.años_producto)},
-        {"existencia_cantidad", producto.existencia_cantidad},
-        {"minima_cantidad", producto.minima_cantidad},
-        {"anulado", (producto.anulado) ? "Si" : "No"},
-    };
+    json j;
+    j["id_producto"] = producto.id_producto;
+    j["nombre_producto"] = producto.nombre_producto;
+    j["descripcion_producto"] = producto.descripcion_producto;
+    j["existencia_cantidad"] = producto.existencia_cantidad;
+    j["minima_cantidad"] = producto.minima_cantidad;
+    bool anulado = (producto.anulado);
+    j["anulado"] = (anulado) ? "Si" : "No";
+    j["lista_ano"] = agregarListaAno(producto.anos_producto);
+    j["costo_de_venta_total"] = producto.costo_de_venta_total;
+    j["porcentaje_ganancia"] = producto.porcentaje_ganancia;
+    return j;
 }
 
 json listaProductoAJSON(lista_Producto *lista_producto)
@@ -131,7 +98,7 @@ json listaProductoAJSON(lista_Producto *lista_producto)
     }
     return j;
 }
-void escribirProductosEnArchivo(lista_Producto *lista_producto)
+void escribirProductosEnArchivoJSON(lista_Producto *lista_producto)
 {
     std::ofstream file("productos.json");
     if (file.is_open())
@@ -141,7 +108,6 @@ void escribirProductosEnArchivo(lista_Producto *lista_producto)
         file.close();
     }
 }
-
 char *agregarPuntero(std::string texto, const json &item)
 {
     if (!item.contains(texto))
@@ -153,50 +119,55 @@ char *agregarPuntero(std::string texto, const json &item)
     strcpy(dato, information.c_str());
     return dato;
 }
-void guardarAñoEnLista(lista_Producto *&producto_actual, Lista_Año *&año_actual)
+void guardarAnoEnLista(lista_Producto *&producto_actual, Lista_Ano *&ano_actual)
 {
-    Lista_Año *aux = lista_producto->producto.años_producto; // Reservamos el valor original de la lista
-    Lista_Año *aux2;
+    Lista_Ano *aux = producto_actual->producto.anos_producto; // Reservamos el valor original de la lista
+    Lista_Ano *aux2;
     while (aux != NULL)
     {                         // Comprobamos que aux no apunte a null
         aux2 = aux;           // Reservamos el valor original de aux que por ahora es la lista
         aux = aux->siguiente; // Corre una posición, buscando NULL
     }
-    if (lista_producto->producto.años_producto == aux)
+    if (producto_actual->producto.anos_producto == aux)
     { // Nunca pasó por el while
-        lista_producto->producto.años_producto = año_actual;
+        producto_actual->producto.anos_producto = ano_actual;
     }
     else
     { // Al pasar por el while, sabemos que aux2 apunta una posicion antes de NULL, que debe ser aux
-        aux2->siguiente = año_actual;
+        aux2->siguiente = ano_actual;
     }
-    año_actual->siguiente = aux; // nuevo_producto apunta a NULL
+    ano_actual->siguiente = aux; // nuevo_producto apunta a NULL
 }
 Fecha leerFecha(const json &item)
 {
     Fecha fecha;
     fecha.dia = item["dia"].get<int>();
     fecha.mes = item["mes"].get<int>();
-    fecha.año = item["año"].get<int>();
+    fecha.ano = item["ano"].get<int>();
     return fecha;
 }
-Lista_Año *agregarListaAño(lista_Producto *&producto_actual, const json &item)
+void agregarListaAno(lista_Producto *&producto_actual, const json &item)
 {
-    if (item.contains("lista_año") && item["lista_año"].is_array())
+
+    if (item.contains("lista_ano") && item["lista_ano"].is_array())
     {
-        for (const json &year_item : item["lista_año"])
+
+        for (const json &year_item : item["lista_ano"])
         {
-            Lista_Año *nuevo_año = new Lista_Año();
-            nuevo_año->año_producto.año = year_item["año"].get<int>();
-            if (year_item.contains("informacion_mes") && item["informacion_mes"].is_array())
+
+            Lista_Ano *nuevo_ano = new Lista_Ano();
+            nuevo_ano->ano_producto.ano = year_item["ano"].get<int>();
+            if (year_item.contains("informacion_mes") && year_item["informacion_mes"].is_array())
             {
+
                 for (const json &month_item : year_item["informacion_mes"])
                 {
                     int mes = month_item["mes"].get<int>();
-                    Informacion_Mes *mes_actual = &nuevo_año->año_producto.producto[mes - 1];
+                    Informacion_Mes *mes_actual = &nuevo_ano->ano_producto.producto[mes - 1];
                     mes_actual->mes = month_item["mes"].get<int>();
                     if (month_item.contains("lotes") && month_item["lotes"].is_array())
                     {
+
                         for (const json &lot_item : month_item["lotes"])
                         {
                             cola_Lote *nuevo_lote = new cola_Lote();
@@ -204,23 +175,21 @@ Lista_Año *agregarListaAño(lista_Producto *&producto_actual, const json &item)
                             nuevo_lote->lote.ingreso_fecha = leerFecha(lot_item["ingreso_fecha"]);
                             nuevo_lote->lote.expiracion_fecha = leerFecha(lot_item["expiracion_fecha"]);
                             nuevo_lote->lote.cantidad_de_producto = lot_item["cantidad_de_producto"].get<int>();
-                            nuevo_lote->lote.precio_producto = lot_item["precio_producto"].get<int>();
-                            bool validacion = (lot_item["validacion"].get<std::string>() =="Si");
+                            nuevo_lote->lote.precio_producto = lot_item["precio_producto"].get<double>();
+                            bool validacion = (lot_item["validacion"].get<std::string>() == "Si");
                             nuevo_lote->lote.validacion = validacion;
                             nuevo_lote->lote.motivo = lot_item["motivo"].get<int>();
-                            //agregar para guardar lotes en la lista
-                            //terminar de detalles y revisar codigo
+                            nuevo_lote->lote.costo_venta = lot_item["costo_venta"].get<double>();
+
+                            guardarLoteEnProducto(mes_actual, nuevo_lote);
                         }
                     }
                     mes_actual->lotes_cantidad = month_item["lotes_cantidad"].get<int>();
                 }
             }
-
-            guardarAñoEnLista(producto_actual, nuevo_año);
+            guardarAnoEnLista(producto_actual, nuevo_ano);
         }
     }
-
-    return NULL; // agregar el return correspondiente
 }
 void leerProductosDeArchivo(lista_Producto *&lista_producto)
 {
@@ -235,102 +204,77 @@ void leerProductosDeArchivo(lista_Producto *&lista_producto)
             nuevo_producto->producto.id_producto = item["id_producto"].get<int>();
             nuevo_producto->producto.nombre_producto = agregarPuntero("nombre_producto", item);
             nuevo_producto->producto.descripcion_producto = agregarPuntero("descripcion_producto", item);
-            // agregar lista_producto;
+            agregarListaAno(nuevo_producto, item);
             nuevo_producto->producto.existencia_cantidad = item["existencia_cantidad"].get<int>();
             nuevo_producto->producto.minima_cantidad = item["minima_cantidad"].get<int>();
             bool anulado = (item["anulado"].get<std::string>() == "Si");
             nuevo_producto->producto.anulado = anulado;
+            nuevo_producto->producto.costo_de_venta_total = item["costo_de_venta_total"].get<double>();
+            nuevo_producto->producto.porcentaje_ganancia = item["porcentaje_ganancia"].get<double>();
             guardarProductoEnLista(lista_producto, nuevo_producto);
+            conteo_id_producto++;
+        }
+    }
+    file.close();
+}
+
+json estructuraUsuarioAJSON(Usuario &usuario)
+{
+    json j;
+    j["nombres"] = usuario.nombres;
+    j["apellidos"] = usuario.apellidos;
+    j["telefono"] = usuario.telefono;
+    j["correo"] = usuario.correo;
+    j["contrasena"] = usuario.contrasena;
+    j["validacion"] = (usuario.validacion) ? "Si" : "No";
+    j["administrador"] = (usuario.administrador) ? "Si" : "No";
+    return j;
+}
+json listaUsuariosAJSON(lista_Usuario *&lista_usuario)
+{
+    lista_Usuario *aux = lista_usuario->siguiente;
+    json j = json::array();
+    while (aux != NULL)
+    {
+        j.push_back(estructuraUsuarioAJSON(aux->usuario));
+        aux = aux->siguiente;
+    }
+    return j;
+}
+void escribirUsuariosAJSON(lista_Usuario *&lista_usuario)
+{
+    std::ofstream archivo_usuario("usuarios.json");
+    if (archivo_usuario.is_open())
+    {
+        json j = listaUsuariosAJSON(lista_usuario);
+        archivo_usuario << j.dump(6);
+        archivo_usuario.close();
+    }
+}
+void leerUsuariosEnJSON(lista_Usuario *&lista_usuario)
+{
+    std::ifstream archivo_usuario_lectura("usuarios.json");
+    if (archivo_usuario_lectura.is_open())
+    {
+        json j;
+        archivo_usuario_lectura >> j;
+        for (const auto &usuario : j)
+        {
+            lista_Usuario *nuevo_usuario = new lista_Usuario();
+            nuevo_usuario->usuario.nombres = agregarPuntero("nombres", usuario);
+            nuevo_usuario->usuario.apellidos = agregarPuntero("apellidos", usuario);
+            nuevo_usuario->usuario.telefono = usuario["telefono"].get<int>();
+            nuevo_usuario->usuario.correo = agregarPuntero("correo", usuario);
+            nuevo_usuario->usuario.contrasena = agregarPuntero("contrasena", usuario);
+            bool validacion = (usuario["validacion"].get<std::string>() == "Si");
+            nuevo_usuario->usuario.validacion = validacion;
+            bool administrador = (usuario["administrador"].get<std::string>() == "Si");
+            nuevo_usuario->usuario.administrador  = administrador;
+            guardarUsuario(nuevo_usuario);
         }
     }
 }
-void escribirEnArchivoDeUsuarioTodo(lista_Usuario *lista_usuario)
-{
-    std::ofstream archivo("usuarios.txt", std::ios::trunc);
-    if (!archivo)
-    {
-        return;
-    }
-    lista_Usuario *aux = lista_usuario;
-    while (aux != NULL)
-    {
-        archivo << aux->usuario.nombres << ";";
-        archivo << aux->usuario.apellidos << ";";
-        archivo << aux->usuario.telefono << ";";
-        archivo << aux->usuario.correo << ";";
-        archivo << aux->usuario.contraseña << ";";
-        archivo << (aux->usuario.administrador ? "Si" : "No") << ";";
-        archivo << (aux->usuario.validacion ? "Si" : "No");
-        archivo << std::endl;
-        aux = aux->siguiente;
-    }
-    archivo.close();
-}
 
-void escribirEnArchivoDeUsuario(lista_Usuario *usuario_actual)
-{
-    std::ofstream archivo("usuarios.txt", std::ios::app);
-    if (!archivo)
-    {
-        return;
-    }
-    archivo << std::endl;
-    archivo << usuario_actual->usuario.nombres << ";";
-    archivo << usuario_actual->usuario.apellidos << ";";
-    archivo << usuario_actual->usuario.telefono << ";";
-    archivo << usuario_actual->usuario.correo << ";";
-    archivo << usuario_actual->usuario.contraseña << ";";
-    archivo << (usuario_actual->usuario.administrador ? "Si" : "No") << ";";
-    archivo << (usuario_actual->usuario.validacion ? "Si" : "No");
-    archivo << std::endl;
-
-    archivo.close();
-}
-
-void leerEnArchivoDeUsuario(lista_Usuario *&lista_usuario)
-{
-    std::ifstream archivo("usuarios.txt", std::ios::in);
-    if (!archivo)
-    {
-        return;
-    }
-    std::string dato;
-    while (getline(archivo, dato))
-    {
-        if (dato.empty())
-            continue;
-        std::istringstream iss(dato);
-        lista_Usuario *nuevo_usuario = new lista_Usuario;
-        nuevo_usuario->siguiente = NULL;
-        agregarDatosDeUsuario(nuevo_usuario, iss);
-        guardarUsuario(nuevo_usuario);
-    }
-}
-void agregarDatosDeUsuario(lista_Usuario *&nuevo_usuario, std::istringstream &linea)
-{
-    std::string informacion;
-    std::getline(linea, informacion, ';');
-    nuevo_usuario->usuario.nombres = new char[informacion.length() + 1];
-    strcpy(nuevo_usuario->usuario.nombres, informacion.c_str());
-    std::getline(linea, informacion, ';');
-    nuevo_usuario->usuario.apellidos = new char[informacion.length() + 1];
-    strcpy(nuevo_usuario->usuario.apellidos, informacion.c_str());
-    std::getline(linea, informacion, ';');
-    nuevo_usuario->usuario.telefono = std::stoi(informacion);
-    std::getline(linea, informacion, ';');
-    nuevo_usuario->usuario.correo = new char[informacion.length() + 1];
-    strcpy(nuevo_usuario->usuario.correo, informacion.c_str());
-    std::getline(linea, informacion, ';');
-    nuevo_usuario->usuario.contraseña = new char[informacion.length() + 1];
-    strcpy(nuevo_usuario->usuario.contraseña, informacion.c_str());
-    std::getline(linea, informacion, ';');
-    bool validacion = (informacion == "Si") ? true : false;
-    nuevo_usuario->usuario.validacion = validacion;
-    std::getline(linea, informacion, ';');
-    bool administrador = (informacion == "Si") ? true : false;
-    nuevo_usuario->usuario.administrador = administrador;
-    guardarUsuario(nuevo_usuario);
-}
 void guardarUsuario(lista_Usuario *&nuevo_usuario)
 {
     lista_Usuario *aux = lista_usuario; // Reservamos el valor original de la lista
@@ -349,14 +293,4 @@ void guardarUsuario(lista_Usuario *&nuevo_usuario)
         aux2->siguiente = nuevo_usuario;
     }
     nuevo_usuario->siguiente = aux; // nuevo_usuario apunta a NULL
-}
-
-void agregarDatosDeProducto(lista_Producto *&nuevo_producto)
-{
-    std::ifstream archivo("productos.txt", std::ios::in);
-    if (!archivo)
-    {
-        return;
-    }
-    // codigo
 }

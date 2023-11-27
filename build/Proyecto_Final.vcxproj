@@ -371,9 +371,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\lote.cpp" />
     <ClInclude Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\structs.h" />
     <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\registros.cpp" />
-    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\reporte_pdf.cpp" />
     <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\producto.cpp" />
-    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\movimientos.cpp" />
     <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\menus.cpp" />
     <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\complemento.cpp" />
     <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\alertas.cpp" />

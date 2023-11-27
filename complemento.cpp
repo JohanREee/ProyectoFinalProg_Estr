@@ -1,26 +1,6 @@
-#ifndef complemento
-#define complemento
-
 #include "structs.h"
 
-int soloEnteros();
-double soloFlotantes();
-char *nombreFormal(Usuario usuario_actual);
-Lista_Año *buscarAñoActualDeProducto(lista_Producto *producto, int año);
-bool validarDiaPorMes(int dia, int mes, int año);
-bool esBisiesto(int año);
-void asociarMesConNumero(int mes);
-void limpiarBuffer();
-void verificarModificacionEnLote(int &op);
-void verificarModificacionEnProducto(int &op);
-bool verificarModificacionEnUsuario(int &op);
-bool comprobarCorreo(char *correo, lista_Usuario *lista_usuario);
-void pausar();
-void limpiar();
-void pausarYLimpiar();
-char *digitarContraseña();
-
-char *digitarContraseña()
+char *digitarContrasena()
 {
     int i = 0;
     char ch;
@@ -53,10 +33,10 @@ char *digitarContraseña()
         }
     }
     input[i] = '\0';
-    char *contraseña = new char[strlen(input) + 1];
-    strcpy(contraseña, input);
+    char *contrasena = new char[strlen(input) + 1];
+    strcpy(contrasena, input);
     input[0] = '\0';
-    return contraseña;
+    return contrasena;
 }
 void agregarElementoPuntero(char *&dato, char *input)
 {
@@ -190,6 +170,8 @@ double soloFlotantes()
     return numero;
 }
 
+
+
 char *nombreFormal(Usuario usuario_actual)
 {
     char *nombre = new char[strlen(usuario_actual.nombres) + 1];
@@ -210,12 +192,13 @@ char *nombreFormal(Usuario usuario_actual)
     delete[] apellido;
     return nombreFormal;
 }
-int obtenerAño()
+
+int obtenerAno()
 {
     std::time_t t = std::time(0);
     std::tm *now = std::localtime(&t);
-    int año = now->tm_year + 1900;
-    return año;
+    int ano = now->tm_year + 1900;
+    return ano;
 }
 int obtenerMes()
 {
@@ -232,16 +215,16 @@ int obtenerDia()
     return dia;
 }
 
-Lista_Año *buscarAñoActualDeProducto(lista_Producto *producto, int año)
+Lista_Ano *buscarAnoActualDeProducto(lista_Producto *producto, int ano)
 {
-    Lista_Año *lista_año = producto->producto.años_producto;
-    while (lista_año != NULL)
+    Lista_Ano *lista_ano = producto->producto.anos_producto;
+    while (lista_ano != NULL)
     {
-        if (lista_año->año_producto.año == año)
+        if (lista_ano->ano_producto.ano == ano)
         {
-            return lista_año;
+            return lista_ano;
         }
-        lista_año = lista_año->siguiente;
+        lista_ano = lista_ano->siguiente;
     }
     return NULL;
 }
@@ -292,12 +275,12 @@ void asociarMesConNumero(int mes)
     }
 }
 
-bool validarDiaPorMes(int dia, int mes, int año)
+bool validarDiaPorMes(int dia, int mes, int ano)
 {
     int diasEnMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    // Ajusta febrero para años bisiestos
-    if (esBisiesto(año))
+    // Ajusta febrero para anos bisiestos
+    if (esBisiesto(ano))
     {
         diasEnMes[1] = 29;
     }
@@ -314,30 +297,30 @@ bool validarDiaPorMes(int dia, int mes, int año)
     return true; // Fecha válida
 }
 
-bool esBisiesto(int año)
+bool esBisiesto(int ano)
 {
-    return (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);
+    return (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
 }
 
-bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, int diae)
+bool ingresarFechaExpiracion(int ano, int mes, int dia, int anoe, int mese, int diae)
 {
-    if ((añoe == año) && (mese == mes) && (diae > dia)) // Validar en el mes actual
+    if ((anoe == ano) && (mese == mes) && (diae > dia)) // Validar en el mes actual
     {
-        if (validarDiaPorMes(diae, mese, añoe))
+        if (validarDiaPorMes(diae, mese, anoe))
         {
             return true;
         }
     }
-    else if ((añoe == año) && (mese > mes))
+    else if ((anoe == ano) && (mese > mes))
     {
-        if (validarDiaPorMes(diae, mese, añoe))
+        if (validarDiaPorMes(diae, mese, anoe))
         {
             return true;
         }
     }
-    else if (añoe > año)
+    else if (anoe > ano)
     {
-        if (validarDiaPorMes(diae, mese, añoe))
+        if (validarDiaPorMes(diae, mese, anoe))
         {
             return true;
         }
@@ -345,20 +328,20 @@ bool ingresarFechaExpiracion(int año, int mes, int dia, int añoe, int mese, in
     return false;
 }
 
-bool comprobarEstadoFecha(int dia, int mes, int año, cola_Lote *lote_actual)
+bool comprobarEstadoFecha(int dia, int mes, int ano, cola_Lote *lote_actual)
 {
     Fecha fecha_expira = lote_actual->lote.expiracion_fecha; // 11/11/2023         //18/11/2023
-    if (ingresarFechaExpiracion(año, mes, dia, fecha_expira.año, fecha_expira.mes, fecha_expira.dia))
+    if (ingresarFechaExpiracion(ano, mes, dia, fecha_expira.ano, fecha_expira.mes, fecha_expira.dia))
     {
         return true;
     }
     return false;
 }
 
-bool comprobarEstadoFecha2(int dia, int mes, int año, lista_Lote_Alerta_Caducidad *lote_actual)
+bool comprobarEstadoFecha2(int dia, int mes, int ano, lista_Lote_Alerta_Caducidad *lote_actual)
 {
     Fecha fecha_expira = lote_actual->lote.fecha_expiracion; // 11/11/2023         //18/11/2023
-    if (ingresarFechaExpiracion(año, mes, dia, fecha_expira.año, fecha_expira.mes, fecha_expira.dia))
+    if (ingresarFechaExpiracion(ano, mes, dia, fecha_expira.ano, fecha_expira.mes, fecha_expira.dia))
     {
         return true;
     }
@@ -367,7 +350,7 @@ bool comprobarEstadoFecha2(int dia, int mes, int año, lista_Lote_Alerta_Caducid
 void limpiarBuffer()
 {
     std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore();
     return;
 }
 void verificarModificacionEnLote(int &op)
@@ -429,4 +412,17 @@ void pausarYLimpiar()
     pausar();
     limpiar();
 }
-#endif
+void gotoxy(int x, int y) 
+{
+	// Obtiene el identificador de la consola de salida estándar
+	HANDLE hcon;
+	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// Crea una estructura de coordenadas con las posiciones especificadas
+	COORD dwPos;
+	dwPos.X = x;
+	dwPos.Y = y;
+
+	// Establece la posición del cursor en la consola a las coordenadas especificadas
+	SetConsoleCursorPosition(hcon, dwPos);
+}

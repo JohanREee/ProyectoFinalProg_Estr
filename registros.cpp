@@ -1,5 +1,4 @@
 #include "structs.h"
-#include "complemento.cpp"
 
 void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_Producto_Existencia *&producto_existencia)
 {
@@ -89,16 +88,16 @@ void generarReporteDeLotesPorRango()
         Fecha fecha_inicio;
         Fecha fecha_final;
         std::cout << "Ingrese la fecha inicial en formato dd/mm/yyyy: ";
-        scanf("%2d/%2d/%4d", &fecha_inicio.dia, &fecha_inicio.mes, &fecha_inicio.año);
-        if (!validarDiaPorMes(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.año))
+        scanf("%2d/%2d/%4d", &fecha_inicio.dia, &fecha_inicio.mes, &fecha_inicio.ano);
+        if (!validarDiaPorMes(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.ano))
         {
             std::cout << "Fecha no válida. \n";
             std::cout << "Volviendo al menú anterior.\n";
             return;
         }
         std::cout << "Ingrese la fecha final en formato dd/mm/yyyy: ";
-        scanf("%2d/%2d/%4d", &fecha_final.dia, &fecha_final.mes, &fecha_final.año);
-        if (!validarDiaPorMes(fecha_final.dia, fecha_final.mes, fecha_final.año))
+        scanf("%2d/%2d/%4d", &fecha_final.dia, &fecha_final.mes, &fecha_final.ano);
+        if (!validarDiaPorMes(fecha_final.dia, fecha_final.mes, fecha_final.ano))
         {
             std::cout << "Fecha no válida. \n";
             std::cout << "Volviendo al menú anterior.\n";
@@ -123,8 +122,8 @@ void generarReporteDeLotesPorRango()
     {
         Fecha fecha_inicial;
         std::cout << "Ingrese la fecha inicial en formato dd/mm/yyyy: ";
-        scanf("%2d/%2d/%4d", &fecha_inicial.dia, &fecha_inicial.mes, &fecha_inicial.año);
-        if (!validarDiaPorMes(fecha_inicial.dia, fecha_inicial.mes, fecha_inicial.año))
+        scanf("%2d/%2d/%4d", &fecha_inicial.dia, &fecha_inicial.mes, &fecha_inicial.ano);
+        if (!validarDiaPorMes(fecha_inicial.dia, fecha_inicial.mes, fecha_inicial.ano))
         {
             std::cout << "Fecha no válida. \n";
             std::cout << "Volviendo al menú anterior.\n";
@@ -149,8 +148,8 @@ void generarReporteDeLotesPorRango()
     {
         Fecha fecha_finalizar;
         std::cout << "Ingrese la fecha final en formato dd/mm/yyyy: ";
-        scanf("%2d/%2d/%4d", &fecha_finalizar.dia, &fecha_finalizar.mes, &fecha_finalizar.año);
-        if (!validarDiaPorMes(fecha_finalizar.dia, fecha_finalizar.mes, fecha_finalizar.año))
+        scanf("%2d/%2d/%4d", &fecha_finalizar.dia, &fecha_finalizar.mes, &fecha_finalizar.ano);
+        if (!validarDiaPorMes(fecha_finalizar.dia, fecha_finalizar.mes, fecha_finalizar.ano))
         {
             std::cout << "Fecha no válida. \n";
             std::cout << "Volviendo al menú anterior.\n";
@@ -180,14 +179,14 @@ void generarReporteDeLotesPorRango()
 }
 bool buscarLotesPorFecha(lista_Producto *producto_actual, Fecha fecha_inicio, Fecha fecha_final)
 {
-    bool desdeFechaInicio = (fecha_inicio.dia == 0) && (fecha_inicio.mes == 0) && (fecha_inicio.año == 0);
-    bool hastaFechaFinal = (fecha_final.dia == 0) && (fecha_final.mes == 0) && (fecha_final.año == 0);
-    Lista_Año *año_actual = producto_actual->producto.años_producto;
-    while (año_actual != NULL)
+    bool desdeFechaInicio = (fecha_inicio.dia == 0) && (fecha_inicio.mes == 0) && (fecha_inicio.ano == 0);
+    bool hastaFechaFinal = (fecha_final.dia == 0) && (fecha_final.mes == 0) && (fecha_final.ano == 0);
+    Lista_Ano *ano_actual = producto_actual->producto.anos_producto;
+    while (ano_actual != NULL)
     {
         for (int i = 0; i < 12; i++)
         {
-            Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+            Informacion_Mes *mes_actual = &ano_actual->ano_producto.producto[i];
             cola_Lote *lote_actual = mes_actual->lotes;
             while (lote_actual != NULL) // 20/11/2023            20/11/2023
             {
@@ -203,14 +202,14 @@ bool buscarLotesPorFecha(lista_Producto *producto_actual, Fecha fecha_inicio, Fe
                     }
                     else if (desdeFechaInicio)
                     {
-                        if (!comprobarEstadoFecha(fecha_final.dia, fecha_final.mes, fecha_final.año, lote_actual))
+                        if (!comprobarEstadoFecha(fecha_final.dia, fecha_final.mes, fecha_final.ano, lote_actual))
                         {
                             validado = true;
                         }
                     }
                     else if (hastaFechaFinal)
                     {
-                        if (comprobarEstadoFecha(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.año, lote_actual))
+                        if (comprobarEstadoFecha(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.ano, lote_actual))
                         {
                             validado = true;
                         }
@@ -229,7 +228,7 @@ bool buscarLotesPorFecha(lista_Producto *producto_actual, Fecha fecha_inicio, Fe
                 lote_actual = lote_actual->siguiente;
             }
         }
-        año_actual = año_actual->siguiente;
+        ano_actual = ano_actual->siguiente;
     }
     if (reporte_rango != NULL)
     {
@@ -239,7 +238,7 @@ bool buscarLotesPorFecha(lista_Producto *producto_actual, Fecha fecha_inicio, Fe
 }
 bool validarFecha(Fecha fecha_inicio, Fecha fecha_final, cola_Lote *lote_actual)
 {
-    if (comprobarEstadoFecha(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.año, lote_actual) && !comprobarEstadoFecha(fecha_final.dia, fecha_final.mes, fecha_final.año, lote_actual))
+    if (comprobarEstadoFecha(fecha_inicio.dia, fecha_inicio.mes, fecha_inicio.ano, lote_actual) && !comprobarEstadoFecha(fecha_final.dia, fecha_final.mes, fecha_final.ano, lote_actual))
     { // 10/11/2023      20/11/2024
 
         return true;
@@ -272,8 +271,8 @@ void guardarLoteEnListaDeReporteDeRango(lista_Reporte_Rango *&reporte_actual)
 void mostrarLoteDeReporteDeRango(lista_Reporte_Rango *lote_actual)
 {
     std::cout << "\nID del lote: " << lote_actual->lote.id_lote << "\n";
-    std::cout << "Fecha de ingreso del lote: " << lote_actual->lote.ingreso_fecha.dia << "/" << lote_actual->lote.ingreso_fecha.mes << "/" << lote_actual->lote.ingreso_fecha.año << "\n";
-    std::cout << "Fecha de expiración del lote: " << lote_actual->lote.expiracion_fecha.dia << "/" << lote_actual->lote.expiracion_fecha.mes << "/" << lote_actual->lote.expiracion_fecha.año << "\n";
+    std::cout << "Fecha de ingreso del lote: " << lote_actual->lote.ingreso_fecha.dia << "/" << lote_actual->lote.ingreso_fecha.mes << "/" << lote_actual->lote.ingreso_fecha.ano << "\n";
+    std::cout << "Fecha de expiración del lote: " << lote_actual->lote.expiracion_fecha.dia << "/" << lote_actual->lote.expiracion_fecha.mes << "/" << lote_actual->lote.expiracion_fecha.ano << "\n";
     std::cout << "Precio del producto en Córdobas en este lote: C$" << lote_actual->lote.precio_producto << "\n";
     std::cout << "Cantidad del producto ingresada en este lote: " << lote_actual->lote.cantidad_de_producto << "\n";
 }
@@ -290,7 +289,7 @@ void eliminarListaDeReporteDeRango(lista_Reporte_Rango *&reporte_rango)
 void generarReporteDeLotesPorExpirar()
 {
     int op = 0;
-    int año = obtenerAño();
+    int ano = obtenerAno();
     int mes = obtenerMes();
     int dia = obtenerDia();
     int sumar = 0;
@@ -301,15 +300,15 @@ void generarReporteDeLotesPorExpirar()
         if (op == 1)
         {
             sumar+=7;
-            sumarFecha(año, mes, dia, sumar);
+            sumarFecha(ano, mes, dia, sumar);
         }
         else
         {
             std::cout << "Ingrese la cantidad en dias para obtener los reportes que están por expirar: ";
             sumar = soloEnteros();
-            sumarFecha(año, mes, dia, sumar);
+            sumarFecha(ano, mes, dia, sumar);
         }
-        Fecha fecha = {dia, mes, año};
+        Fecha fecha = {dia, mes, ano};
         if (!buscarLoteParaReporteDeLotesPorExpirar(fecha))
         {
             std::cout << "No se han encontrado lotes que expiren actualmente.\n";
@@ -318,7 +317,7 @@ void generarReporteDeLotesPorExpirar()
         std::cout << "Mostrando todos los lotes que van a expirar " << sumar;
         (sumar == 1) ? std::cout << " dia" : std::cout << " dias";
         std::cout << " a partir de la fecha ";
-        std::cout << fecha.dia << "/" << fecha.mes << "/" << fecha.año << "\n";
+        std::cout << fecha.dia << "/" << fecha.mes << "/" << fecha.ano << "\n";
         lista_Lote_Alerta_Caducidad *aux = lote_caducidad;
         while (aux != NULL)
         {
@@ -343,16 +342,16 @@ bool buscarLoteParaReporteDeLotesPorExpirar(Fecha fecha)
     {
         if (!aux->producto.anulado)
         {
-            Lista_Año *año_actual = aux->producto.años_producto;
-            while (año_actual != NULL)
+            Lista_Ano *ano_actual = aux->producto.anos_producto;
+            while (ano_actual != NULL)
             {
                 for (int i = 0; i < 12; i++)
                 {
-                    Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+                    Informacion_Mes *mes_actual = &ano_actual->ano_producto.producto[i];
                     cola_Lote *lote_actual = mes_actual->lotes;
                     while (lote_actual != NULL)
                     {
-                        if (!lote_actual->lote.validacion && !comprobarEstadoFecha(fecha.dia, fecha.mes, fecha.año, lote_actual))
+                        if (!lote_actual->lote.validacion && !comprobarEstadoFecha(fecha.dia, fecha.mes, fecha.ano, lote_actual))
                         {
                             lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
                             nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;                    // Almacenar
@@ -363,7 +362,7 @@ bool buscarLoteParaReporteDeLotesPorExpirar(Fecha fecha)
                         lote_actual = lote_actual->siguiente;
                     }
                 }
-                año_actual = año_actual->siguiente;
+                ano_actual = ano_actual->siguiente;
             }
         }
         aux = aux->siguiente;
@@ -424,13 +423,13 @@ void generarReporteCostoInventario()
     {
         if (!aux->producto.anulado)
         {
-            Lista_Año *año_actual = aux->producto.años_producto;
-            while (año_actual != NULL)
+            Lista_Ano *ano_actual = aux->producto.anos_producto;
+            while (ano_actual != NULL)
             {
 
                 for (int i = 0; i < 12; i++)
                 {
-                    Informacion_Mes *mes_actual = &año_actual->año_producto.producto[i];
+                    Informacion_Mes *mes_actual = &ano_actual->ano_producto.producto[i];
                     cola_Lote *lote_actual = mes_actual->lotes;
                     while (lote_actual != NULL)
                     {
@@ -441,7 +440,7 @@ void generarReporteCostoInventario()
                         }
                     }
                 }
-                año_actual = año_actual->siguiente;
+                ano_actual = ano_actual->siguiente;
             }
         }
         aux = aux->siguiente;

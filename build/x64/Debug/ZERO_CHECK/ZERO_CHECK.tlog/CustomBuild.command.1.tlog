@@ -1,0 +1,10 @@
+^C:\USERS\NOCQU\ONEDRIVE\ESCRITORIO\PROYECTO_FINAL\PROYECTOFINALPROG_ESTR\BUILD\CMAKEFILES\506E99E281ECEA58C1C8E2B17611DE9D\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr -BC:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/Prueba.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
