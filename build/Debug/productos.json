@@ -1,9 +1,9 @@
 [
     {
         "anulado": "No",
-        "costo_de_venta_total": 1650.0,
-        "descripcion_producto": "Cajita Leche",
-        "existencia_cantidad": 30,
+        "costo_de_venta_total": 364.0,
+        "descripcion_producto": "potente",
+        "existencia_cantidad": 45,
         "id_producto": 1,
         "lista_ano": [
             {
@@ -12,73 +12,86 @@
                     {
                         "lotes": [
                             {
-                                "cantidad_de_producto": 30,
-                                "costo_venta": 1650.0,
+                                "cantidad_de_producto": 0,
+                                "costo_venta": 0.0,
                                 "expiracion_fecha": {
                                     "ano": 2023,
-                                    "dia": 27,
+                                    "dia": 29,
                                     "mes": 11
                                 },
-                                "id_lote": "12611231",
+                                "id_lote": "12811231",
                                 "ingreso_fecha": {
                                     "ano": 2023,
-                                    "dia": 26,
+                                    "dia": 28,
                                     "mes": 11
                                 },
-                                "motivo": 0,
-                                "precio_producto": 55.0,
-                                "validacion": "No"
-                            }
-                        ],
-                        "lotes_cantidad": 1,
-                        "mes": 11
-                    }
-                ]
-            }
-        ],
-        "minima_cantidad": 40,
-        "nombre_producto": "Caja Leche 1 Litro",
-        "porcentaje_ganancia": 0.0
-    },
-    {
-        "anulado": "No",
-        "costo_de_venta_total": 1800.0,
-        "descripcion_producto": "Rica",
-        "existencia_cantidad": 20,
-        "id_producto": 2,
-        "lista_ano": [
-            {
-                "ano": 2023,
-                "informacion_mes": [
-                    {
-                        "lotes": [
+                                "motivo": 2,
+                                "precio_producto": 14.0,
+                                "validacion": "Si"
+                            },
                             {
-                                "cantidad_de_producto": 20,
-                                "costo_venta": 1800.0,
+                                "cantidad_de_producto": 0,
+                                "costo_venta": 0.0,
+                                "expiracion_fecha": {
+                                    "ano": 2023,
+                                    "dia": 29,
+                                    "mes": 11
+                                },
+                                "id_lote": "12811232",
+                                "ingreso_fecha": {
+                                    "ano": 2023,
+                                    "dia": 28,
+                                    "mes": 11
+                                },
+                                "motivo": 2,
+                                "precio_producto": 45.0,
+                                "validacion": "Si"
+                            },
+                            {
+                                "cantidad_de_producto": 0,
+                                "costo_venta": 0.0,
                                 "expiracion_fecha": {
                                     "ano": 2023,
                                     "dia": 30,
                                     "mes": 11
                                 },
-                                "id_lote": "22611231",
+                                "id_lote": "12811233",
                                 "ingreso_fecha": {
                                     "ano": 2023,
-                                    "dia": 26,
+                                    "dia": 28,
+                                    "mes": 11
+                                },
+                                "motivo": 2,
+                                "precio_producto": 6.0,
+                                "validacion": "Si"
+                            },
+                            {
+                                "cantidad_de_producto": 45,
+                                "costo_venta": 315.0,
+                                "expiracion_fecha": {
+                                    "ano": 2023,
+                                    "dia": 1,
+                                    "mes": 12
+                                },
+                                "id_lote": "12811234",
+                                "ingreso_fecha": {
+                                    "ano": 2023,
+                                    "dia": 28,
                                     "mes": 11
                                 },
                                 "motivo": 0,
-                                "precio_producto": 90.0,
+                                "precio_producto": 7.0,
                                 "validacion": "No"
                             }
                         ],
-                        "lotes_cantidad": 1,
+                        "lotes_cantidad": 4,
                         "mes": 11
                     }
                 ]
             }
         ],
         "minima_cantidad": 10,
-        "nombre_producto": "Libra de Carne Roja Muslo",
+        "nombre_producto": "Mostaza",
         "porcentaje_ganancia": 0.0
     }
 ]

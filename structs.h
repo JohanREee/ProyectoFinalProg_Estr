@@ -75,7 +75,7 @@ struct Producto
     int existencia_cantidad = 0;
     int minima_cantidad = 0;
     double costo_de_venta_total = 0; // Costo de todos los lotes con cada cantidad que tienen
-    double porcentaje_ganancia = 0; // va de 0 a 1
+    double porcentaje_ganancia = 0;  // va de 0 a 1
     bool anulado = false;
 };
 
@@ -106,8 +106,10 @@ struct lote_Alerta_Caducidad
 {
     char *nombre_producto = NULL;
     char *id_lote = NULL;
-    Fecha fecha_expiracion;
-    double costo_venta = 0;
+    Fecha *fecha_expiracion;
+    double *costo_venta;
+    int *cantidad_de_producto;
+    double *precio_producto;
 };
 
 struct lista_Lote_Alerta_Caducidad
@@ -119,10 +121,10 @@ struct lista_Lote_Alerta_Caducidad
 struct producto_Alerta_Cantidad
 {
     char *nombre_producto = NULL;
-    int id_producto = 0;
-    int actual_cantidad = 0;
-    int minima_cantidad = 0;
-    double costo_de_venta_total = 0;
+    int id_producto;
+    int actual_cantidad;
+    int minima_cantidad;
+    double costo_de_venta_total;
 };
 
 struct lista_Producto_Alerta_Cantidad
@@ -193,6 +195,8 @@ int obtenerMes();
 int obtenerDia();
 bool comprobarEstadoFecha2(int dia, int mes, int ano, lista_Lote_Alerta_Caducidad *lote_actual);
 void gotoxy(int x, int y);
+void limpiarMarcoDeNotificaciones();
+void marcoReporte();
 // General
 
 void agregarElementoPuntero(char *&dato, char *input);
@@ -265,9 +269,13 @@ bool comprobarEstadoFecha(int dia, int mes, int ano, cola_Lote *lote_actual);
 void registroDeInformacionLote(Lote &lote);
 void borrarLote(lista_Producto *&producto_actual, char *id_lote);
 void registroDeVentas();
+void registroDeVentasManual(lista_Producto *&producto_actual);
+void registroDeVentasProximoAVencer(lista_Producto *&producto_actual);
+void venderCantidad(lista_Producto *&producto_actual, int &cantidad, double &costo_vendido);
+// Alerta de registro de ventas
 
-// Movimiento
-
+void generarAlertaCaducidadPorProducto(lista_Producto *&producto_actual);
+void mostrarAlertaCaducidadPorProducto(lista_Lote_Alerta_Caducidad *&lote_actual, int &y);
 // Alerta de caducidad
 
 void generarAlertaCaducidad();
@@ -302,7 +310,7 @@ void generarReporteCostoInventario();
 void generarReporteDeExistenciasActuales(lista_Producto *lista_producto, lista_Producto_Existencia *&producto_existencia);
 bool buscarProductosDeReporteStockMinimo();
 
-// JSON 
+// JSON
 // JSON USERS
 json estructuraUsuarioAJSON(Usuario &usuario);
 json listaUsuariosAJSON(lista_Usuario *&lista_usuario);

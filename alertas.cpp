@@ -1,5 +1,70 @@
 #include "structs.h"
 
+void generarAlertaCaducidadPorProducto(lista_Producto *&producto_actual)
+{
+    if (lote_caducidad != NULL)
+        eliminarListaDeAlerta(lote_caducidad);
+    int ano = obtenerAno();
+    int mes = obtenerMes();
+    int dia = obtenerDia();
+    sumarFecha(ano, mes, dia, 7300);
+    Lista_Ano *ano_actual = producto_actual->producto.anos_producto;
+    while (ano_actual != NULL)
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            Informacion_Mes *mes_actual = &ano_actual->ano_producto.producto[i];
+            cola_Lote *lote_actual = mes_actual->lotes;
+            while (lote_actual != NULL)
+            { // 16/11/23 --------    23/11/23
+
+                if (!lote_actual->lote.validacion && !comprobarEstadoFecha(dia, mes, ano, lote_actual))
+                {
+                    lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Almacenar
+                    nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
+                    nuevo_lote->lote.fecha_expiracion = &lote_actual->lote.expiracion_fecha;
+                    nuevo_lote->lote.costo_venta = &lote_actual->lote.costo_venta;
+                    nuevo_lote->lote.cantidad_de_producto = &lote_actual->lote.cantidad_de_producto;
+                    nuevo_lote->lote.precio_producto = &lote_actual->lote.precio_producto;
+                    guardarLoteEnLista(nuevo_lote); // Guardar
+                }
+                lote_actual = lote_actual->siguiente;
+            }
+        }
+        ano_actual = ano_actual->siguiente;
+    }
+    if (lote_caducidad != NULL)
+    {
+        int cont = 0;
+        lista_Lote_Alerta_Caducidad *aux2 = lote_caducidad;
+        gotoxy(92, 6);
+        std::cout << "Lotes mas prontos a vencer para el producto \"" << producto_actual->producto.nombre_producto << "\".\n";
+        int y = 7;
+        while (cont != 7)
+        {
+            cont++;
+            mostrarAlertaCaducidadPorProducto(aux2, y);
+            if (aux2->siguiente == NULL)
+            {
+                break;
+            }
+            aux2 = aux2->siguiente;
+        }
+    }
+}
+
+void mostrarAlertaCaducidadPorProducto(lista_Lote_Alerta_Caducidad *&lote_actual, int &y)
+{
+    Fecha *fecha = lote_actual->lote.fecha_expiracion;
+    gotoxy(92, ++y);
+    std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
+    gotoxy(92, ++y);
+    std::cout << "Fecha de expiración: " << fecha->dia << "/" << fecha->mes << "/" << fecha->ano << "\n";
+    gotoxy(92, ++y);
+    std::cout << "Costo: C$" << *(lote_actual->lote.costo_venta) << "\n";
+    y += 2;
+}
+
 void generarAlertaCaducidad()
 {
     if (lote_caducidad != NULL)
@@ -29,8 +94,8 @@ void generarAlertaCaducidad()
                             lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
                             nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;            // Almacenar
                             nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
-                            nuevo_lote->lote.fecha_expiracion = lote_actual->lote.expiracion_fecha;
-                            nuevo_lote->lote.costo_venta = lote_actual->lote.costo_venta;
+                            nuevo_lote->lote.fecha_expiracion = &lote_actual->lote.expiracion_fecha;
+                            nuevo_lote->lote.costo_venta = &lote_actual->lote.costo_venta;
                             guardarLoteEnLista(nuevo_lote); // Guardar
                         }
                         lote_actual = lote_actual->siguiente;
@@ -47,7 +112,7 @@ void generarAlertaCaducidad()
         int cont = 0;
         lista_Lote_Alerta_Caducidad *aux2 = lote_caducidad;
         gotoxy(92, 6);
-        std::cout << "\nLotes mas prontos a vencer.\n";
+        std::cout << "Lotes mas prontos a vencer.\n";
         int y = 7;
         while (cont != 6)
         {
@@ -65,24 +130,24 @@ void generarAlertaCaducidad()
 
 void mostrarAlertaAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual, int &y)
 {
-    Fecha fecha = {lote_actual->lote.fecha_expiracion.dia, lote_actual->lote.fecha_expiracion.mes, lote_actual->lote.fecha_expiracion.ano};
+    Fecha *fecha = lote_actual->lote.fecha_expiracion;
     gotoxy(92, y);
     std::cout << "Nombre: " << lote_actual->lote.nombre_producto << "\n";
     gotoxy(92, ++y);
     std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
     gotoxy(92, ++y);
-    std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.ano << "\n";
+    std::cout << "Fecha de expiración: " << fecha->dia << "/" << fecha->mes << "/" << fecha->ano << "\n";
     gotoxy(92, ++y);
-    std::cout << "Costo: C$" << lote_actual->lote.costo_venta << "\n";
+    std::cout << "Costo: C$" << *(lote_actual->lote.costo_venta) << "\n";
     y += 2;
 }
 void mostrarAlertaCaducidad(lista_Lote_Alerta_Caducidad *lote_actual)
 {
-    Fecha fecha = {lote_actual->lote.fecha_expiracion.dia, lote_actual->lote.fecha_expiracion.mes, lote_actual->lote.fecha_expiracion.ano};
+    Fecha *fecha = lote_actual->lote.fecha_expiracion;
     std::cout << "\n\nNombre: " << lote_actual->lote.nombre_producto << "\n";
     std::cout << "ID de lote: " << lote_actual->lote.id_lote << "\n";
-    std::cout << "Fecha de expiración: " << fecha.dia << "/" << fecha.mes << "/" << fecha.ano << "\n";
-    std::cout << "Costo: C$" << lote_actual->lote.costo_venta << "\n";
+    std::cout << "Fecha de expiración: " << fecha->dia << "/" << fecha->mes << "/" << fecha->ano << "\n";
+    std::cout << "Costo: C$" << *(lote_actual->lote.costo_venta) << "\n";
 }
 
 void sumarFecha(int &ano, int &mes, int &dia, int cantidad)
@@ -117,7 +182,7 @@ void guardarLoteEnLista(lista_Lote_Alerta_Caducidad *&nuevo_lote)
         lista_Lote_Alerta_Caducidad *aux = lote_caducidad;
         lista_Lote_Alerta_Caducidad *aux2 = NULL;
 
-        if (aux == NULL || !comprobarEstadoFecha2(aux->lote.fecha_expiracion.dia, aux->lote.fecha_expiracion.mes, aux->lote.fecha_expiracion.ano, nuevo_lote))
+        if (aux == NULL || !comprobarEstadoFecha2(aux->lote.fecha_expiracion->dia, aux->lote.fecha_expiracion->mes, aux->lote.fecha_expiracion->ano, nuevo_lote))
         {
             nuevo_lote->siguiente = lote_caducidad;
             lote_caducidad = nuevo_lote;
@@ -125,7 +190,7 @@ void guardarLoteEnLista(lista_Lote_Alerta_Caducidad *&nuevo_lote)
         else
         {
 
-            while (aux != NULL && comprobarEstadoFecha2(aux->lote.fecha_expiracion.dia, aux->lote.fecha_expiracion.mes, aux->lote.fecha_expiracion.ano, nuevo_lote))
+            while (aux != NULL && comprobarEstadoFecha2(aux->lote.fecha_expiracion->dia, aux->lote.fecha_expiracion->mes, aux->lote.fecha_expiracion->ano, nuevo_lote))
             {
                 aux2 = aux;
                 aux = aux->siguiente;

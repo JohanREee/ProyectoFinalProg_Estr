@@ -68,7 +68,7 @@ void agregarElementoPuntero(char *&dato, char *input)
             std::cout << ch;
         }
     } while (true);
-    
+
     input[i] = '\0';
     int length = strlen(input);
     dato = new char[length + 1];
@@ -169,8 +169,6 @@ double soloFlotantes()
     input[0] = '\0';
     return numero;
 }
-
-
 
 char *nombreFormal(Usuario usuario_actual)
 {
@@ -340,8 +338,8 @@ bool comprobarEstadoFecha(int dia, int mes, int ano, cola_Lote *lote_actual)
 
 bool comprobarEstadoFecha2(int dia, int mes, int ano, lista_Lote_Alerta_Caducidad *lote_actual)
 {
-    Fecha fecha_expira = lote_actual->lote.fecha_expiracion; // 11/11/2023         //18/11/2023
-    if (ingresarFechaExpiracion(ano, mes, dia, fecha_expira.ano, fecha_expira.mes, fecha_expira.dia))
+    Fecha *fecha_expira = lote_actual->lote.fecha_expiracion; // 11/11/2023         //18/11/2023
+    if (ingresarFechaExpiracion(ano, mes, dia, fecha_expira->ano, fecha_expira->mes, fecha_expira->dia))
     {
         return true;
     }
@@ -412,17 +410,29 @@ void pausarYLimpiar()
     pausar();
     limpiar();
 }
-void gotoxy(int x, int y) 
+void gotoxy(int x, int y)
 {
-	// Obtiene el identificador de la consola de salida estándar
-	HANDLE hcon;
-	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    // Obtiene el identificador de la consola de salida estándar
+    HANDLE hcon;
+    hcon = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	// Crea una estructura de coordenadas con las posiciones especificadas
-	COORD dwPos;
-	dwPos.X = x;
-	dwPos.Y = y;
+    // Crea una estructura de coordenadas con las posiciones especificadas
+    COORD dwPos;
+    dwPos.X = x;
+    dwPos.Y = y;
 
-	// Establece la posición del cursor en la consola a las coordenadas especificadas
-	SetConsoleCursorPosition(hcon, dwPos);
+    // Establece la posición del cursor en la consola a las coordenadas especificadas
+    SetConsoleCursorPosition(hcon, dwPos);
+}
+
+void limpiarMarcoDeNotificaciones()
+{
+    int limpiar_x = 90;
+    int limpiar_y = 2;
+    for (int i = 0; i < 40; i++)
+    {
+        gotoxy(limpiar_x, limpiar_y);
+        std::cout << "                                                ";
+        limpiar_y ++;
+    }
 }

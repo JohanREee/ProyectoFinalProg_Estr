@@ -4,14 +4,14 @@
 
 
 # Configuration directories and files
-SourceDirectory: C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr
-BuildDirectory: C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr/build
+SourceDirectory: C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr
+BuildDirectory: C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: FranciscoGuevaraPC
+Site: DESKTOP-QVNQAM9
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Win32-MSBuild
@@ -27,8 +27,8 @@ SubmitInactivityTimeout:
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "D:/C++Studio/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe" "C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr"
-MakeCommand: D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe --build . --config "${CTEST_CONFIGURATION_TYPE}"
+ConfigureCommand: "C:/Program Files/CMake/bin/cmake.exe" "C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr"
+MakeCommand: "C:\Program Files\CMake\bin\cmake.exe" --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
 # version control
@@ -63,8 +63,8 @@ UpdateOptions:
 UpdateType: git
 
 # Compiler info
-Compiler: D:/C++Studio/VC/Tools/MSVC/14.34.31933/bin/Hostx64/x64/cl.exe
-CompilerVersion: 19.34.31937.0
+Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe
+CompilerVersion: 19.38.33130.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 
@@ -81,7 +81,7 @@ MemoryCheckCommandOptions:
 MemoryCheckSuppressionFile: 
 
 # Coverage
-CoverageCommand: C:/msys64/mingw64/bin/gcov.exe
+CoverageCommand: C:/TDM-GCC-64/bin/gcov.exe
 CoverageExtraFlags: -l
 
 # Testing options

@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr
+# Install script for directory: C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/LoQueSea")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Prueba")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/frang/OneDrive/Documentos/Clases/VI_Semestre/ProgramacionEstructurada/PROYECTO/ProyectoFinalProg_Estr/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/nocqu/OneDrive/Escritorio/Proyecto_Final/ProyectoFinalProg_Estr/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -3,6 +3,9 @@
   <PropertyGroup>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -22,9 +25,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8810779A-B0C6-388B-9727-8FDEEB01E057}</ProjectGuid>
+    <ProjectGuid>{C7FE50C0-F40E-3901-8E3C-B59A9033D869}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
     <ProjectName>PACKAGE</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
@@ -68,11 +71,11 @@
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-cd C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build
+cd C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cpack.exe -C $(Configuration) --config ./CPackConfig.cmake
+"C:\Program Files\CMake\bin\cpack.exe" -C $(Configuration) --config ./CPackConfig.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -86,11 +89,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-cd C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build
+cd C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cpack.exe -C $(Configuration) --config ./CPackConfig.cmake
+"C:\Program Files\CMake\bin\cpack.exe" -C $(Configuration) --config ./CPackConfig.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -104,11 +107,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-cd C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build
+cd C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cpack.exe -C $(Configuration) --config ./CPackConfig.cmake
+"C:\Program Files\CMake\bin\cpack.exe" -C $(Configuration) --config ./CPackConfig.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -122,11 +125,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-cd C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build
+cd C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build
 if %errorlevel% neq 0 goto :cmEnd
 C:
 if %errorlevel% neq 0 goto :cmEnd
-D:\C++Studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cpack.exe -C $(Configuration) --config ./CPackConfig.cmake
+"C:\Program Files\CMake\bin\cpack.exe" -C $(Configuration) --config ./CPackConfig.cmake
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -137,7 +140,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\CMakeFiles\ca5af265d0a182fc9e5df8c428ba589f\PACKAGE_force.rule">
+    <CustomBuild Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\CMakeFiles\506e99e281ecea58c1c8e2b17611de9d\PACKAGE_force.rule">
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BuildInParallel>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 cd .
@@ -149,9 +153,10 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BuildInParallel>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 cd .
@@ -163,9 +168,10 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</VerifyInputsAndOutputsExist>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</BuildInParallel>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
 cd .
@@ -177,9 +183,10 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</VerifyInputsAndOutputsExist>
+      <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</BuildInParallel>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
 cd .
@@ -191,20 +198,20 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\CMakeFiles\PACKAGE_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
       <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</VerifyInputsAndOutputsExist>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\ZERO_CHECK.vcxproj">
-      <Project>{7A9CE096-2472-34C2-88C5-55CAD0963319}</Project>
+    <ProjectReference Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\ZERO_CHECK.vcxproj">
+      <Project>{5750B790-6F29-3935-A7CF-844DED57F3B5}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\build\ALL_BUILD.vcxproj">
-      <Project>{C27D4843-75AA-3E0D-B397-E5BF539DABBE}</Project>
+    <ProjectReference Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\build\ALL_BUILD.vcxproj">
+      <Project>{6BD8F604-8FD3-3EC8-B4B1-1BEC426E536C}</Project>
       <Name>ALL_BUILD</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

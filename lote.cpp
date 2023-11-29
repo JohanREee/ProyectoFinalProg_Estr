@@ -150,7 +150,7 @@ void agregarLotesAProducto(lista_Producto *&producto)
         nuevo_lote->lote.costo_venta = nuevo_lote->lote.precio_producto * nuevo_lote->lote.cantidad_de_producto;
         nuevo_lote->lote.costo_venta += (nuevo_lote->lote.costo_venta * producto->producto.porcentaje_ganancia);
         calcularCostoVentaTotal(producto);
-        
+
         escribirProductosEnArchivoJSON(lista_producto);
         std::cout << "\n\tLote agregado con exito.\n";
         std::cout << "\tEl ID del lote es: " << nuevo_lote->lote.id_lote << "\n";
@@ -381,7 +381,7 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
     int dia = obtenerDia(), mes = obtenerMes(), ano = obtenerAno();
     pausarYLimpiar();
     marco();
-    gotoxy(2,6);
+    gotoxy(2, 6);
     std::cout << "\tSeleccione el campo del lote " << lote_actual->lote.id_lote << " que desea modificar: \n";
     std::cout << "\t1. Fecha de expiración\n";
     std::cout << "\t2. Precio del producto\n";
@@ -431,7 +431,7 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
             break;
         }
         std::cout << "\tIngrese el nuevo precio del producto para este lote: ";
-        
+
         precio = soloFlotantes();
         if (precio > 0)
         {
@@ -521,13 +521,104 @@ void modificarLoteDeProducto(lista_Producto *&lista_producto)
     }
     return;
 }
-void registroDeVentas()
+
+void venderCantidad(lista_Producto *&producto_actual, int &cantidad, double &costo_vendido)
 {
-    lista_Producto *producto_actual = NULL;
-    if (!ingresarProducto(producto_actual))
+    cantidad = soloEnteros();
+    if (cantidad > producto_actual->producto.existencia_cantidad)
     {
+        std::cout << "\tLa cantidad ingresada es mayor que la cantidad en existencia del producto.\n";
         return;
     }
+
+    while (cantidad != 0 || lote_caducidad != NULL)               // 50
+    {                                                             // 7 5 10 41
+        int aux = cantidad;                                       // 50 - 7 = 43
+        cantidad -= *(lote_caducidad->lote.cantidad_de_producto); // 2 10 = -8
+        if (cantidad > 0)
+        {
+            int op;
+            while (true)
+            {
+                if (lote_caducidad->siguiente == NULL)
+                {
+                }
+                std::cout << "\tLa cantidad de productos para el lote " << lote_caducidad->lote.id_lote << " es menor a la cantidad\n\tactual ingresada(" << aux << ")\n";
+                std::cout << "\t¿Desea tomar productos del siguiente lote mas proximo a vencer? (" << lote_caducidad->siguiente->lote.id_lote << ")?"
+                          << "\n";
+                std::cout << "\tEsta accion establecerá el lote actual con una cantidad en stock de 0.\n";
+                std::cout << "\t1. Sí\n";
+                std::cout << "\t2. No\n";
+                std::cout << "\tIngresar numero: ";
+                op = soloEnteros();
+                if (op == 1 || op == 2)
+                {
+                    break;
+                }
+                else
+                {
+                    std::cout << "\tError al ingresar un numero.\n";
+                    std::cout << "\tVuelve a intentarlo.\n";
+                    pausar();
+                    continue;
+                }
+            }
+            if (op == 1)
+            {
+                costo_vendido += *(lote_caducidad->lote.costo_venta);
+                producto_actual->producto.existencia_cantidad -= *(lote_caducidad->lote.cantidad_de_producto);
+                producto_actual->producto.costo_de_venta_total -= *(lote_caducidad->lote.costo_venta);
+                *(lote_caducidad->lote.costo_venta) = 0;
+                *(lote_caducidad->lote.cantidad_de_producto) = 0;
+                vencerLotes(lista_producto);
+                pausarYLimpiar();
+                marco();
+                generarAlertaCaducidadPorProducto(producto_actual);
+                gotoxy(2,6);
+                continue;
+            }
+            break;
+        }
+        else if (cantidad < 0)
+        {
+            *(lote_caducidad->lote.cantidad_de_producto) -= aux;
+            producto_actual->producto.existencia_cantidad -= aux;
+            *(lote_caducidad->lote.costo_venta) = (*(lote_caducidad->lote.cantidad_de_producto) * *(lote_caducidad->lote.precio_producto));
+            costo_vendido += *(lote_caducidad->lote.costo_venta);
+            std::cout << "\tLa cantidad de " << aux << " ha sido correctamente vendida en el lote " << lote_caducidad->lote.id_lote << ".\n";
+            pausar();
+            break;
+        }
+        else if (cantidad == 0)
+        {
+            costo_vendido += *(lote_caducidad->lote.costo_venta);
+            producto_actual->producto.existencia_cantidad -= *(lote_caducidad->lote.cantidad_de_producto);
+            producto_actual->producto.costo_de_venta_total -= *(lote_caducidad->lote.costo_venta);
+            *(lote_caducidad->lote.costo_venta) = 0;
+            *(lote_caducidad->lote.cantidad_de_producto) = 0;
+            std::cout << "\tLa cantidad de " << aux << " ha sido correctamente vendida en el lote " << lote_caducidad->lote.id_lote << ".\n";
+            pausar();
+        }
+    }
+}
+void registroDeVentasProximoAVencer(lista_Producto *&producto_actual)
+{
+    int cantidad;
+    double costo_vendido = 0;
+    generarAlertaCaducidadPorProducto(producto_actual);
+    gotoxy(2,12);
+    std::cout << "\tA su derecha, se pueden observar los lotes mas prontos a vencer.\n";
+    std::cout << "\tDigite la cantidad a vender del producto (no puede ser \n\tmayor que la cantidad del producto)\n";
+    std::cout << "\tCantidad del producto \"" << producto_actual->producto.nombre_producto << "\""
+              << ": " << producto_actual->producto.existencia_cantidad << "\n";
+    std::cout << "\tIngresar cantidad(0 para salir): ";
+    venderCantidad(producto_actual, cantidad, costo_vendido);
+    std::cout << "\tCantidad en Córdobas vendida: " << costo_vendido << "\n";
+}
+
+
+void registroDeVentasManual(lista_Producto *&producto_actual)
+{
     cola_Lote *lote_actual = NULL;
     if (!ingresarLote(producto_actual, lote_actual))
     {
@@ -554,9 +645,38 @@ void registroDeVentas()
     lote_actual->lote.costo_venta += (lote_actual->lote.costo_venta * producto_actual->producto.porcentaje_ganancia); // 120
     aux -= lote_actual->lote.costo_venta;                                                                             // -20
     producto_actual->producto.costo_de_venta_total -= aux;
-
-    escribirProductosEnArchivoJSON(lista_producto);
-    
+}
+void registroDeVentas()
+{
+    lista_Producto *producto_actual = NULL;
+    if (!ingresarProducto(producto_actual))
+    {
+        return;
+    }
+    int op;
+    std::cout << "\tElegir opciones: \n";
+    std::cout << "\t1. Seleccionar lote para vender cantidad.\n";
+    std::cout << "\t2. Vender cantidad desde el lotes más próximo a vencer.\n";
+    std::cout << "\tIngresar número: ";
+    op = soloEnteros();
+    if (op == 1)
+    {
+        registroDeVentasManual(producto_actual);
+        escribirProductosEnArchivoJSON(lista_producto);
+        return;
+    }
+    else if (op == 2)
+    {
+        registroDeVentasProximoAVencer(producto_actual);
+        escribirProductosEnArchivoJSON(lista_producto);
+        return;
+    }
+    else
+    {
+        std::cout << "\tValor invalido.\n";
+        std::cout << "\tVolviendo al menú anterior.\n";
+        return;
+    }
 }
 void eliminarLoteDeProducto()
 {
@@ -662,7 +782,6 @@ void vencerLotes(lista_Producto *&producto)
                                 aux->producto.costo_de_venta_total -= lote_actual->lote.costo_venta;
                                 lote_actual->lote.motivo = 1;
                                 escribirProductosEnArchivoJSON(lista_producto);
-                                
                             }
                         }
                         else if (lote_actual->lote.cantidad_de_producto == 0) // Anula por cantidad
@@ -681,7 +800,7 @@ void vencerLotes(lista_Producto *&producto)
 
                             lote_actual->lote.motivo = 0;
                             escribirProductosEnArchivoJSON(lista_producto);
-                            
+
                             // Se reactiva
                         }
                         lote_actual = lote_actual->siguiente;

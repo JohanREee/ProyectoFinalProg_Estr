@@ -358,7 +358,8 @@ bool buscarLoteParaReporteDeLotesPorExpirar(Fecha fecha)
                             lista_Lote_Alerta_Caducidad *nuevo_lote = new lista_Lote_Alerta_Caducidad(); // Crear
                             nuevo_lote->lote.nombre_producto = aux->producto.nombre_producto;                    // Almacenar
                             nuevo_lote->lote.id_lote = lote_actual->lote.id_lote;
-                            nuevo_lote->lote.fecha_expiracion = lote_actual->lote.expiracion_fecha;
+                            nuevo_lote->lote.fecha_expiracion = &lote_actual->lote.expiracion_fecha;
+                            nuevo_lote->lote.costo_venta = &lote_actual->lote.costo_venta;
                             guardarLoteEnLista(nuevo_lote); // Guardar
                         }
                         lote_actual = lote_actual->siguiente;

@@ -1,54 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\main.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\inicio_sesion.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\inicio_sesion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\lote.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\lote.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\registros.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\registros.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\producto.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\producto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\menus.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\menus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\complemento.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\complemento.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\alertas.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\alertas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\archivos_texto.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\archivos_texto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\usuario.cpp">
+    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\usuario.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\structs.h">
+    <ClInclude Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="C:\Users\frang\OneDrive\Documentos\C++\vcpkg\installed\x64-windows\share\nlohmann_json\nlohmann_json.natvis" />
+    <Natvis Include="C:\Users\nocqu\OneDrive\Escritorio\Programs\More\vcpkg\installed\x64-windows\share\nlohmann_json\nlohmann_json.natvis" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{1C2D4030-B19D-34AF-A9DD-4F33FCBC8B78}</UniqueIdentifier>
+      <UniqueIdentifier>{7A4B5CE6-40C8-3D96-B755-BCFE59027147}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{B99FF92E-050E-3A5D-9846-61A58481C90C}</UniqueIdentifier>
+      <UniqueIdentifier>{9E557541-9420-37F8-9D2B-06097DF90276}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
