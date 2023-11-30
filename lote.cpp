@@ -83,7 +83,6 @@ void agregarPrimerLote(lista_Producto *&producto)
     nuevo_lote->lote.cantidad_de_producto += producto->producto.existencia_cantidad;
     // Actualizar el costo de venta del lote.
     nuevo_lote->lote.costo_venta = nuevo_lote->lote.precio_producto * nuevo_lote->lote.cantidad_de_producto;
-    nuevo_lote->lote.costo_venta += (nuevo_lote->lote.costo_venta * producto->producto.porcentaje_ganancia);
     std::cout << "\tEl ID del lote es: " << nuevo_lote->lote.id_lote << "\n";
     // Guardar el nuevo lote en la cola de todos los lotes
     guardarLoteEnProducto(mes_actual, nuevo_lote);
@@ -571,7 +570,7 @@ void venderCantidad(lista_Producto *&producto_actual, int &cantidad, double &cos
                 *(lote_caducidad->lote.costo_venta) = 0;
                 *(lote_caducidad->lote.cantidad_de_producto) = 0;
                 vencerLotes(lista_producto);
-                pausarYLimpiar();
+                limpiar();
                 marco();
                 generarAlertaCaducidadPorProducto(producto_actual);
                 gotoxy(2,6);
@@ -600,6 +599,8 @@ void venderCantidad(lista_Producto *&producto_actual, int &cantidad, double &cos
             pausar();
         }
     }
+    costo_vendido += (costo_vendido * producto_actual->producto.porcentaje_ganancia);
+
 }
 void registroDeVentasProximoAVencer(lista_Producto *&producto_actual)
 {

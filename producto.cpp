@@ -4,13 +4,28 @@ void agregarProductoEnLista(lista_Producto *&producto, char *input)
 {
     lista_Producto *nuevo_producto = new lista_Producto();
     nuevo_producto->producto.id_producto = ++conteo_id_producto;
-    gotoxy(2,6);
+    gotoxy(2, 6);
     std::cout << "\tIngresar el nombre del producto: ";
     agregarElementoPuntero(nuevo_producto->producto.nombre_producto, input);
     std::cout << "\tIngresar descripción del producto: ";
     agregarElementoPuntero(nuevo_producto->producto.descripcion_producto, input);
+    while (true)
+    {
+        std::cout << "\tIngresar el porcentaje de ganancia del producto: ";
+        nuevo_producto->producto.porcentaje_ganancia = soloFlotantes();
+        if (nuevo_producto->producto.porcentaje_ganancia > 100)
+        {
+            std::cout << "\tLa cantidad del porcentaje no puede ser mayor a 100.\n";
+            std::cout << "\tVuelve a intentarlo.\n";
+            continue;
+        }
+        nuevo_producto->producto.porcentaje_ganancia /= 100;
+        break;
+    }
+
     std::cout << "\tIngresar cantidad en existencia del producto: ";
     nuevo_producto->producto.existencia_cantidad = soloEnteros();
+
     if (nuevo_producto->producto.existencia_cantidad != 0)
     {
         agregarPrimerLote(nuevo_producto);
@@ -81,7 +96,7 @@ void guardarProductoEnLista(lista_Producto *&lista_producto, lista_Producto *&nu
 bool ingresarProducto(lista_Producto *&producto_actual)
 {
     int id_producto;
-    gotoxy(2,6);
+    gotoxy(2, 6);
     std::cout << "\tDigite el ID del producto que desea buscar: ";
     id_producto = soloEnteros();
     producto_actual = buscarProducto(lista_producto, id_producto);
@@ -131,12 +146,14 @@ void mostrarProducto(lista_Producto *producto)
 {
     pausarYLimpiar();
     marco();
-    gotoxy(2,6);
+    gotoxy(2, 6);
     std::cout << "\tNombre: " << producto->producto.nombre_producto << "\n";
-    std::cout << "\tDescripcion: " << producto->producto.descripcion_producto << "\n"; // Controlar el flujo
+    std::cout << "\tDescripcion: " << producto->producto.descripcion_producto << "\n";
+    std::cout << "\tPorcentaje de ganancias: " << producto->producto.porcentaje_ganancia << "\n";
     std::cout << "\tCantidad en existencia: " << producto->producto.existencia_cantidad << "\n";
     std::cout << "\tCantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
-    std::cout << "\tCosto de venta total en Córdobas: C$" << producto->producto.costo_de_venta_total << "\n";;
+    std::cout << "\tCosto de venta total en Córdobas: C$" << producto->producto.costo_de_venta_total << "\n";
+    ;
     if (producto->producto.anulado)
     {
         std::cout << "\n\tEl producto está anulado\n";
@@ -175,9 +192,10 @@ void mostrarProductos(lista_Producto *producto, bool show)
     {
         if (!producto->producto.anulado || show)
         {
-            gotoxy(2,6);
+            gotoxy(2, 6);
             std::cout << "\tNombre del producto: " << producto->producto.nombre_producto << "\n";
             std::cout << "\tDescripción del producto: " << producto->producto.descripcion_producto << "\n";
+            std::cout << "\tPorcentaje de ganancias: " << producto->producto.porcentaje_ganancia << "\n";
             std::cout << "\tCantidad en existencia:" << producto->producto.existencia_cantidad << "\n";
             std::cout << "\tCantidad mínima de existencia: " << producto->producto.minima_cantidad << "\n";
             std::cout << "\tCosto de venta total en Córdobas: C$" << producto->producto.costo_de_venta_total << "\n";
@@ -201,11 +219,12 @@ void modificarProducto(lista_Producto *&lista_producto)
     {
         return;
     }
-    gotoxy(2,6);
+    gotoxy(2, 6);
     std::cout << "\tSeleccione el campo de \"" << producto_actual->producto.nombre_producto << "\" que desea modificar\n";
     std::cout << "\t1. Nombre\n";
     std::cout << "\t2. Descripción\n";
     std::cout << "\t3. Cantidad minima en existencia.\n";
+    std::cout << "\t4. Porcentaje de ganancias.\n";
     std::cout << "\tIngresar número: ";
     int op = soloEnteros();
     int porcentaje_ganancia = 0;
@@ -250,6 +269,23 @@ void modificarProducto(lista_Producto *&lista_producto)
         }
         std::cout << "\tLa cantidad minima no puede ser menor a 0.\n";
         std::cout << "\tVolviendo al menú anterior.\n";
+        escribirProductosEnArchivoJSON(lista_producto);
+        break;
+    case 4:
+        double porcentaje_ganancia;
+        std::cout << "\tIngrese el nuevo porcentaje de ganancia para el producto \"" << producto_actual->producto.nombre_producto << "\"\n";
+        std::cout << "\tIngresar numero: ";
+        porcentaje_ganancia = soloFlotantes();
+        if (porcentaje_ganancia > 100)
+        {
+            std::cout << "\tEl porcentaje de ganancia no puede ser mayor a 100.\n";
+            std::cout << "\tVolviendo al menú anterior.\n";
+            return;
+        }
+        std::cout << "\tEl porcentaje de " << producto_actual->producto.porcentaje_ganancia << " ha sido reemplazado por ";
+        std::cout << "\n\t" << porcentaje_ganancia << ".\n";
+        producto_actual->producto.porcentaje_ganancia = porcentaje_ganancia;
+
         escribirProductosEnArchivoJSON(lista_producto);
         break;
     default:
@@ -351,7 +387,6 @@ void asignarCostoVentaACadaLote(lista_Producto *&producto_actual)
             while (lote_actual != NULL)
             {
                 lote_actual->lote.costo_venta = (lote_actual->lote.precio_producto * lote_actual->lote.cantidad_de_producto);
-                lote_actual->lote.costo_venta += (lote_actual->lote.costo_venta * producto_actual->producto.porcentaje_ganancia);
                 lote_actual = lote_actual->siguiente;
             }
         }
