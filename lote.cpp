@@ -582,8 +582,9 @@ void venderCantidad(lista_Producto *&producto_actual, int &cantidad, double &cos
         {
             *(lote_caducidad->lote.cantidad_de_producto) -= aux;
             producto_actual->producto.existencia_cantidad -= aux;
+            producto_actual->producto.costo_de_venta_total -= (aux * *(lote_caducidad->lote.precio_producto));
             *(lote_caducidad->lote.costo_venta) = (*(lote_caducidad->lote.cantidad_de_producto) * *(lote_caducidad->lote.precio_producto));
-            costo_vendido += *(lote_caducidad->lote.costo_venta);
+            costo_vendido += aux * *(lote_caducidad->lote.precio_producto);
             std::cout << "\tLa cantidad de " << aux << " ha sido correctamente vendida en el lote " << lote_caducidad->lote.id_lote << ".\n";
             pausar();
             break;

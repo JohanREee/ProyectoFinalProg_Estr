@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\main.cpp">
+    <ClCompile Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\nocqu\OneDrive\Escritorio\Proyecto_Final\ProyectoFinalProg_Estr\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\frang\OneDrive\Documentos\Clases\VI_Semestre\ProgramacionEstructurada\PROYECTO\ProyectoFinalProg_Estr\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{9E557541-9420-37F8-9D2B-06097DF90276}</UniqueIdentifier>
+      <UniqueIdentifier>{B99FF92E-050E-3A5D-9846-61A58481C90C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

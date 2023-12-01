@@ -1,9 +1,9 @@
 [
     {
         "anulado": "No",
-        "costo_de_venta_total": 364.0,
-        "descripcion_producto": "potente",
-        "existencia_cantidad": 45,
+        "costo_de_venta_total": 950.0,
+        "descripcion_producto": "a",
+        "existencia_cantidad": 19,
         "id_producto": 1,
         "lista_ano": [
             {
@@ -12,86 +12,32 @@
                     {
                         "lotes": [
                             {
-                                "cantidad_de_producto": 0,
-                                "costo_venta": 0.0,
+                                "cantidad_de_producto": 19,
+                                "costo_venta": 950.0,
                                 "expiracion_fecha": {
                                     "ano": 2023,
-                                    "dia": 29,
-                                    "mes": 11
+                                    "dia": 2,
+                                    "mes": 12
                                 },
-                                "id_lote": "12811231",
+                                "id_lote": "10112231",
                                 "ingreso_fecha": {
-                                    "ano": 2023,
-                                    "dia": 28,
-                                    "mes": 11
-                                },
-                                "motivo": 2,
-                                "precio_producto": 14.0,
-                                "validacion": "Si"
-                            },
-                            {
-                                "cantidad_de_producto": 0,
-                                "costo_venta": 0.0,
-                                "expiracion_fecha": {
-                                    "ano": 2023,
-                                    "dia": 29,
-                                    "mes": 11
-                                },
-                                "id_lote": "12811232",
-                                "ingreso_fecha": {
-                                    "ano": 2023,
-                                    "dia": 28,
-                                    "mes": 11
-                                },
-                                "motivo": 2,
-                                "precio_producto": 45.0,
-                                "validacion": "Si"
-                            },
-                            {
-                                "cantidad_de_producto": 0,
-                                "costo_venta": 0.0,
-                                "expiracion_fecha": {
-                                    "ano": 2023,
-                                    "dia": 30,
-                                    "mes": 11
-                                },
-                                "id_lote": "12811233",
-                                "ingreso_fecha": {
-                                    "ano": 2023,
-                                    "dia": 28,
-                                    "mes": 11
-                                },
-                                "motivo": 2,
-                                "precio_producto": 6.0,
-                                "validacion": "Si"
-                            },
-                            {
-                                "cantidad_de_producto": 45,
-                                "costo_venta": 315.0,
-                                "expiracion_fecha": {
                                     "ano": 2023,
                                     "dia": 1,
                                     "mes": 12
                                 },
-                                "id_lote": "12811234",
-                                "ingreso_fecha": {
-                                    "ano": 2023,
-                                    "dia": 28,
-                                    "mes": 11
-                                },
                                 "motivo": 0,
-                                "precio_producto": 7.0,
+                                "precio_producto": 50.0,
                                 "validacion": "No"
                             }
                         ],
-                        "lotes_cantidad": 4,
-                        "mes": 11
+                        "lotes_cantidad": 1,
+                        "mes": 12
                     }
                 ]
             }
         ],
         "minima_cantidad": 10,
-        "nombre_producto": "Mostaza",
-        "porcentaje_ganancia": 0.0
+        "nombre_producto": "a",
+        "porcentaje_ganancia": 0.1
     }
 ]
